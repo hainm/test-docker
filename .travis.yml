@@ -6,6 +6,7 @@ services:
 - docker
 install: sh scripts/travis-build.sh
 script: echo "hello"
-after_success: echo "after success"
+after_success:
+    - docker ps -a
 notifications:
   email: false
