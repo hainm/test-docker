@@ -1,3 +1,3 @@
 #!/bin/sh
 
-docker build ./scripts/
+docker build -t my_image ./scripts/

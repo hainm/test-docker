@@ -9,5 +9,6 @@ script: echo "hello"
 after_success:
     - docker ps -a
     - docker images
+    - docker run my_image ipython
 notifications:
   email: false
