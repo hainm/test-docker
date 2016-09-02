@@ -8,5 +8,6 @@ install: sh scripts/travis-build.sh
 script: echo "hello"
 after_success:
     - docker ps -a
+    - docker images
 notifications:
   email: false
