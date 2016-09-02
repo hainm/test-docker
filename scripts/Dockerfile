@@ -55,6 +55,10 @@ RUN conda config --add channels r
 RUN conda config --add channels file://anaconda/conda-bld
 RUN conda install -y toposort
 
+# install pytraj, nglview
+RUN pip install git+https://github.com/arose/nglview
+RUN pip install pytraj==1.0.9
+
 # setup entrypoint (assuming that repo is mounted under /bioconda-recipes)
 # ENTRYPOINT ["/bioconda-recipes/scripts/build-packages.py"]
 CMD []
