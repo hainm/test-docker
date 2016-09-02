@@ -1,0 +1,7 @@
+os:
+- linux
+language: c
+sudo: required
+services:
+- docker
+install: sh scripts/travis-build.sh
