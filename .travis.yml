@@ -9,6 +9,7 @@ script: echo "hello"
 after_success:
     - docker ps -a
     - docker images
+    - eval $(docker-machine env)
     - source scripts/travis-test.sh
 notifications:
   email: false
