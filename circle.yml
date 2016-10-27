@@ -2,16 +2,14 @@ machine:
   services:
     - docker
 
-# dependencies:
-#   override:
-#     - docker pull condaforge/linux-anvil
+dependencies:
+  override:
+    - docker pull python:3.5.2
 
 test:
   override:
     - source scripts/install_git_lfs.sh
-    # - cp Dockerfile_cf Dockerfile
-    - docker build .
-    - sleep 1000
+    - docker build -t ambermd/ambertools:16 .
 #   post:
 #     - mkdir $CIRCLE_ARTIFACTS/pytraj-build
 #     - cp pytraj*bz2 $CIRCLE_ARTIFACTS/pytraj-build/
