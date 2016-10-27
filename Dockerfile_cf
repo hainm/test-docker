@@ -4,6 +4,9 @@ FROM  condaforge/linux-anvil
 # at the site below and click Download.
 ADD A.tar.bz2 /usr/local/
 
+RUN yum install csh -y
+RUN yum install wget -y
+
 RUN     cd /usr/local/amber16 \
     &&  export AMBERHOME=$(pwd) \
     &&  ./update_amber --show-applied-patches \
