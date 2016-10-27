@@ -2,7 +2,7 @@ FROM  python:3.5.2
 
 # To get the AmberTools16.tar.bz file, fill out the form
 # at the site below and click Download.
-ADD A.tar.gz /usr/local/
+ADD A.tar.bz2 /usr/local/
 
 RUN     apt-get update \
     &&  apt-get install -y \
