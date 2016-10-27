@@ -1,4 +1,4 @@
-FROM  python:3.5.2
+FROM  condaforge/linux-anvil
 
 # To get the AmberTools16.tar.bz file, fill out the form
 # at the site below and click Download.
