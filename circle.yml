@@ -9,6 +9,7 @@ machine:
 test:
   override:
     - docker build .
+    - sleep 1000
 #   post:
 #     - mkdir $CIRCLE_ARTIFACTS/pytraj-build
 #     - cp pytraj*bz2 $CIRCLE_ARTIFACTS/pytraj-build/
