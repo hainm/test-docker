@@ -9,7 +9,8 @@ machine:
 test:
   override:
     - source scripts/install_git_lfs.sh
-    - docker build Dockerfile_cf
+    - cp Dockerfile_cf Dockerfile
+    - docker build .
     - sleep 1000
 #   post:
 #     - mkdir $CIRCLE_ARTIFACTS/pytraj-build
