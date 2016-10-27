@@ -10,7 +10,7 @@ test:
   override:
     - source scripts/install_git_lfs.sh
     - docker build -t ambermd/ambertools:16 .
-#   post:
-#     - mkdir $CIRCLE_ARTIFACTS/pytraj-build
-#     - cp pytraj*bz2 $CIRCLE_ARTIFACTS/pytraj-build/
-#     - cp libcpptraj*bz2 $CIRCLE_ARTIFACTS/pytraj-build/
+   post:
+     - mkdir $CIRCLE_ARTIFACTS/amber-build/
+     - docker save -o amber_docker ambermd/ambertools:16
+     - cp amber_docker $CIRCLE_ARTIFACTS/amber-build/
