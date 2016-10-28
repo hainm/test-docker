@@ -26,5 +26,8 @@ RUN     cd /usr/local/amber16 \
     &&  ./configure -noX11 gnu \
     &&  . ${AMBERHOME}/amber.sh \
     &&  make -j4 install \
+    &&  make test \
     &&  ./configure -noX11 -mpi gnu \
     &&  make -j4 install 
+    &&  export DO_PARALLEL="mpirun -n 2" \
+    &&  make test
