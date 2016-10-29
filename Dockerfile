@@ -3,6 +3,7 @@ FROM  condaforge/linux-anvil
 # To get the AmberTools16.tar.bz file, fill out the form
 # at the site below and click Download.
 ADD A.tar.bz2 /usr/local/
+ADD recipe-prebuild/ /usr/local/amber16/
 
 RUN yum install csh -y
 RUN yum install wget -y
@@ -19,4 +20,5 @@ RUN     cd /usr/local/amber16 \
     &&  export CXX=/opt/rh/devtoolset-2/root/usr/bin/g++ \
     &&  ./configure -noX11 gnu \
     &&  . ${AMBERHOME}/amber.sh \
-    &&  make -j4 install
+    &&  make -j4 install \
+    &&  amber.conda build recipe-prebuild/
