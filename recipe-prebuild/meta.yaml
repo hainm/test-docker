@@ -1,0 +1,34 @@
+{% set version = 16 %}
+
+package:
+  name: ambertools
+  version: {{ version }}
+
+build:
+  number: 1
+  script_env:
+      - AMBERHOME
+
+requirements:
+  build:
+    - zlib
+    - bzip2
+    - libnetcdf
+    - openblas
+    - libgfortran
+  run:
+    - zlib
+    - bzip2
+    - libnetcdf
+    - openblas
+    - libgfortran
+
+test:
+  commands:
+    - cpptraj --defines
+    - which tleap
+
+about:
+    home: https://ambermd.org
+    license: GNU
+    summary: ambermd-test
