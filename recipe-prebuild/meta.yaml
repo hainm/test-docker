@@ -9,8 +9,6 @@ source:
 
 build:
   number: 1
-  script_env:
-      - AMBERHOME
 
 requirements:
   build:
