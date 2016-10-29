@@ -24,6 +24,7 @@ CONDARC
 
 cat << EOF | docker run -i \
                         -v ${AMBER16}:/amber16 \
+                        -v ${FEEDSTOCK_ROOT}:/feedstock_root \
                         -a stdin -a stdout -a stderr \
                         condaforge/linux-anvil \
                         bash || exit $?
