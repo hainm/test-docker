@@ -1,33 +1,18 @@
-# Dockerfile for amber in a slurm cluster
-FROM  python:3.5.2
+FROM  condaforge/linux-anvil
 
 # To get the AmberTools16.tar.bz file, fill out the form
 # at the site below and click Download.
 ADD A.tar.bz2 /usr/local/
 
-RUN     apt-get update \
-    &&  apt-get install -y \
-        csh \
-        flex \
-        gfortran \
-        g++ \
-        zlib1g-dev \
-        libbz2-dev \
-        patch \
-        openmpi-bin \
-        libopenmpi-dev
-   
+RUN yum install csh -y
+RUN yum install wget -y
+
 RUN     cd /usr/local/amber16 \
     &&  export AMBERHOME=$(pwd) \
     &&  ./update_amber --show-applied-patches \
     &&  ./update_amber --update \
     &&  ./update_amber --show-applied-patches \
-    &&  ./AmberTools/src/configure_python \
+    &&  ./AmberTools/src/configure_python -v 3 \
     &&  ./configure -noX11 gnu \
     &&  . ${AMBERHOME}/amber.sh \
-    &&  make -j4 install \
-    &&  make test \
-    &&  ./configure -noX11 -mpi gnu \
-    &&  make -j4 install 
-    &&  export DO_PARALLEL="mpirun -n 2" \
-    &&  make test
+    &&  make -j4 install
