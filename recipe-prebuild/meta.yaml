@@ -1,0 +1,33 @@
+{% set version = 16 %}
+
+package:
+  name: ambertools
+  version: {{ version }}
+
+source:
+  path: ../
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - zlib
+    - bzip2
+    - gcc
+    - libgfortran
+  run:
+    - zlib
+    - bzip2
+    - gcc
+    - libgfortran
+
+test:
+  commands:
+    - cpptraj --defines
+    - which tleap
+
+about:
+    home: https://ambermd.org
+    license: GNU
+    summary: ambermd-test. Please do not use for your production.
