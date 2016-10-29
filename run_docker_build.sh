@@ -42,7 +42,7 @@ conda update --yes --all
 conda install --yes conda-build
 conda info
 
-yum -y install csh flex wget
+yum -y install csh flex wget perl
 
 # Embarking on 1 case(s).
     # conda build /feedstock_root/test-docker/amber16/recipe-prebuild --quiet || exit 1
