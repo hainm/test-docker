@@ -4,6 +4,9 @@ package:
   name: ambertools
   version: {{ version }}
 
+source:
+  path: ../
+
 build:
   number: 1
   script_env:
