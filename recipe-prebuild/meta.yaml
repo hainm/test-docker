@@ -15,6 +15,7 @@ requirements:
     - bzip2
     - libnetcdf
     - openblas
+    - gcc
     - libgfortran
   run:
     - zlib

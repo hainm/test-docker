@@ -15,10 +15,4 @@ RUN     cd /usr/local/amber16 \
     &&  ./update_amber --show-applied-patches \
     &&  ./update_amber --update \
     &&  ./update_amber --show-applied-patches \
-    &&  ./AmberTools/src/configure_python -v 3 \
-    &&  export CC=/usr/bin/gcc \
-    &&  export CXX=/opt/rh/devtoolset-2/root/usr/bin/g++ \
-    &&  ./configure -noX11 gnu \
-    &&  . ${AMBERHOME}/amber.sh \
-    &&  make -j4 install \
-    &&  amber.conda build recipe-prebuild/
+    &&  conda build recipe-prebuild/
