@@ -14,15 +14,12 @@ requirements:
   build:
     - zlib
     - bzip2
-    - libnetcdf
-    - openblas
     - gcc
     - libgfortran
   run:
     - zlib
     - bzip2
-    - libnetcdf
-    - openblas
+    - gcc
     - libgfortran
 
 test:
@@ -33,4 +30,4 @@ test:
 about:
     home: https://ambermd.org
     license: GNU
-    summary: ambermd-test
+    summary: ambermd-test. Please do not use for your production.
