@@ -41,4 +41,5 @@ yum -y install csh flex wget
 
 # Embarking on 1 case(s).
     conda build /feedstock_root/test-docker/amber16/recipe-prebuild --quiet || exit 1
+    cp `conda build --output /feedstock_root/test-docker/amber16/recipe-prebuild` /feedstock_root/test-docker/
 EOF
