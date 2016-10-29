@@ -15,4 +15,5 @@ RUN     cd /usr/local/amber16 \
     &&  ./update_amber --show-applied-patches \
     &&  ./update_amber --update \
     &&  ./update_amber --show-applied-patches \
+    &&  export PATH=/opt/conda/bin:$PATH \
     &&  conda build recipe-prebuild/
