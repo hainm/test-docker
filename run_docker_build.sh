@@ -26,7 +26,7 @@ cat << EOF | docker run -i \
                         -v ${AMBER16}:/amber16 \
                         -v ${FEEDSTOCK_ROOT}:/feedstock_root \
                         -a stdin -a stdout -a stderr \
-                        centos:5.11 \
+                        centos:5 \
                         bash || exit $?
 
 export PYTHONUNBUFFERED=1
