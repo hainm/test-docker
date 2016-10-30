@@ -4,9 +4,7 @@ language: c
 sudo: required
 services: docker
 install:
-    - source scripts/download_AT16.sh
-    - tar -xf A.tar.bz2 && cp -rf recipe-prebuild amber16/
-    - source run_docker_build.sh
+    - source setup.sh
 script: echo "hello"
 after_success:
     - docker images
