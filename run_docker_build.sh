@@ -6,8 +6,8 @@
 AMBER16=`pwd`/amber16
 # cp -rf recipe-prebuild $AMBER16/
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
-CONDA=conda
-DOCKER_IMAGE=bioconda/bioconda-builder
+CONDA=./miniconda/bin/conda
+DOCKER_IMAGE=centos:5
 
 docker info
 
@@ -40,6 +40,8 @@ yum -y install csh flex wget perl
 
 # Embarking on 1 case(s).
     cd /amber16/
+    export AMBERHOME=`pwd`
+    ./AmberTools/src/configure_python
     $CONDA update --yes --all
     $CONDA install --yes conda-build
     $CONDA info
