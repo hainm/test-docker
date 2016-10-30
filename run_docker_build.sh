@@ -6,7 +6,7 @@
 AMBER16=`pwd`/amber16
 # cp -rf recipe-prebuild $AMBER16/
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
-CONDA=./miniconda/bin/conda
+CONDA=$HOME/miniconda/bin/conda
 DOCKER_IMAGE=centos:5
 
 docker info
@@ -36,12 +36,13 @@ echo "$config" > ~/.condarc
 # A lock sometimes occurs with incomplete builds. The lock file is stored in build_artefacts.
 conda clean --lock
 
-yum -y install gcc csh flex wget perl bzip2
+yum -y install gcc patch csh flex wget perl bzip2 libgfortran44.x86_64
 
 # Embarking on 1 case(s).
     cd /amber16/
-    export AMBERHOME=/amber16/
-    ./AmberTools/src/configure_python
+    wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh -O miniconda.sh;
+    bash miniconda.sh -b
+    export PATH=$HOME/miniconda/bin:$PATH
     $CONDA update --yes --all
     $CONDA install --yes conda-build
     $CONDA info
