@@ -6,7 +6,8 @@
 AMBER16=`pwd`/amber16
 # cp -rf recipe-prebuild $AMBER16/
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
-conda='./miniconda/bin/conda'
+CONDA=/opt/conda/bin/conda
+DOCKER_IMAGE=continuumio/miniconda
 
 docker info
 
@@ -26,7 +27,7 @@ cat << EOF | docker run -i \
                         -v ${AMBER16}:/amber16 \
                         -v ${FEEDSTOCK_ROOT}:/feedstock_root \
                         -a stdin -a stdout -a stderr \
-                        centos:5 \
+                        $DOCKER_IMAGE \
                         bash || exit $?
 
 export PYTHONUNBUFFERED=1
@@ -39,11 +40,9 @@ yum -y install csh flex wget perl
 
 # Embarking on 1 case(s).
     cd /amber16/
-    export AMBERHOME=`pwd`
-    ./AmberTools/src/configure_python -v 3
-    $conda update --yes --all
-    $conda install --yes conda-build
-    $conda info
-    $conda build recipe-prebuild --quiet || exit 1
-    cp `$conda build --output recipe-prebuild` /feedstock_root/test-docker/
+    $CONDA update --yes --all
+    $CONDA install --yes conda-build
+    $CONDA info
+    $CONDA build recipe-prebuild --quiet || exit 1
+    cp `$CONDA build --output recipe-prebuild` /feedstock_root/test-docker/
 EOF
