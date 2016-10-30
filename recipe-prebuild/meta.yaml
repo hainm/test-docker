@@ -21,6 +21,7 @@ requirements:
     - bzip2
     - gcc
     - libgfortran
+    - numpy
 
 test:
   commands:
