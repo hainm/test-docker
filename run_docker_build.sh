@@ -38,6 +38,6 @@ yum -y install gcc \
     $CONDA update --yes --all
     $CONDA install --yes conda-build
     $CONDA info
-    $CONDA build recipe-prebuild --quiet --python=3.5 || exit 1
+    $CONDA build recipe-prebuild --quiet || exit 1
     cp $BZ2FILE /feedstock_root/test-docker/
 EOF
