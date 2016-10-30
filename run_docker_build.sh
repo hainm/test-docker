@@ -29,6 +29,7 @@ yum -y install gcc patch csh flex wget perl \
     $CONDA update --yes --all
     $CONDA install --yes conda-build
     $CONDA info
+    $CONDA config --add channels NESII
     $CONDA build recipe-prebuild --quiet || exit 1
     cp `$CONDA build --output recipe-prebuild` /feedstock_root/test-docker/
 EOF
