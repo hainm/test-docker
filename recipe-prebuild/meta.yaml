@@ -16,15 +16,11 @@ requirements:
     - bzip2
     - gcc
     - libgfortran
-    - libnetcdf
-    - netcdf-fortran 
   run:
     - zlib
     - bzip2
     - gcc
     - libgfortran
-    - libnetcdf
-    - netcdf-fortran 
 
 test:
   commands:
