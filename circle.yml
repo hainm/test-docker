@@ -9,9 +9,8 @@ dependencies:
 test:
   override:
     - source scripts/install_git_lfs.sh
-    - tar -xf A.tar.bz2 && cp -rf recipe-prebuild amber16/
+    - tar -xf AmberTools16.tar.bz2 && cp -rf recipe-prebuild amber16/
     - source run_docker_build.sh
-    # - docker build -t ambermd/ambertools:16 .
   post:
     - mkdir $CIRCLE_ARTIFACTS/amber-build/
     - cp ambertools*bz2 $CIRCLE_ARTIFACTS/amber-build/
