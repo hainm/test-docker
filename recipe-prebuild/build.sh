@@ -2,6 +2,9 @@
 
 export AMBERHOME=`pwd`
 yes | ./configure -noX11 gnu
+# debug
+cat AmberTools/src/netcdf-4.3.0/netcdf.c.compile.log
+# 
 source amber.sh
 make install -j4
 cp $AMBERHOME/bin/* $PREFIX/bin/
