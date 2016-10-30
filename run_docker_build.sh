@@ -5,7 +5,7 @@ AMBER16=`pwd`/amber16
 # cp -rf recipe-prebuild $AMBER16/
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 CONDA=/root/miniconda/bin/conda
-DOCKER_IMAGE=centos:6
+DOCKER_IMAGE=centos:5
 BZ2FILE=/root/miniconda/conda-bld/linux-64/ambertools-16-1.tar.bz2
 
 docker info
