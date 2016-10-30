@@ -5,7 +5,7 @@ AMBER16=`pwd`/amber16
 # cp -rf recipe-prebuild $AMBER16/
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 CONDA=/root/miniconda/bin/conda
-DOCKER_IMAGE=centos:5
+DOCKER_IMAGE=centos:6
 
 docker info
 
