@@ -16,7 +16,9 @@ cat << EOF | docker run -i \
                         $DOCKER_IMAGE \
                         bash || exit $?
 
-yum -y install gcc patch csh flex wget perl bzip2 libgfortran44.x86_64
+yum -y install gcc patch csh flex wget perl \
+               bzip2 libgfortran44.x86_64 \
+               which
 
 # Embarking on 1 case(s).
     cd /amber16/
