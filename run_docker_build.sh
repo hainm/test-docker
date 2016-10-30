@@ -20,6 +20,7 @@ yum -y update
 yum -y install gcc patch csh flex wget perl \
                bzip2 libgfortran44.x86_64 \
                make \
+               m4 \
                which
 
 # Embarking on 1 case(s).
