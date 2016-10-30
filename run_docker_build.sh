@@ -36,7 +36,7 @@ echo "$config" > ~/.condarc
 # A lock sometimes occurs with incomplete builds. The lock file is stored in build_artefacts.
 conda clean --lock
 
-yum -y install csh flex wget perl bzip2
+yum -y install gcc csh flex wget perl bzip2
 
 # Embarking on 1 case(s).
     cd /amber16/
