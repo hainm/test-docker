@@ -39,7 +39,7 @@ yum -y install csh flex wget perl
 
 # Embarking on 1 case(s).
     cd /amber16/
-    export ABERHOME=`pwd`
+    export AMBERHOME=`pwd`
     ./AmberTools/src/configure_python -v 3
     $conda update --yes --all
     $conda install --yes conda-build
