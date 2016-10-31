@@ -1,5 +1,8 @@
-os:
-- linux
+matrix:
+  include:
+    - { os: linux, env: PYTHON_VERSION=2.7 }
+    # - { os: linux, env: PYTHON_VERSION=3.4 }
+    - { os: linux, env: PYTHON_VERSION=3.5 }
 language: c
 sudo: required
 secure: "n4NTq96WEgS+p0Zwu47yCg3rzT7203+G7UhOkhPQ3hG6m31BTbov1VJm5TAjjwYZ4wwFwwPJd8SLL9c5n3elwD/9SFZCIDll7ZXGHN5//dEmOMVBpSny0Nk19sLzUtGFG8Z8AZzru6Lzy6n8CYJUQb2K+//cfwYJbK3+CJbdiVygVUoEetEY1vyOp984dAnFBc92wLhZgtVqvLpZs5kIkJpeVzGPAv9jtHyGcUXr6ab7Bn5an62tvSKsWpc011i0NLDaDz/ri28pG2qxkknaieAujYWucBvnnxgRKkO+9Z681NUxA5SF0s94tcYlKBKxg6/r0E+LE7RVNRlowCeqEBHU9entTggvg0i5TsY/xo4iPOyRhxFf4RS7UYtp7njp7PUfVa/6U3c1Gotgac5/QIUhkzVXlYiBmcxV/27izr9qoABOUvbzWkozwzYUH1jXGZ0dsRGST+EuLAA6UqH7afaanEHdlPycMg8lbtlyymBy/p4QSY5lwrCiLNhudUy0XSTdYQokN/NOaIErQirLE0WpNOiKthXkAMmpY/+i+NeZCtmJ2lqt5Mi+X8S+3NFFh5/Hz1Z52CT+ygv4JxaGR298iET6PE59JueWZOeb9O94b/h7EOasCLpJXedVNd7cGkZQx8arS1qluVnMYsQfv3ycJI+AcxQiryz569wVIDQ="
