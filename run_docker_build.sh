@@ -6,7 +6,7 @@ AMBER16=`pwd`/amber16
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 CONDA=/root/miniconda/bin/conda
 DOCKER_IMAGE=centos:5
-BZ2FILE=/root/miniconda/conda-bld/linux-64/ambertools-16-1.tar.bz2
+BZ2FILE=/root/miniconda/conda-bld/linux-64/ambertools-*.tar.bz2
 
 docker info
 
@@ -36,8 +36,10 @@ yum -y install gcc \
     bash miniconda.sh -b
     export PATH=/root/miniconda/bin:\$PATH
     $CONDA update --yes --all
-    $CONDA install --yes conda-build
+    $CONDA install --yes conda-build anaconda-client
     $CONDA info
+    $CONDA create -n myenv python=$PYTHON_VERSION
+    source activate myenv
     $CONDA build recipe-prebuild --quiet || exit 1
     cp $BZ2FILE /feedstock_root/test-docker/
 EOF
