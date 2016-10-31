@@ -42,6 +42,6 @@ yum -y install gcc \
     $CONDA create -n myenv python=$PYTHON_VERSION
     source activate myenv
     $CONDA build recipe-prebuild --quiet || exit 1
-    anacond upload --user hainm -t $TOKEN $BZ2FILE || exit 0
+    anaconda upload --user hainm -t $TOKEN $BZ2FILE --force || exit 0
     cp $BZ2FILE /feedstock_root/test-docker/
 EOF
