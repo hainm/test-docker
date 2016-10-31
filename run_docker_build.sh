@@ -6,7 +6,7 @@ AMBER16=`pwd`/amber16
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 CONDA=/root/miniconda/bin/conda
 DOCKER_IMAGE=centos:6
-BZ2FILE=/root/miniconda/conda-bld/linux-64/ambertools-16-1.tar.bz2
+BZ2FILE=/root/miniconda/conda-bld/linux-64/ambertools-*.tar.bz2
 
 docker info
 
