@@ -9,5 +9,6 @@ install:
 script: echo "hello"
 after_success:
     - ls .
+    - sh scripts/upload_anaconda.sh
 notifications:
   email: false
