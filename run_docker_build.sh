@@ -7,7 +7,6 @@ FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 CONDA=/root/miniconda/bin/conda
 DOCKER_IMAGE=centos:6
 BZ2FILE=/root/miniconda/conda-bld/linux-64/ambertools-*.tar.bz2
-TOKEN=ha-f0b5eda5-b258-4f79-8b02-1627dfb8612b
 
 docker info
 
@@ -42,6 +41,15 @@ yum -y install gcc \
     $CONDA create -n myenv python=$PYTHON_VERSION
     source activate myenv
     $CONDA build recipe-prebuild --quiet || exit 1
-    anaconda upload --user hainm -t $TOKEN $BZ2FILE --force || exit 0
+    echo $TRAVIS_PULL_REQUEST $TRAVIS_BRANCH
+    if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
+        echo "This is a pull request. No deployment will be done."; exit 0
+    fi
+    if [[ "$TRAVIS_BRANCH" != "master" ]]; then
+        echo "No deployment on BRANCH='$TRAVIS_BRANCH'"; exit 0
+    if
+    if [[ "$TRAVIS_BRANCH" = "master" ]]; then
+        anaconda upload --user hainm -t $TRAVIS_TO_ANACONDA $BZ2FILE --force || exit 0
+    fi
     cp $BZ2FILE /feedstock_root/test-docker/
 EOF
