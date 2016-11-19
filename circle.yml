@@ -4,7 +4,7 @@ machine:
 
 dependencies:
   override:
-    - docker pull centos:5
+    - docker pull ambermd/manylinux-extra
 
 test:
   override:
