@@ -1,4 +1,4 @@
-FROM  condaforge/linux-anvil
+FROM  ambermd/manylinux-extra
 
 # To get the AmberTools16.tar.bz file, fill out the form
 # at the site below and click Download.
