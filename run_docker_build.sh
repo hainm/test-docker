@@ -35,8 +35,6 @@ sudo apt-get install gcc \
     $CONDA update --yes --all
     $CONDA install --yes conda-build anaconda-client
     $CONDA info
-    $CONDA create -n myenv python=$PYTHON_VERSION
-    source activate myenv
     $CONDA build recipe-prebuild --quiet || exit 1
     cp $BZ2FILE /feedstock_root/test-docker/
 EOF
