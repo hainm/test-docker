@@ -15,15 +15,10 @@ requirements:
     - python
     - zlib
     - bzip2
-    - gcc
-    - libgfortran
   run:
     - python
     - zlib
     - bzip2
-    - gcc
-    - libgcc
-    - libgfortran
     - numpy
 
 test:
