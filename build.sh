@@ -1,5 +1,5 @@
 #!/bin/sh
 
-source scripts/download_AT16.sh
+source scripts/download_AmberTools.sh
 tar -xf AmberTools16.tar.bz2 && cp -rf recipe-prebuild amber16/
 sh scripts/run_docker_build.sh
