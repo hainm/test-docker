@@ -1,5 +1,0 @@
-conda-build
-conda
-anaconda-client
-nose
-networkx
