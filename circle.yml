@@ -8,7 +8,7 @@ dependencies:
 
 test:
   override:
-    - source buid.sh
+    - source build.sh
   post:
     - mkdir $CIRCLE_ARTIFACTS/amber-build/
     - cp ambertools*bz2 $CIRCLE_ARTIFACTS/amber-build/
