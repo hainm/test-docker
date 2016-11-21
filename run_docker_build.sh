@@ -32,9 +32,9 @@ yum -y install gcc \
 
 # Embarking on 1 case(s).
     cd /amber16/
-    wget http://repo.continuum.io/miniconda/Miniconda-3.7.0-Linux-x86_64.sh -O miniconda.sh;
+    wget wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh miniconda.sh
     bash miniconda.sh -b
-    export PATH=/root/miniconda/bin:\$PATH
+    export PATH=/root/miniconda3/bin:\$PATH
     $CONDA update --yes --all
     $CONDA install --yes conda-build anaconda-client
     $CONDA info
