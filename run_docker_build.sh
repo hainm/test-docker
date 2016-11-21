@@ -4,9 +4,9 @@
 AMBER16=`pwd`/amber16
 # cp -rf recipe-prebuild $AMBER16/
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
-CONDA=/root/miniconda/bin/conda
+CONDA=/root/miniconda3/bin/conda
 DOCKER_IMAGE=ambermd/manylinux-extra
-BZ2FILE=/root/miniconda/conda-bld/linux-64/ambertools-*.tar.bz2
+BZ2FILE=/root/miniconda3/conda-bld/linux-64/ambertools-*.tar.bz2
 
 docker info
 
@@ -17,22 +17,19 @@ cat << EOF | docker run -i \
                         $DOCKER_IMAGE \
                         bash || exit $?
 
-yum -y update
-yum -y install gcc \
+sudo apt-get install gcc \
                patch \
                csh \
                flex \
                wget \
                perl \
                bzip2 \
-               libgfortran44.x86_64 \
                make \
-               m4 \
-               which
+               m4
 
 # Embarking on 1 case(s).
     cd /amber16/
-    wget wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh miniconda.sh
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
     bash miniconda.sh -b
     export PATH=/root/miniconda3/bin:\$PATH
     $CONDA update --yes --all
