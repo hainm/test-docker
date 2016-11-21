@@ -2,7 +2,7 @@
 
 # tar -xf A.tar.bz2
 AMBER16=`pwd`/amber16
-# cp -rf recipe-prebuild $AMBER16/
+# cp -rf recipe $AMBER16/
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 echo "FEEDSTOCK_ROOT" $FEEDSTOCK_ROOT
 DOCKER_IMAGE=ambermd/manylinux-extra
@@ -31,6 +31,6 @@ yum -y install gcc \
 # Embarking on 1 case(s).
     cd /amber16/
     source /feedstock_root/scripts/install_miniconda.sh
-    conda build recipe-prebuild --quiet || exit 1
+    conda build recipe --quiet || exit 1
     cp $BZ2FILE /feedstock_root/
 EOF

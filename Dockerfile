@@ -3,7 +3,7 @@ FROM  ambermd/manylinux-extra
 # To get the AmberTools16.tar.bz file, fill out the form
 # at the site below and click Download.
 ADD AmberTools16.tar.bz2 /usr/local/
-ADD recipe-prebuild/ /usr/local/amber16/
+ADD recipe/ /usr/local/amber16/
 
 RUN yum -y update
 RUN yum -y install gcc \
@@ -22,4 +22,4 @@ RUN     cd /usr/local/amber16 \
     &&  ./update_amber --update \
     &&  ./update_amber --show-applied-patches \
     &&  export PATH=/opt/conda/bin:$PATH \
-    &&  conda build recipe-prebuild/
+    &&  conda build recipe/
