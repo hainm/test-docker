@@ -1,7 +1,7 @@
 #!/bin/sh
 
 export AMBERHOME=`pwd`
-yes | ./configure -noX11 -norism gnu
+yes | ./configure -noX11 gnu
 source amber.sh
 make install -j4
 cp $AMBERHOME/bin/* $PREFIX/bin/
