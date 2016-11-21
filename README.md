@@ -1,4 +1,4 @@
-Build AmberTools with conda and docker. Please do not use this yet for production.
+Build AmberTools with conda and docker. This is beta version.
 
 - Update AmberTools version
 
