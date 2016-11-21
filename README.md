@@ -22,7 +22,7 @@ Build AmberTools with conda and docker. This is beta version.
 
 - How to build
 
-    1. Make a git commit to this repo. Circleci (and travis) will do the rest
+    1. Make a git commit to this repo. Circleci (and travis) will do the rest.
     Built packages can retrieved from below url:
 
     ```bash
