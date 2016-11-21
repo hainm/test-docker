@@ -5,7 +5,6 @@ AMBER16=`pwd`/amber16
 # cp -rf recipe-prebuild $AMBER16/
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 echo "FEEDSTOCK_ROOT" $FEEDSTOCK_ROOT
-CONDA=/root/miniconda3/bin/conda
 DOCKER_IMAGE=ambermd/manylinux-extra
 BZ2FILE=/root/miniconda3/conda-bld/linux-64/ambertools-*.tar.bz2
 
@@ -31,12 +30,7 @@ yum -y install gcc \
 
 # Embarking on 1 case(s).
     cd /amber16/
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
-    bash miniconda.sh -b
-    export PATH=/root/miniconda3/bin:\$PATH
-    $CONDA update --yes --all
-    $CONDA install --yes conda-build anaconda-client
-    $CONDA info
-    $CONDA build recipe-prebuild --quiet || exit 1
+    source /feedstock_root/scripts/install_miniconda.sh
+    conda build recipe-prebuild --quiet || exit 1
     cp $BZ2FILE /feedstock_root/
 EOF

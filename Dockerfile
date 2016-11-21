@@ -2,13 +2,19 @@ FROM  ambermd/manylinux-extra
 
 # To get the AmberTools16.tar.bz file, fill out the form
 # at the site below and click Download.
-ADD A.tar.bz2 /usr/local/
+ADD AmberTools16.tar.bz2 /usr/local/
 ADD recipe-prebuild/ /usr/local/amber16/
 
-RUN yum install csh -y
-RUN yum install wget -y
-RUN yum install gcc-gfortran -y
-RUN yum install flex -y
+RUN yum -y update
+RUN yum -y install gcc \
+               patch \
+               csh \
+               flex \
+               wget \
+               perl \
+               bzip2 \
+               make \
+               m4
 
 RUN     cd /usr/local/amber16 \
     &&  export AMBERHOME=$(pwd) \
