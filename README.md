@@ -1,3 +1,8 @@
-[![Build Status](https://travis-ci.org/hainm/test-docker.svg?branch=master)](https://travis-ci.org/hainm/test-docker)
+Build AmberTools with conda and docker. Please do not use this yet for production.
 
-Test: build AmberTools16 with conda and docker. Please do not use this yet for production.
+- Update AmberTools version:
+
+    # change v16 to v17
+    python scripts/update_ambertools_version.py 16 17
+
+- centos:5 derived image is used.
