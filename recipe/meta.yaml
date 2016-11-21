@@ -28,5 +28,5 @@ test:
 
 about:
     home: https://ambermd.org
-    license: GNU
-    summary: ambermd-test. Please do not use for your production yet.
+    license: GNU General Public License (GPL)
+    summary: AmberTools is a set of programs for biomolecular simulation and analysis.
