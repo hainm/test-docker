@@ -17,7 +17,8 @@ cat << EOF | docker run -i \
                         $DOCKER_IMAGE \
                         bash || exit $?
 
-sudo apt-get install gcc \
+yum -y update
+yum -y install gcc \
                patch \
                csh \
                flex \
