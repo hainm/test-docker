@@ -27,9 +27,11 @@ Build AmberTools with conda and docker. This is beta version.
 
     ```bash
         https://circleci.com/gh/Amber-MD/ambertools-conda-build/{build_number}#artifacts/containers/0
+        Note: Need to replace {build_number} by the commit number
+        e.g:
+        https://circleci.com/gh/Amber-MD/ambertools-conda-build/153#artifacts/containers/0
     ```
 
-    Note: Need to replace {build_number} by the commit number
 
     2. Or: build locally
     ```bash
