@@ -1,3 +1,5 @@
+[circleci](https://circleci.com/gh/Amber-MD/ambertools-conda-build)
+
 Build AmberTools with conda and docker. This is beta version.
 
 - Update AmberTools version
