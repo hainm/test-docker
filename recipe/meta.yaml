@@ -1,7 +1,8 @@
 {% set ambertools_package = 'AmberTools' %}
 {% set ambertools_version = 16.20 %}
 {% set ambertools_fn = "AmberTools16.tar.bz2" %}
-{% set ambertools_url = "https://dl.dropboxusercontent.com/u/5494759/AmberTools16.tar.bz2" %}
+# {% set ambertools_url = "https://dl.dropboxusercontent.com/u/5494759/AmberTools16.tar.bz2" %}
+{% set ambertools_url = "wget -nv "http://ambermd.org/cgi-bin/AmberTools16-get.pl?Name=HaiNguyen&Institution=Rutgers&City=NewBrunswicks&State=NJ&Country=USA"" %}
 
 package:
   name: {{ ambertools_package }}
