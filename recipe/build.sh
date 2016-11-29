@@ -1,7 +1,7 @@
 #!/bin/sh
 
 export AMBERHOME=`pwd`
-yes | ./configure -noX11 gnu
+yes | ./configure -noX11 --with-python `which python` gnu
 source amber.sh
 
 # build whole ambertools
