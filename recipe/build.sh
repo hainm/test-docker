@@ -5,7 +5,11 @@ yes | ./configure -noX11 gnu
 source amber.sh
 make install -j4
 # make test
+
 cp $AMBERHOME/bin/* $PREFIX/bin/
 cp -rf $AMBERHOME/lib/* $PREFIX/lib/
 cp -rf $AMBERHOME/include/* $PREFIX/include/
 mkdir $PREFIX/dat/ && cp -rf $AMBERHOME/dat/* $PREFIX/dat/
+
+# overwrite tleap, ...
+cp $RECIPE/patch_amberhome/tleap $PREFIX/lib/

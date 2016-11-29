@@ -1,4 +1,4 @@
-{% set version = 16 %}
+{% set version = 16.20 %}
 
 package:
   name: ambertools
@@ -24,7 +24,10 @@ requirements:
 test:
   commands:
     - cpptraj --defines
-    - which tleap
+    - tleap -h
+    - sqm -h
+    - antechamber -h
+    - parmchk2 -h
 
 about:
     home: https://ambermd.org
