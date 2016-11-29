@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/Amber-MD/ambertools-conda-build.svg?branch=master)](https://travis-ci.org/Amber-MD/ambertools-conda-build)
 [circleci](https://circleci.com/gh/Amber-MD/ambertools-conda-build)
 
 Build AmberTools with conda and docker. This is beta version.
