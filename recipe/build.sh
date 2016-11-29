@@ -1,6 +1,6 @@
 #!/bin/sh
 
-isosx=`python -c "import sys; print(sys.platform.startswith('darwin')"`
+isosx=`python -c "import sys; print(sys.platform.startswith('darwin'))"`
 if [ "$isosx" == "True" ]; then
     compiler='clang'
 else
