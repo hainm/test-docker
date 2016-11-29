@@ -1,7 +1,8 @@
 {% set ambertools_package = 'ambertools' %}
 {% set ambertools_version = 16.20 %}
 {% set ambertools_fn = "AmberTools16.tar.bz2" %}
-# {% set ambertools_url = "https://dl.dropboxusercontent.com/u/5494759/AmberTools16.tar.bz2" %}
+
+# Please update your name and other info if you maintain or update this recipe
 {% set ambertools_url = "http://ambermd.org/cgi-bin/AmberTools16-get.pl?Name=HaiNguyen&Institution=Rutgers&City=NewBrunswicks&State=NJ&Country=USA" %}
 
 package:
@@ -11,6 +12,8 @@ package:
 source:
   fn : {{ ambertools_fn }}
   url : {{ ambertools_url }}
+
+  # Use local path: specify local path here and comment above lines (fn, url)
   # path: ../
 
 build:
