@@ -36,11 +36,11 @@ requirements:
 
 test:
   commands:
-    - cpptraj --defines
     - tleap -h
     - sqm -h
     - antechamber -h
     - parmchk2 -h
+    # - cpptraj --defines
 
 about:
     home: https://ambermd.org
