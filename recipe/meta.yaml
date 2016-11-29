@@ -31,8 +31,11 @@ requirements:
   run:
     - zlib
     - bzip2
-    # - python
+    - python
     # - numpy
+  test:
+    - zlib
+    - bzip2
 
 test:
   commands:
