@@ -1,7 +1,14 @@
 #!/bin/sh
 
+isosx=`python -c "import sys; print(sys.platform.startswith('darwin')"`
+if [ "$isosx" == "True" ]; then
+    compiler='clang'
+else
+    compiler='gnu'
+fi
+
 export AMBERHOME=`pwd`
-yes | ./configure -noX11 --with-python `which python` gnu
+yes | ./configure -noX11 --with-python `which python` $compiler
 source amber.sh
 
 # build whole ambertools

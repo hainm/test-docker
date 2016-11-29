@@ -1,9 +1,9 @@
-os: linux
+os: osx
 language: c
-sudo: required
-services: docker
 install:
-    - source build.sh
+    # - source build.sh
+    - source scripts/install_miniconda_travis.sh
+    - conda build recipe
 script: echo "hello"
 after_success:
     - echo "hello"
