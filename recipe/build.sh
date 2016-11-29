@@ -3,8 +3,14 @@
 export AMBERHOME=`pwd`
 yes | ./configure -noX11 gnu
 source amber.sh
-make install -j4
-# make test
+
+# build whole ambertools
+# make install -j4
+
+# build ambermini
+source build_ambermini.sh
+
+# make test: add me
 
 cp $AMBERHOME/bin/* $PREFIX/bin/
 cp -rf $AMBERHOME/lib/* $PREFIX/lib/

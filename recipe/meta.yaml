@@ -1,11 +1,15 @@
-{% set version = 16.20 %}
+{% set ambertools_version = 16.20 %}
+{% set ambertools_fn = "AmberTools16.tar.bz2" %}
+{% set ambertools_url = "https://doc-0s-8o-docs.googleusercontent.com/docs/securesc/qin80csv2ut623oa313e4l6b3rdccgb0/hi1eal681n1ehg6gljulko34qhiovnnl/1480449600000/00303717336760164522/05729401050132487937/0B216Hig8s1amS2w1eEdudUN0b1U?e=download&nonce=4gq4m9fpc3a12&user=05729401050132487937&hash=jpr7c8eg2rdcailffnvuh4p3uepfnfa5" %}
 
 package:
   name: ambertools
-  version: {{ version }}
+  version: {{ ambertools_version }}
 
 source:
-  path: ../
+  fn : {{ ambertools_fn }}
+  url : {{ ambertools_url }}
+  # path: ../
 
 build:
   number: 1
