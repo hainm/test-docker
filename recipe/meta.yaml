@@ -19,6 +19,8 @@ source:
 
 build:
   number: 1
+  skip:
+    - [win]
 
 requirements:
   build:
