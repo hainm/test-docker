@@ -1,6 +1,6 @@
 #!/bin/sh
 
-
+# extract from ${AMBERHOME}/AmberTools/src/Makefile
 (cd ${AMBERHOME}/AmberTools/src/cifparse && make install )
 (cd ${AMBERHOME}/AmberTools/src/xblas && make -j 1 lib-amb && mv libxblas-amb.a ${AMBERHOME}/lib/)
 (cd ${AMBERHOME}/AmberTools/src/byacc && make install )
