@@ -26,7 +26,7 @@ yum -y install gcc \
 
 # Embarking on 1 case(s).
     # source /feedstock_root/scripts/install_miniconda.sh
-    export PATH=/opt/conda/bin:\$PATH
+    export PATH=/root/miniconda3/bin:\$PATH
     conda update --all --yes
     conda build /feedstock_root/recipe --quiet || exit 1
     cp $BZ2FILE /feedstock_root/
