@@ -21,14 +21,14 @@ build:
 
 requirements:
   build:
-    - python
     - zlib
     - bzip2
+    # - python
   run:
-    - python
     - zlib
     - bzip2
-    - numpy
+    # - python
+    # - numpy
 
 test:
   commands:
