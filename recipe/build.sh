@@ -8,7 +8,7 @@ source amber.sh
 # make install -j4
 
 # build ambermini
-source $RECIPE/build_ambermini.sh
+source $RECIPE_DIR/build_ambermini.sh
 
 # make test: add me
 
