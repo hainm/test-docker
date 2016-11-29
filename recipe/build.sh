@@ -18,4 +18,4 @@ cp -rf $AMBERHOME/include/* $PREFIX/include/
 mkdir $PREFIX/dat/ && cp -rf $AMBERHOME/dat/* $PREFIX/dat/
 
 # overwrite tleap, ...
-cp $RECIPE/patch_amberhome/tleap $PREFIX/lib/
+cp $RECIPE_DIR/patch_amberhome/tleap $PREFIX/bin/
