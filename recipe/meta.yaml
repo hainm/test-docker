@@ -15,7 +15,8 @@ source:
   url : {{ ambertools_url }}
 
   # Use local path: specify local path here and comment above lines (fn, url)
-  # path: ../
+  # path is relative to this recipe folder
+  # path: ../{{ ambertools_fn }}
 
 build:
   number: 1
