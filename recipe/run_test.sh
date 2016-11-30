@@ -14,6 +14,6 @@ match_atomname -h
 parmchk -h
 parmchk2 -h
 prepgen -h
-reduce -h
+reduce -Help
 residuegen -h
 respgen -h
