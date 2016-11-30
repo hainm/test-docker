@@ -1,4 +1,3 @@
-# {% set ambertools_package = 'ambertools' %}
 {% set ambertools_package = 'ambermini_test' %}
 {% set ambertools_version = "16.20" %}
 {% set ambertools_fn = "AmberTools16.tar.bz2" %}
@@ -27,23 +26,10 @@ requirements:
   build:
     - zlib
     - bzip2
-    # - python
   run:
     - zlib
     - bzip2
     - python
-    # - numpy
-  test:
-    - zlib
-    - bzip2
-
-test:
-  commands:
-    - tleap -h
-    - sqm -h
-    - antechamber -h
-    - parmchk2 -h
-    # - cpptraj --defines
 
 about:
     home: https://ambermd.org
