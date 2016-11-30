@@ -1,9 +1,13 @@
 #!/bin/sh
 
-miniconda=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-wget $miniconda -O miniconda.sh
+osname=`python -c 'import sys; print(sys.platform)'`
+if [ $osname = "darwin" ]; then
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+else
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+fi
+
 bash miniconda.sh -b
-export PATH=/root/miniconda3/bin:$PATH
-conda update --yes --all
-conda install --yes conda-build anaconda-client numpy matplotlib
+export PATH=$HOME/miniconda3/bin:$PATH
+conda install --yes conda-build jinja2 anaconda-client pip cython numpy
 conda info
