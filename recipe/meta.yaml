@@ -1,4 +1,4 @@
-{% set ambertools_package = 'ambermini_test' %}
+{% set ambertools_package = 'ambermini101' %}
 {% set ambertools_version = "16.20" %}
 {% set ambertools_fn = "AmberTools16.tar.bz2" %}
 
