@@ -2,7 +2,7 @@ os: osx
 language: c
 install:
     # - source build.sh
-    - source scripts/install_miniconda_travis.sh
+    - source scripts/install_miniconda.sh
     - conda build recipe
 script: echo "hello"
 after_success:
