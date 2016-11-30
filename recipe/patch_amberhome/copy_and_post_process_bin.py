@@ -56,7 +56,6 @@ def main():
     for exe_path in get_all_exe_paths_requiring_amberhome():
         if not any(word in exe_path for word in EXCLUDED_EXE):
             print('patching {}'.format(exe_path))
-            print(template.format(exe=os.path.basename(exe_path)))
             post_process_exe_for_prefix_folder(exe_path)
 
 if __name__ == '__main__':
