@@ -12,10 +12,11 @@ package:
 source:
   fn : {{ ambertools_fn }}
   url : {{ ambertools_url }}
-
-  # Use local path: specify local path here and comment above lines (fn, url)
-  # path is relative to this recipe folder
-  # path: ../{{ ambertools_fn }}
+  
+  # Un-comment if using local path, must use file:/// if using tar file
+  # url : file:///home/haichit/AmberTools16.tar.bz2
+  # or
+  # url : /home/haichit/amber16/
 
 build:
   number: 1

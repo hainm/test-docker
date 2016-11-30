@@ -14,6 +14,6 @@ match_atomname -h
 parmchk -h
 parmchk2 -h
 prepgen -h
-reduce -Help
+# reduce -Help # does reduce give exit 1 for Help?
 residuegen -h
 respgen -h
