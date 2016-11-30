@@ -1,75 +1,28 @@
-os: Windows Server 2012
-
-# We need printf exponents to have 2 digits like the C standard says,
-# or tests will fail. Set environment variable for mingw-w64:
-# https://github.com/Alexpux/mingw-w64/blob/master/mingw-w64-crt/stdio/mingw_pformat.c#L223
 environment:
+  global:
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C appveyor-ci\\run_with_env.cmd"
+    PYTHONUNBUFFERED: 1
+
   matrix:
-  - PRINTF_EXPONENT_DIGITS: "2"
+    - PYTHON: "C:\\Miniconda3"
+      CONDA_PY: "35"
+      CONDA_NPY: "1.10"
+
+    - PYTHON: "C:\\Miniconda3-x64"
+      CONDA_PY: "35"
+      CONDA_NPY: "1.10"
+      ARCH: "64"
 
 install:
-  - set HOME=.
-  - set MSYSTEM=MINGW64
-  - set PATH=C:/msys64/usr/bin;C:/msys64/mingw64/bin;%PATH%
-  - "sh -lc \"pacman -S --noconfirm --needed
-      mingw-w64-x86_64-openblas
-      mingw-w64-x86_64-arpack
-      mingw-w64-x86_64-gcc
-      mingw-w64-x86_64-gcc-fortran
-      mingw-w64-x86_64-ncurses
-      mingw-w64-x86_64-readline
-      diffutils
-    \""
-  # - "sh -lc \"
-  #    if [ ! -f /usr/local/lib/libnetcdf.a ]; then
-  #      curl -fsS -o netcdf-4.3.3.zip ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-4.3.3.zip &&
-  #      7z x netcdf-4.3.3.zip -o$APPVEYOR_BUILD_FOLDER > /dev/null &&
-  #      cd $APPVEYOR_BUILD_FOLDER/netcdf-4.3.3 &&
-  #      exec 0</dev/null &&
-  #      ./configure --enable-static --disable-netcdf-4 --prefix=/usr/local/ --disable-dap &&
-  #      make -r install;
-  #    else
-  #      echo 'Have Cached NetCDF';
-  #    fi
-  # \""
+  - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+  - conda config --add channels omnia
+  - conda update -yq --all
+  - conda install -yq conda-build jinja2
 
-build_script:
-  - sh -lc "sh scripts/download_AmberTools.sh"
-  - sh -lc "tar -xf AmberTools16.tar.bz2"
-  - sh -lc "cd amber16"
-  - sh -lc "./configure gnu"
-  # - sh -lc "mkdir bin/"
-  # - sh -lc "echo \"CPPTRAJBIN=$(pwd)/bin\" > config.h"
-  # - echo INSTALL_TARGETS= install_cpptraj install_ambpdb >> config.h
-  # - echo LIBCPPTRAJ_TARGET=nolibcpptraj >> config.h
-  # - echo DBGFLAGS= >> config.h
-  # - echo CC=gcc >> config.h
-  # - echo CXX=g++ >> config.h
-  # - echo FC=gfortran >> config.h
-  # - echo CFLAGS=   -O3 -Wall -DHASBZ2 -DHASGZ -DBINTRAJ -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -I/usr/local/include -I/mingw64/include -Ixdrfile $(DBGFLAGS) >> config.h
-  # - echo CXXFLAGS= -O3 -Wall -DHASBZ2 -DHASGZ -DBINTRAJ -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -I/usr/local/include -I/mingw64/include -Ixdrfile $(DBGFLAGS) >> config.h
-  # - echo FFLAGS=   -O3       -DHASBZ2 -DHASGZ -DBINTRAJ -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -I/usr/local/include -I/mingw64/include -Ixdrfile -ffree-form $(DBGFLAGS) >> config.h
-  # - echo READLINE_TARGET=/mingw64/lib/libreadline.a >> config.h
-  # - echo READLINE_HOME=/mingw64/include/readline/ >> config.h
-  # - echo XDRFILE=xdrfile/libxdrfile.a >> config.h
-  # - echo XDRFILE_HOME=xdrfile >> config.h
-  # - echo XDRFILE_TARGET=xdrfile/libxdrfile.a >> config.h
-  # - echo FFT_DEPEND=pub_fft.o >> config.h
-  # - echo FFT_LIB=pub_fft.o >> config.h
-  # - echo LDFLAGS=-lreadline -ltermcap -larpack -L/usr/local/lib -lnetcdf -lopenblas -lbz2 -lz xdrfile/libxdrfile.a -lgfortran -lquadmath -w  -static >> config.h
-  # - echo SFX= >> config.h
-  # - echo EXE=.exe >> config.h
-  # - sh -lc "cat config.h"
-  # - sh -lc "make -j2 install"
+build: false
 
-
-# after_build:
-  # - 7z a cpptraj-%APPVEYOR_BUILD_ID%.zip bin/ambpdb.exe bin/cpptraj.exe
-  # - find C:/msys64/usr/local
-
-# test_script:
-#   - set TEST_OS=windows
-#   - sh -lc "cd test; make test.showerrors"
-# 
-# artifacts:
-#   - path: cpptraj-$(APPVEYOR_BUILD_ID).zip
+test_script:
+  - "%CMD_IN_ENV% conda build recipe"
