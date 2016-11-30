@@ -24,5 +24,9 @@ cp -rf $AMBERHOME/lib/* $PREFIX/lib/
 cp -rf $AMBERHOME/include/* $PREFIX/include/
 mkdir $PREFIX/dat/ && cp -rf $AMBERHOME/dat/* $PREFIX/dat/
 
+# will overwrite later
+mv $PREFIX/bin/antechamber $PREFIX/bin/_antechamber
+
 # overwrite tleap, ...
 cp $RECIPE_DIR/patch_amberhome/tleap $PREFIX/bin/
+cp $RECIPE_DIR/patch_amberhome/antechamber $PREFIX/bin/
