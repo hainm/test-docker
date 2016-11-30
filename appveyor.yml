@@ -35,6 +35,9 @@ install:
 
 build_script:
   - sh -lc "sh scripts/download_AmberTools.sh"
+  - sh -lc "tar -xf AmberTools16.tar.bz2"
+  - sh -lc "cd amber16"
+  - sh -lc "./configure gnu"
   # - sh -lc "mkdir bin/"
   # - sh -lc "echo \"CPPTRAJBIN=$(pwd)/bin\" > config.h"
   # - echo INSTALL_TARGETS= install_cpptraj install_ambpdb >> config.h
