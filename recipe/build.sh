@@ -19,14 +19,14 @@ source $RECIPE_DIR/build_ambermini.sh
 
 # make test: add me
 
-cp $AMBERHOME/bin/* $PREFIX/bin/
+# cp $AMBERHOME/bin/* $PREFIX/bin/
+python $RECIPE_DIR/patch_amberhome/copy_and_post_process_bin.py
 cp -rf $AMBERHOME/lib/* $PREFIX/lib/
 cp -rf $AMBERHOME/include/* $PREFIX/include/
 mkdir $PREFIX/dat/ && cp -rf $AMBERHOME/dat/* $PREFIX/dat/
 
-# will overwrite later
-mv $PREFIX/bin/antechamber $PREFIX/bin/_antechamber
-
 # overwrite tleap, ...
+# handle tleap a bit differently since it requires -I flag
+# TODO: move to copy_and_post_process_bin.py?
+cp $AMBERHOME/bin/teLeap $PREFIX/bin/
 cp $RECIPE_DIR/patch_amberhome/tleap $PREFIX/bin/
-cp $RECIPE_DIR/patch_amberhome/antechamber $PREFIX/bin/
