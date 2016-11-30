@@ -3,7 +3,7 @@
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 echo "FEEDSTOCK_ROOT" $FEEDSTOCK_ROOT
 DOCKER_IMAGE=ambermd/manylinux-extra
-BZ2FILE=/root/miniconda3/conda-bld/linux-64/ambertools-*.tar.bz2
+BZ2FILE=/root/miniconda3/conda-bld/linux-64/amber*.tar.bz2
 
 docker info
 
