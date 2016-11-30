@@ -1,8 +1,8 @@
-export CC=gcc.exe
-export CXX=g++.exe 
-export FC=gfortran.exe
+set CC=gcc.exe
+set CXX=g++.exe 
+set FC=gfortran.exe
 
-yes | ./configure -noX11 --with-python `which python` gnu
+.\configure -noX11 gnu
 mingw32-make
 mingw32-make install
 xcopy /E %PREFIX%\bin %PREFIX%\Scripts\
