@@ -37,7 +37,13 @@ Build AmberTools with conda and docker. This is beta version.
 
 
     2. Or: build locally
+    - by docker container
     ```bash
         # update build.sh if needed
         sh build.sh
+    ```
+
+    - by conda
+    ```bash
+    conda build recipe
     ```
