@@ -2,7 +2,7 @@
 
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 echo "FEEDSTOCK_ROOT" $FEEDSTOCK_ROOT
-DOCKER_IMAGE=ambermd/manylinux-extra
+DOCKER_IMAGE=ambermd/manylinux-build-box
 BZ2FILE=/root/miniconda3/conda-bld/linux-64/amber*.tar.bz2
 
 docker info
@@ -13,19 +13,7 @@ cat << EOF | docker run -i \
                         $DOCKER_IMAGE \
                         bash || exit $?
 
-yum -y update
-yum -y install gcc \
-               patch \
-               csh \
-               flex \
-               wget \
-               perl \
-               bzip2 \
-               make \
-               m4
-
 # Embarking on 1 case(s).
-    # source /feedstock_root/scripts/install_miniconda.sh
     export PATH=/root/miniconda3/bin:\$PATH
     conda update --all --yes
     conda build /feedstock_root/recipe --quiet || exit 1
