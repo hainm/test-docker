@@ -6,7 +6,7 @@ set AMBERHOME=%cd%
 python update_amber --show-applied-patches
 python update_amber --update
 python update_amber --show-applied-patches
-python bash .\configure -noX11 gnu
+bash .\configure -noX11 gnu
 make
 mingw32-make
 mingw32-make install
