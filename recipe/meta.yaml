@@ -27,8 +27,6 @@ requirements:
     - bzip2
     - python
     - mingwpy [win]
-    - patch [win]
-    - make [win] 
   run:
     - zlib
     - bzip2

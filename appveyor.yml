@@ -11,16 +11,16 @@ environment:
       CONDA_PY: "35"
       CONDA_NPY: "1.10"
 
-    - PYTHON: "C:\\Miniconda3-x64"
-      CONDA_PY: "35"
-      CONDA_NPY: "1.10"
-      ARCH: "64"
+    # - PYTHON: "C:\\Miniconda3-x64"
+    #   CONDA_PY: "35"
+    #   CONDA_NPY: "1.10"
+    #   ARCH: "64"
 
 install:
   - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
   - conda config --add channels conda-forge
-  - conda update -yq --all
-  - conda install -yq conda-build jinja2
+  - conda update -y --all
+  - conda install -y conda-build jinja2
   - conda build recipe
 
 build: false
