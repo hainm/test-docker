@@ -5,6 +5,7 @@ install:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
           brew tap homebrew/science;
           brew update;
+          brew install gfortran;
       fi
     - source scripts/install_miniconda.sh
     - conda build recipe
