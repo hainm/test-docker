@@ -2,7 +2,7 @@ set CC=gcc.exe
 set CXX=g++.exe 
 set FC=gfortran.exe
 
-set AMBERHOME=`pwd`
+set AMBERHOME=%cd%
 python update_amber --show-applied-patches
 python update_amber --update
 python update_amber --show-applied-patches
