@@ -6,8 +6,7 @@ set AMBERHOME=%cd%
 python update_amber --show-applied-patches
 python update_amber --update
 python update_amber --show-applied-patches
-bash .\configure -noX11 gnu
-make
+echo n | bash .\configure -noX11 gnu
 mingw32-make
 mingw32-make install
 xcopy /E %PREFIX%\bin %PREFIX%\Scripts\
