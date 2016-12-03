@@ -25,6 +25,9 @@ requirements:
   build:
     - zlib
     - bzip2
+    - python
+    - mingwpy [win]j
+    - make [win] 
   run:
     - zlib
     - bzip2
