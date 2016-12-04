@@ -14,7 +14,7 @@ Build AmberTools with conda and docker. This is beta version.
 
 - Proposed usage
 ```bash
-    conda install -c ambermd ambertools=16
+    conda install -c http://ambermd.org/conda/ ambertools=16
 
     # current working version with python=3.5
     conda install -c hainm ambertools=16
@@ -47,3 +47,9 @@ Build AmberTools with conda and docker. This is beta version.
     ```bash
     conda build recipe
     ```
+
+ - How continuous integration services are being used?
+
+     - travis : test building ambermini, full ambertools with GNU compiler, not use docker.
+     - circleci: test building ambermini with our ('ambermd/amber-build-box') docker image.
+     - Why? just for testing
