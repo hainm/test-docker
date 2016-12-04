@@ -2,8 +2,6 @@ sudo: true
 language: cpp
 addons:
   apt:
-    sources:
-    - ubuntu-precise
     packages:
     - gfortran
     - libbz2-dev
@@ -17,16 +15,14 @@ addons:
     - openmpi-bin
     - openmpi-common
     - libopenmpi-dev
-matrix:
-  include:
-  - os: osx
-    env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=2.7
-  - os: osx
-    env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.4
-  - os: osx
-    env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.5
-  - os: osx
-    env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=2.7
+env:
+  global:
+    secure: "MOKk2v9+GPKa7Dv/VGiVcyGJBknP32snQtXDRGf5X6P3EUAGTbQPCpQ5iyOezF6zeELGbTlz6POGYqLYnP7NK21WiKS2+ffkznIrVabdgpwrBsSMS7difqYvSfOTQnd1nZa7iibaKxVzh93iL+dc1h98ibCkIWMGYoHIBy38jhPCJHU4ol3w8Uhvo9jEMhxSbJmKlavNy6OvQM8JWWCaHVldb/AfjED5t4Kr+GNwGcZlaTZmoGZZjB9sEfshWoGCXI377ln80SOVdbw5RQ/jpaY2g2G9BLkH7pFz12tdxNP39Z0LIqkvmD/To6r6qG/COBZfWgpt5NlY4F/pqJpF6OcM2zek1hGkYM1FLEMw2okLj+bwHjbUSOmvgJO9TVYGK9k7V1JFWM74SJIn9dOWyKenBxKKGLfb53dFQ9MrMi4rsXvry33/pCe3TmByOkgDAAYPx3i70JmiSoDcunNRlJQE/zUcKmGQNVlaX0vDX/xWlUw7CF1IEqg4PYWvA73KIU53+IL8CzKqGQlUmL8J93b+fFzuRS3hUYAz6lSaUERBFB6EDNaqwjRWWQUU/4XafHquD1lQ2IsQrPekzdd1FTSPs0M00QApsB/Qv2b7FYBVuoYvxpce7VIWWVOBtFJ8B6yPRkCBMtqzjRa0pklM7aQci1g0tw6YVRP8qM3wPiQ=" 
+  matrix:
+    - { os: osx, env: AMBER_BUILD_TASK=ambermini  PYTHON_VERSION=2.7 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambermini  PYTHON_VERSION=3.4 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambermini  PYTHON_VERSION=3.5 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=2.7 }
 install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap homebrew/science; brew update;
   brew install gcc; fi
@@ -35,8 +31,6 @@ install:
 - conda build recipe --py $PYTHON_VERSION
 script: echo "hello"
 after_success:
-- sh scripts/upload_to_anaconda.sh # only for osx, we run linux build on circleci
+- bash scripts/upload_to_anaconda.sh # only for osx, we run linux build on circleci
 notifications:
   email: false
-! '':
-  secure: BDtD1NfeJqtVdFmRWXi3HdJ1WjP4qSLwjexay55eNBb02GgYcXQzCuMca9TG0SGRKYSdQaBB0gCk8wq+Mb4zJ/XsAHKt+Z3oXfa2Kd0hlNym0W81NvHnJcmSPEsBUrqVheAGV5qneIBTu3oVR9K2lRXNkV4GToiTWgVgQ2GGtbAi0pY7o/dwk30bbq6SvkrRh6+e0ofu+xlxw0iRUtY+kNge2oDETav3xZkSbVKVS2o+KjKILJXdoAvqtuv3SeSUFZZUDxxPkloRsB3dmRSpqLur4HF52fCsG75Jh/lPnZQtJjlqsSoEYQUdw2wojyjgjRIoyKpdhZppe/fCy5nmJwiqdQbU0oNGTaPudkrrd3rTbOQKpBDUM5rjuypQf3OMd2bK69gSq6vuAh84eGQcJG92zEETsoRf4JTHd0lSz6zkcoQjQUGK/YPDrUDtuT/nLtaYk/mDMnoN/L9eujHFMDCrL8WPl4AmMjSEAdepL8VZV+ewinmVxZPyUQk3AfelEr5y54ri5U6zJZorLMGTLfIcOW6DfEpKPw0vGkPkV2VpThxgWFmP+7iCALblSSm7PMmHtEA3eh3i+xIPrJ6eGgmsAD0PWyPjxoz9iflw7PjHeomYArcz5kM5/swdpMK7qQpG6SRQ32Dgk4SLQeXORg+ol7ncJs+QPHvfwUMbXjk=
