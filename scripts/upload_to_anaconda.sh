@@ -12,6 +12,6 @@ if [[ "$TRAVIS_BRANCH" != "master" ]]; then
     echo "No deployment on BRANCH='$TRAVIS_BRANCH'"; exit 0
 fi
 
-if [ "$TRAVIS_OS_NAME" == "osx" ] && [ '$AMBER_BUILD_TASK' == 'ambermini' ] ; then
+if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     anaconda -t $TRAVIS_TO_ANACONDA upload --force -u hainm $HOME/miniconda3/conda-bld/osx-64/amber*
 fi
