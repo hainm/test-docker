@@ -1,4 +1,7 @@
-os: osx
+matrix:
+  include:
+   - { os: osx, env: AMBER_BUILD_TASK=ambermini }
+   - { os: linux, env: AMBER_BUILD_TASK=ambertools }
 language: c
 install:
     # - source build.sh
