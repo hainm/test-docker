@@ -22,6 +22,7 @@ matrix:
    - { os: osx, env: AMBER_BUILD_TASK=ambermini }
    - { os: osx, env: AMBER_BUILD_TASK=ambertools }
    - { os: linux, env: AMBER_BUILD_TASK=ambermini }
+   - { os: linux, env: AMBER_BUILD_TASK=ambertools }
 install:
     # - source build.sh
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
