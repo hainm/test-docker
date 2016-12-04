@@ -10,6 +10,8 @@ export AMBERHOME=`pwd`
 ./update_amber --show-applied-patches
 if [ "$isosx" == "True" ]; then
     # ./configure -noX11 --with-python `which python` -macAccelerate clang
+
+    # TODO: clang? (got EMIL error)
     export CXX=/usr/local/Cellar/gcc/6.2.0/bin/g++-6
     export CC=/usr/local/Cellar/gcc/6.2.0/bin/gcc-6
     ./configure -noX11 --with-python `which python` gnu
