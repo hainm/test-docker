@@ -1,7 +1,5 @@
-FROM  ambermd/manylinux-build-box
-
-# To get the AmberTools16.tar.bz file, fill out the form
-# at the site below and click Download.
+# make sure having AmberTools16.tar.bz2 file in the same folder as this Dockerfile
+FROM ambermd/amber-build-box
 ADD AmberTools16.tar.bz2 /usr/local/
 ADD recipe/ /usr/local/amber16/
 
