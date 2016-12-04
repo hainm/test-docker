@@ -2,12 +2,13 @@
 
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 echo "FEEDSTOCK_ROOT" $FEEDSTOCK_ROOT
-DOCKER_IMAGE=ambermd/manylinux-build-box
+DOCKER_IMAGE=ambermd/amber-build-box
 BZ2FILE=/root/miniconda3/conda-bld/linux-64/amber*.tar.bz2
 
 docker info
 
-cat << EOF | docker run -i \
+cat << EOF | docker run -it \
+                        --rm \
                         -v ${FEEDSTOCK_ROOT}:/feedstock_root \
                         -a stdin -a stdout -a stderr \
                         $DOCKER_IMAGE \
