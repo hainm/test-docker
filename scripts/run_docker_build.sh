@@ -7,7 +7,7 @@ BZ2FILE=/root/miniconda3/conda-bld/linux-64/amber*.tar.bz2
 
 docker info
 
-cat << EOF | docker run -it \
+cat << EOF | docker run -i \
                         --rm \
                         -v ${FEEDSTOCK_ROOT}:/feedstock_root \
                         -a stdin -a stdout -a stderr \
