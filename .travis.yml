@@ -18,17 +18,18 @@ addons:
 env:
   global:
     secure: "MOKk2v9+GPKa7Dv/VGiVcyGJBknP32snQtXDRGf5X6P3EUAGTbQPCpQ5iyOezF6zeELGbTlz6POGYqLYnP7NK21WiKS2+ffkznIrVabdgpwrBsSMS7difqYvSfOTQnd1nZa7iibaKxVzh93iL+dc1h98ibCkIWMGYoHIBy38jhPCJHU4ol3w8Uhvo9jEMhxSbJmKlavNy6OvQM8JWWCaHVldb/AfjED5t4Kr+GNwGcZlaTZmoGZZjB9sEfshWoGCXI377ln80SOVdbw5RQ/jpaY2g2G9BLkH7pFz12tdxNP39Z0LIqkvmD/To6r6qG/COBZfWgpt5NlY4F/pqJpF6OcM2zek1hGkYM1FLEMw2okLj+bwHjbUSOmvgJO9TVYGK9k7V1JFWM74SJIn9dOWyKenBxKKGLfb53dFQ9MrMi4rsXvry33/pCe3TmByOkgDAAYPx3i70JmiSoDcunNRlJQE/zUcKmGQNVlaX0vDX/xWlUw7CF1IEqg4PYWvA73KIU53+IL8CzKqGQlUmL8J93b+fFzuRS3hUYAz6lSaUERBFB6EDNaqwjRWWQUU/4XafHquD1lQ2IsQrPekzdd1FTSPs0M00QApsB/Qv2b7FYBVuoYvxpce7VIWWVOBtFJ8B6yPRkCBMtqzjRa0pklM7aQci1g0tw6YVRP8qM3wPiQ=" 
-  matrix:
-    - { os: osx, AMBER_BUILD_TASK: ambermini,  PYTHON_VERSION: 2.7 }
-    - { os: osx, AMBER_BUILD_TASK: ambermini,  PYTHON_VERSION: 3.4 }
-    - { os: osx, AMBER_BUILD_TASK: ambermini,  PYTHON_VERSION: 3.5 }
-    - { os: osx, AMBER_BUILD_TASK: ambertools, PYTHON_VERSION: 2.7 }
+matrix:
+  include:
+    - { os: osx, env: AMBER_BUILD_TASK=ambermini,  PYTHON_VERSION=2.7 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambermini,  PYTHON_VERSION=3.4 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambermini,  PYTHON_VERSION=3.5 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambertools, PYTHON_VERSION=2.7 }
+
 install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap homebrew/science; brew update;
   brew install gcc; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y csh; fi
 - source scripts/install_miniconda.sh
-- unset os # if not, Jinja2 will not be happy
 - conda build recipe --py $PYTHON_VERSION
 script: echo "hello"
 after_success:
