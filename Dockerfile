@@ -4,10 +4,9 @@ RUN yum update -y
 RUN yum install -y \
             csh \
             flex \
-            gfortran \
-            g++ \
+            gcc \
             patch \
-            zlib-dev \
-            bz2-dev
+            zlib-devel \
+            bzip2-devel
 RUN cd /root/ && sh install_miniconda.sh
 RUN rm /root/install_miniconda.sh
