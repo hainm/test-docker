@@ -2,7 +2,7 @@ language: cpp
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+    - ubuntu-precise
     packages:
       - gfortran
       - libbz2-dev
