@@ -1,3 +1,4 @@
+sudo: true
 language: cpp
 addons:
   apt:
@@ -26,6 +27,9 @@ install:
           brew tap homebrew/science;
           brew update;
           brew install gcc;
+      fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+        sudo apt-get install -y csh
       fi
     - source scripts/install_miniconda.sh
     - conda build recipe
