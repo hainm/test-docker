@@ -1,5 +1,5 @@
 FROM quay.io/pypa/manylinux1_x86_64
-ADD install_miniconda.sh /root/
+ADD scripts/install_miniconda.sh /root/
 RUN yum update -y
 RUN yum install -y \
             csh \
