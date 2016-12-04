@@ -5,37 +5,38 @@ addons:
     sources:
     - ubuntu-precise
     packages:
-      - gfortran
-      - libbz2-dev
-      - libblas-dev
-      - liblapack-dev
-      - libarpack2-dev
-      - libnetcdf-dev
-      - libfftw3-dev
-      - netcdf-bin
-      - clang
-      - openmpi-bin
-      - openmpi-common
-      - libopenmpi-dev
+    - gfortran
+    - libbz2-dev
+    - libblas-dev
+    - liblapack-dev
+    - libarpack2-dev
+    - libnetcdf-dev
+    - libfftw3-dev
+    - netcdf-bin
+    - clang
+    - openmpi-bin
+    - openmpi-common
+    - libopenmpi-dev
 matrix:
   include:
-   - { os: osx, env: AMBER_BUILD_TASK=ambermini }
-   - { os: osx, env: AMBER_BUILD_TASK=ambertools }
-   - { os: linux, env: AMBER_BUILD_TASK=ambermini }
-   - { os: linux, env: AMBER_BUILD_TASK=ambertools }
+  - os: osx
+    env: AMBER_BUILD_TASK=ambermini
+  - os: osx
+    env: AMBER_BUILD_TASK=ambertools
+  - os: linux
+    env: AMBER_BUILD_TASK=ambermini
+  - os: linux
+    env: AMBER_BUILD_TASK=ambertools
 install:
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-          brew tap homebrew/science;
-          brew update;
-          brew install gcc;
-      fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-          sudo apt-get install -y csh;
-      fi
-    - source scripts/install_miniconda.sh
-    - conda build recipe
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap homebrew/science; brew update;
+  brew install gcc; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y csh; fi
+- source scripts/install_miniconda.sh
+- conda build recipe
 script: echo "hello"
 after_success:
-    - echo "hello"
+- sh scripts/upload_to_anaconda.sh # only for osx, we run linux build on circleci
 notifications:
   email: false
+! '':
+  secure: BDtD1NfeJqtVdFmRWXi3HdJ1WjP4qSLwjexay55eNBb02GgYcXQzCuMca9TG0SGRKYSdQaBB0gCk8wq+Mb4zJ/XsAHKt+Z3oXfa2Kd0hlNym0W81NvHnJcmSPEsBUrqVheAGV5qneIBTu3oVR9K2lRXNkV4GToiTWgVgQ2GGtbAi0pY7o/dwk30bbq6SvkrRh6+e0ofu+xlxw0iRUtY+kNge2oDETav3xZkSbVKVS2o+KjKILJXdoAvqtuv3SeSUFZZUDxxPkloRsB3dmRSpqLur4HF52fCsG75Jh/lPnZQtJjlqsSoEYQUdw2wojyjgjRIoyKpdhZppe/fCy5nmJwiqdQbU0oNGTaPudkrrd3rTbOQKpBDUM5rjuypQf3OMd2bK69gSq6vuAh84eGQcJG92zEETsoRf4JTHd0lSz6zkcoQjQUGK/YPDrUDtuT/nLtaYk/mDMnoN/L9eujHFMDCrL8WPl4AmMjSEAdepL8VZV+ewinmVxZPyUQk3AfelEr5y54ri5U6zJZorLMGTLfIcOW6DfEpKPw0vGkPkV2VpThxgWFmP+7iCALblSSm7PMmHtEA3eh3i+xIPrJ6eGgmsAD0PWyPjxoz9iflw7PjHeomYArcz5kM5/swdpMK7qQpG6SRQ32Dgk4SLQeXORg+ol7ncJs+QPHvfwUMbXjk=
