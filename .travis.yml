@@ -1,3 +1,4 @@
+sudo: true
 language: cpp
 addons:
   apt:
@@ -19,6 +20,8 @@ addons:
 matrix:
   include:
    - { os: osx, env: AMBER_BUILD_TASK=ambermini }
+   - { os: osx, env: AMBER_BUILD_TASK=ambertools }
+   - { os: linux, env: AMBER_BUILD_TASK=ambermini }
    - { os: linux, env: AMBER_BUILD_TASK=ambertools }
 install:
     # - source build.sh
@@ -26,6 +29,9 @@ install:
           brew tap homebrew/science;
           brew update;
           brew install gcc;
+      fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+          sudo apt-get install -y csh;
       fi
     - source scripts/install_miniconda.sh
     - conda build recipe
