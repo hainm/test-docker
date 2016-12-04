@@ -17,6 +17,8 @@ cat << EOF | docker run -i \
 # Embarking on 1 case(s).
     export PATH=/root/miniconda3/bin:\$PATH
     conda update --all --yes
-    conda build /feedstock_root/recipe --quiet || exit 1
+    conda build /feedstock_root/recipe --py 2.7 --quiet || exit 1
+    conda build /feedstock_root/recipe --py 3.4 --quiet || exit 1
+    conda build /feedstock_root/recipe --py 3.5 --quiet || exit 1
     cp $BZ2FILE /feedstock_root/
 EOF

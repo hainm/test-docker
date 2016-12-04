@@ -28,8 +28,6 @@ else
     source $RECIPE_DIR/build_ambermini.sh
 fi
 
-# make test: add me
-
 cp $AMBERHOME/bin/* $PREFIX/bin/
 python $RECIPE_DIR/patch_amberhome/copy_and_post_process_bin.py
 cp -rf $AMBERHOME/lib/* $PREFIX/lib/
@@ -40,3 +38,8 @@ mkdir $PREFIX/dat/ && cp -rf $AMBERHOME/dat/* $PREFIX/dat/
 # handle tleap a bit differently since it requires -I flag
 # TODO: move to copy_and_post_process_bin.py?
 cp $RECIPE_DIR/patch_amberhome/tleap $PREFIX/bin/
+
+# make test: add me
+if [ ${build_task} == 'ambermini' ]; then
+    sh $RECIPE_DIR/run_test_inside_amberhome.sh
+fi
