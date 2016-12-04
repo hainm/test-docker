@@ -1,9 +1,18 @@
-{% set ambertools_package = 'ambermini101' %}
-{% set ambertools_version = "16.20" %}
-{% set ambertools_fn = "AmberTools16.tar.bz2" %}
-
 # Please update your name and other info if you maintain or update this recipe
 {% set ambertools_url = "http://ambermd.org/cgi-bin/AmberTools16-get.pl?Name=HaiNguyen&Institution=Rutgers&City=NewBrunswicks&State=NJ&Country=USA" %}
+{% set version = "16" %}
+{% set bugfix_version = "20" %} # applied update.1  to update.{{bugfix_version}}
+{% set ambertools_version = version + '.' + bugfix_version %}
+{% set ambertools_fn = "AmberTools" + version + ".tar.bz2" %}
+
+# AMBER_BUILD_TASK = {'', 'ambermini', 'ambertools'}
+{% if os.getenv('AMBER_BUILD_TASK', 'ambermini') == 'ambermini' %}
+     {%set ambertools_package = 'ambermini101' %}
+     {% set summary = "ambermini101, a subset of AmberTools" %}
+{% else %}
+     {%set ambertools_package = 'ambertools' %}
+     {% set summary = "AmberTools is a set of programs for biomolecular simulation and analysis." %}
+{% endif %}
 
 package:
   name: {{ ambertools_package }}
@@ -37,4 +46,4 @@ requirements:
 about:
     home: https://ambermd.org
     license: GNU General Public License (GPL)
-    summary: AmberTools is a set of programs for biomolecular simulation and analysis.
+    summary: {{ summary }}
