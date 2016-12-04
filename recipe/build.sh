@@ -1,6 +1,8 @@
 #!/bin/sh
 
 isosx=`python -c "import sys; print(sys.platform.startswith('darwin'))"`
+build_task=`python -c "import os; print(os.getenv('AMBER_BUILD_TASK'))"`
+echo "amber_build_task", ${build_task}
 
 export AMBERHOME=`pwd`
 ./update_amber --show-applied-patches
@@ -13,11 +15,13 @@ else
 fi
 source amber.sh
 
-# build whole ambertools
-# make install -j4
-
-# build ambermini
-source $RECIPE_DIR/build_ambermini.sh
+if [ ${build_task} == 'ambertools' ]; then
+    # build whole ambertools
+    make install -j4
+else
+    # build ambermini
+    source $RECIPE_DIR/build_ambermini.sh
+fi
 
 # make test: add me
 

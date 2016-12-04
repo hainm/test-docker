@@ -20,6 +20,8 @@ source:
 
 build:
   number: 1
+  script_env:
+    - AMBER_BUILD_TASK
 
 requirements:
   build:
