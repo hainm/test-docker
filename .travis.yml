@@ -20,19 +20,19 @@ addons:
 matrix:
   include:
   - os: osx
-    env: AMBER_BUILD_TASK=ambermini
+    env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=2.7
   - os: osx
-    env: AMBER_BUILD_TASK=ambertools
-  - os: linux
-    env: AMBER_BUILD_TASK=ambermini
-  - os: linux
-    env: AMBER_BUILD_TASK=ambertools
+    env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.4
+  - os: osx
+    env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.5
+  - os: osx
+    env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=2.7
 install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap homebrew/science; brew update;
   brew install gcc; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y csh; fi
 - source scripts/install_miniconda.sh
-- conda build recipe
+- conda build recipe --py $PYTHON_VERSION
 script: echo "hello"
 after_success:
 - sh scripts/upload_to_anaconda.sh # only for osx, we run linux build on circleci
