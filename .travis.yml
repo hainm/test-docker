@@ -1,22 +1,6 @@
+# Use GCC
 sudo: true
 language: cpp
-addons:
-  apt:
-    sources:
-    - ubuntu-precise
-    packages:
-      - gfortran
-      - libbz2-dev
-      - libblas-dev
-      - liblapack-dev
-      - libarpack2-dev
-      - libnetcdf-dev
-      - libfftw3-dev
-      - netcdf-bin
-      - clang
-      - openmpi-bin
-      - openmpi-common
-      - libopenmpi-dev
 matrix:
   include:
    - { os: osx, env: AMBER_BUILD_TASK=ambermini }
@@ -24,11 +8,10 @@ matrix:
    - { os: linux, env: AMBER_BUILD_TASK=ambermini }
    - { os: linux, env: AMBER_BUILD_TASK=ambertools }
 install:
-    # - source build.sh
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
           brew tap homebrew/science;
           brew update;
-          brew install gcc;
+          brew install homebrew/versions/gcc6
       fi
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
           sudo apt-get install -y csh;
