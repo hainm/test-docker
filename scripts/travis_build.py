@@ -13,7 +13,6 @@ if not travis_branch.startswith('circleci_'):
     if travis_os_name == 'linux':
         check_call('sudo apt-get install -y csh', shell=True)
     check_call('source scripts/install_miniconda.sh', shell=True)
-    os.environ['PATH'] = "$HOME/miniconda3/bin:$PATH"
-    check_call('conda build recipe --py {}'.format(python_version), shell=True)
+    check_call('$HOME/miniconda3/bin/conda build recipe --py {}'.format(python_version), shell=True)
 else:
     print("This {} brach will not be run on travis. Skip")
