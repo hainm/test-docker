@@ -1,5 +1,5 @@
 # Please update your name and other info if you maintain or update this recipe
-{% set ambertools_url = "http://ambermd.org/cgi-bin/AmberTools17-get.pl?Name=HaiNguyen&Institution=Rutgers&City=NewBrunswicks&State=NJ&Country=USA" %}
+{% set ambertools_url = "http://ambermd.org/cgi-bin/AmberTools16-get.pl?Name=HaiNguyen&Institution=Rutgers&City=NewBrunswicks&State=NJ&Country=USA" %}
 {% set version = "16" %}
 {% set bugfix_version = "20" %} # applied update.1  to update.{{bugfix_version}}
 {% set ambertools_version = version + '.' + bugfix_version %}
@@ -23,9 +23,9 @@ source:
   url : {{ ambertools_url }}
   
   # Un-comment if using local path, must use file:/// if using tar file
-  # url : file:///home/haichit/AmberTools17.tar.bz2
+  # url : file:///home/haichit/AmberTools16.tar.bz2
   # or
-  # url : /home/haichit/amber17/
+  # url : /home/haichit/amber16/
 
 build:
   number: 1
