@@ -26,7 +26,7 @@ matrix:
     - { os: osx, env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=2.7 }
 
 install:
-- python scripts/travis_build.sh
+- python scripts/travis_build.py
 script: echo "hello"
 after_success:
 - bash scripts/upload_to_anaconda.sh # only for osx, we run linux build on circleci
