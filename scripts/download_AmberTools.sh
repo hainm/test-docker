@@ -1,3 +1,3 @@
 #!/bin/sh
 
-wget https://dl.dropboxusercontent.com/u/5494759/AmberTools16.tar.bz2
+wget https://dl.dropboxusercontent.com/u/5494759/AmberTools17.tar.bz2
