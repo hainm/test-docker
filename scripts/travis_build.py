@@ -5,7 +5,10 @@ travis_os_name = os.getenv('TRAVIS_OS_NAME', '')
 python_version = os.getenv('PYTHON_VERSION')
 travis_branch = os.getenv('TRAVIS_BRANCH')
 
-if not travis_branch.startswith('circleci_'):
+if (travis_branch.startswith('circleci_') or
+    travis_branch.startswith('appveyor')):
+    print("This {} brach will not be run on travis. Skip".format(travis_branch))
+else:
     if travis_os_name == 'osx':
         check_call('brew tap homebrew/science', shell=True)
         check_call('brew update', shell=True)
@@ -14,5 +17,3 @@ if not travis_branch.startswith('circleci_'):
         check_call('sudo apt-get install -y csh', shell=True)
     check_call('source scripts/install_miniconda.sh', shell=True)
     check_call('$HOME/miniconda3/bin/conda build recipe --py {}'.format(python_version), shell=True)
-else:
-    print("This {} brach will not be run on travis. Skip")
