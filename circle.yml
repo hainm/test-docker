@@ -12,3 +12,4 @@ test:
   post:
     - mkdir $CIRCLE_ARTIFACTS/amber-build/
     - cp amber*bz2 $CIRCLE_ARTIFACTS/amber-build/
+    - python scripts/upload_to_github.py
