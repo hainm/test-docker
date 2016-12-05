@@ -15,7 +15,7 @@ addons:
     - openmpi-bin
     - openmpi-common
     - libopenmpi-dev
-# blocklist
+# blocklist, does not work, man
 branches:
   except:
   - circleci_py27
@@ -26,16 +26,21 @@ env:
     secure: "cx6PP7IwjxsKw5Az1BQgv5S9b/LFfSNU+/GgdtFGedqLPFcg/GSKJcVVd9JyturgMmF27H3PdiYV5q8GrNVUj1VWkYJivwyXEOxDDlkDpN0DnOpczD6asPe/GskJr8DH29aZI+RNisPmExMDbU8Tiu9KE7oDx2sEnS6kcAIn8Jux/LIVC+TR8WpWlwPcoYMZwutIvdP+QdtSMHqQmj+9RR31c/L/qmQjXCziM5KPuWSIzg3wzILEMir1EsMTNLuoZ4fOeOGcP9zIC2WMW7KBekIUQSP75SK0WdLZgh7MnTYS9klGsTUwkGXNquD95+QKiC6Ru0C9WAZeyUJgZFJeKHmd91zi4zdDJpSSd0//7htn3IUhYoO6PY7fAqUgeT/jCij/w5VlBHqHnpxpEtxMoAeFFDnacJkay1Wh69gf2k1l6XzIjsB7+xLYxkF21DDyh5GTeWvTBnCBq82erzjRWnMTimSR75Bim9PVi7xmzmYkqn4EVsFCcubDaY0WX7oe4hEGf/ei7CeVkd09VOYxerZ5Ax+lCx3Y8cSo89PHJUMa3m95EKfrrng+HyjyxZoVzvoZ2T/0WLbbiOJd4OB3qccWfpZYrYI8MIER/AaI0oQhHtvgMNl+gUZpZm3Yr7ggVu6QWSw6UvwmXmG4gEscBIadj2dq4Gy86H4NFnWcBtc="
 matrix:
   include:
-    - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=2.7 }
-    - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.4 }
-    - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.5 }
-    - { os: osx, env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=2.7 }
+    - { os: linux, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=2.7 }
+    # - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=2.7 }
+    # - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.4 }
+    # - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.5 }
+    # - { os: osx, env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=2.7 }
 
 install:
-- export PATH=$HOME/miniconda3/bin/:$PATH
-- python scripts/travis_build.py
+# - export PATH=$HOME/miniconda3/bin/:$PATH
+# - python scripts/travis_build.py
+- bash scripts/install_miniconda.sh
+- git clone https://github.com/hainm/registration-flask-test
+- conda build ./registration-flask-test/client/recipe
 script: echo "hello"
 after_success:
-- bash scripts/upload_to_anaconda.sh # only for osx, we run linux build on circleci
+# - bash scripts/upload_to_anaconda.sh # only for osx, we run linux build on circleci
+  - anaconda -t $TRAVIS_TO_ANACONDA upload --force -u hainm $HOME/miniconda3/conda-bld/linux-64/test*bz2
 notifications:
   email: false
