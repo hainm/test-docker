@@ -31,22 +31,18 @@ env:
 
 matrix:
   include:
-    - { os: linux, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=2.7 }
-    # - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=2.7 }
-    # - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.4 }
-    # - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.5 }
-    # - { os: osx, env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=2.7 }
+    # - { os: linux, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=2.7 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=2.7 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.4 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.5 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=2.7 }
 
 install:
-# - export PATH=$HOME/miniconda3/bin/:$PATH
-# - python scripts/travis_build.py
-- source scripts/install_miniconda.sh
-- git clone https://github.com/hainm/registration-flask-test
-- conda build ./registration-flask-test/client/recipe
+ - export PATH=$HOME/miniconda3/bin/:$PATH
+ - python scripts/travis_build.py
 script: echo "hello"
 after_success:
 # - bash scripts/upload_to_anaconda.sh # only for osx, we run linux build on circleci
-#  - anaconda --token $TRAVIS_TO_ANACONDA upload $HOME/miniconda3/conda-bld/linux-64/test*bz2 --user hainm --force
   - bash scripts/upload_to_github.sh
 notifications:
   email: false
