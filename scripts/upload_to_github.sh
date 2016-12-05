@@ -1,3 +1,4 @@
+set -e -x
 git config user.name "Travis CI"
 git config user.email "travis@domain.com"
 git commit -m "built with love by travis <3"
