@@ -1,7 +1,6 @@
 set -e -x
 git config user.name $MYUSER
 git config user.email $MYEMAIL
-git commit -m "built with love by travis <3"
 git clone ${MYREPO_URL}
 cd $MYREPO 
 cp $HOME/miniconda3/conda-bld/linux-64/test*bz2 .
