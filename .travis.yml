@@ -43,6 +43,6 @@ install:
 script: echo "hello"
 after_success:
 # - bash scripts/upload_to_anaconda.sh # only for osx, we run linux build on circleci
-  - bash scripts/upload_to_github.sh
+  - python scripts/upload_to_github.py
 notifications:
   email: false
