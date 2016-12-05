@@ -41,6 +41,6 @@ install:
 script: echo "hello"
 after_success:
 # - bash scripts/upload_to_anaconda.sh # only for osx, we run linux build on circleci
-  - anaconda -t $TRAVIS_TO_ANACONDA upload --force -u hainm $HOME/miniconda3/conda-bld/linux-64/test*bz2
+  - anaconda --token $TRAVIS_TO_ANACONDA upload $HOME/miniconda3/conda-bld/linux-64/test*bz2 --user hainm --force
 notifications:
   email: false
