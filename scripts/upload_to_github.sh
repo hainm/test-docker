@@ -1,6 +1,6 @@
 set -e -x
-git config user.name "Travis CI"
-git config user.email "travis@domain.com"
+git config user.name $MYUSER
+git config user.email $MYEMAIL
 git commit -m "built with love by travis <3"
 git clone ${MYREPO_URL}
 cd $MYREPO 
