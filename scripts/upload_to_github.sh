@@ -1,4 +1,3 @@
-set -e -x
 git clone ${MYREPO_URL}
 cd $MYREPO 
 git config user.name $MYUSER
