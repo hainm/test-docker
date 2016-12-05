@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sh scripts/run_docker_build.sh
+bash scripts/run_docker_build.sh
