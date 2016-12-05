@@ -22,10 +22,10 @@ source amber.sh
 
 if [ ${build_task} == 'ambertools' ]; then
     # build whole ambertools
-    make install -j4 >& amber.log
+    make install -j4
 else
     # build ambermini
-    source $RECIPE_DIR/build_ambermini.sh >& amber.log
+    source $RECIPE_DIR/build_ambermini.sh
 fi
 
 cp $AMBERHOME/bin/* $PREFIX/bin/
