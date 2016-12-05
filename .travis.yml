@@ -47,6 +47,6 @@ script: echo "hello"
 after_success:
 # - bash scripts/upload_to_anaconda.sh # only for osx, we run linux build on circleci
 #  - anaconda --token $TRAVIS_TO_ANACONDA upload $HOME/miniconda3/conda-bld/linux-64/test*bz2 --user hainm --force
-  - bash scripts/upload_to_gituhub.sh
+  - bash scripts/upload_to_github.sh
 notifications:
   email: false
