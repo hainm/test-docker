@@ -35,7 +35,7 @@ matrix:
 install:
 # - export PATH=$HOME/miniconda3/bin/:$PATH
 # - python scripts/travis_build.py
-- bash scripts/install_miniconda.sh
+- source scripts/install_miniconda.sh
 - git clone https://github.com/hainm/registration-flask-test
 - conda build ./registration-flask-test/client/recipe
 script: echo "hello"
