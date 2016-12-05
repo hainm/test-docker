@@ -32,6 +32,7 @@ cat << EOF | docker run -i \
     export PATH=/root/miniconda3/bin:\$PATH
     conda update --all --yes
     export AMBER_BUILD_TASK=${AMBER_BUILD_TASK}
+    echo "Building" \${AMBER_BUILD_TASK}
     if [ "\${AMBER_BUILD_TASK}" == 'ambermini' ]; then
         # build in a single containter
         conda build /feedstock_root/recipe --py 2.7 --quiet || exit 1
@@ -41,5 +42,6 @@ cat << EOF | docker run -i \
         # build whole ambertools, for a single python version
         # should build each ambertools python version on each branch
         conda build /feedstock_root/recipe --py $pyversion --quiet || exit 1
+    fi
     cp $BZ2FILE /feedstock_root/
 EOF
