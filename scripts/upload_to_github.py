@@ -27,7 +27,7 @@ if os.getenv("TRAVIS_PULL_REQUEST") != 'false' or os.getenv('CI_PULL_REQUEST'):
     sys.exit(0)
 
 if travis:
-    if travis_branch != master:
+    if travis_branch != 'master':
         print("No deployment on {} branch".format(travis_branch))
         sys.exit(0)
 
