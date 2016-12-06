@@ -23,6 +23,8 @@ commands_init = """
     cd $MYREPO 
     git config user.name $MYUSER
     git config user.email $MYEMAIL
+    git checkout gh-pages
+    git pull origin gh-pages
 """.strip().split('\n')
 
 command_copy = 'echo'
@@ -36,12 +38,12 @@ commands_add_and_push = """
     git add at16/*
     git commit -m 'push to github'
     git remote add production https://${GITHUB_TOKEN}@github.com/$MYUSER/$MYREPO
-    git push production master --force
+    git push production gh-pages --force
 """.strip().split('\n')
 
 all_commands = commands_init + [command_copy,] + commands_add_and_push
 all_commands_string = ' && '.join(all_commands)
-print(all_commands_string)
+# print(all_commands_string)
 
 if travis_os_name == 'osx' or circleci:
     subprocess.call(all_commands_string, shell=True)
