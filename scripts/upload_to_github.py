@@ -12,9 +12,11 @@ if travis_os_name:
 
 commands_init = """
     git clone ${MYREPO_URL}
+    echo 'my repo' $MYREPO
     cd $MYREPO 
     git config user.name $MYUSER
     git config user.email $MYEMAIL
+    ls .
 """.strip().split('\n')
 
 command_copy = 'echo'
@@ -27,13 +29,13 @@ if circleci:
 commands_add_and_push = """
     git add at16/amber*bz2
     git commit -m 'push to github'
-    git remote add production https://${GITHUB_TOKEN}@github.com/$MYUSER/$MYREPO >& log
-    git push production master --force >& log
+    git remote add production https://${GITHUB_TOKEN}@github.com/$MYUSER/$MYREPO
+    git push production master --force
 """.strip().split('\n')
 
+all_commands = commands_init + [command_copy,] + commands_add_and_push
+all_commands_string = ' && '.join(all_commands)
+print(all_commands_string)
+
 if travis_os_name == 'osx' or circleci:
-    for command in commands_init:
-        subprocess.check_call(command, shell=True)
-    subprocess.check_call(command_copy, shell=True)
-    for command in commands_add_and_push:
-        subprocess.check_call(command, shell=True)
+    subprocess.call(all_commands_string, shell=True)
