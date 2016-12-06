@@ -30,9 +30,9 @@ commands_init = """
 command_copy = 'echo'
 # ovewrite command_copy
 if travis_os_name:
-    command_copy = 'cp $HOME/miniconda*/conda-bld/*/amber*bz2 at16/travis/'
+    command_copy = 'cp $HOME/miniconda*/conda-bld/*/amber*bz2 at16/travis/osx-64/'
 if circleci:
-    command_copy = 'cp $CIRCLE_ARTIFACTS/amber-build/amber*bz2 at16/circleci/'
+    command_copy = 'cp $CIRCLE_ARTIFACTS/amber-build/amber*bz2 at16/circleci/linux-64/'
 
 commands_add_and_push = """
     git add at16/*
