@@ -1,11 +1,9 @@
 machine:
   services:
     - docker
-
 dependencies:
   override:
     - docker pull ambermd/amber-build-box
-
 test:
   override:
     - source build.sh
