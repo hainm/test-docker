@@ -43,3 +43,7 @@ cp $RECIPE_DIR/patch_amberhome/tleap $PREFIX/bin/
 if [ ${build_task} == 'ambermini' ]; then
     sh $RECIPE_DIR/run_test_inside_amberhome.sh
 fi
+
+# registration
+cp $RECIPE_DIR/amber_registration.py $PREFIX/bin/amber_registration
+chmod +x $PREFIX/bin/amber_registration 
