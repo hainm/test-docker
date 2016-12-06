@@ -4,9 +4,11 @@ import os
 import subprocess
 
 # TODO: python
-subprocess.check_call('source scripts/check_deployment.sh', shell=True)
 travis_os_name = os.getenv('TRAVIS_OS_NAME', '')
 circleci = os.getenv('CIRCLECI', '')
+
+if travis_os_name:
+    subprocess.check_call('source scripts/check_deployment.sh', shell=True)
 
 commands = """
     git clone ${MYREPO_URL}
