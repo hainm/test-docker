@@ -6,6 +6,7 @@ import subprocess
 
 travis = os.getenv('TRAVIS')
 travis_os_name = os.getenv('TRAVIS_OS_NAME', '')
+travis_branch = os.getenv('TRAVIS_BRANCH', '')
 circleci = os.getenv('CIRCLECI', '')
 circle_branch = os.getenv('CIRCLE_BRANCH', '')
 
@@ -21,13 +22,13 @@ if not commit_message.startswith("UPLOAD"):
     print('Tip: use git commmit -m "UPLOAD: [your_message]" to upload')
     sys.exit(0)
 
-if os.getenv("TRAVIS_PULL_REQUEST") == 'false' or os.getenv('CI_PULL_REQUEST'):
+if os.getenv("TRAVIS_PULL_REQUEST") != 'false' or os.getenv('CI_PULL_REQUEST'):
     print("This is a pull request. No deployment will be done")
     sys.exit(0)
 
 if travis:
-    if os.getenv("TRAVIS_BRANCH") != "master":
-        print("No deployment on BRANCH='$TRAVIS_BRANCH'")
+    if travis_branch != master:
+        print("No deployment on {} branch".format(travis_branch))
         sys.exit(0)
 
 commands_init = """
