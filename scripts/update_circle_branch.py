@@ -3,7 +3,7 @@ import sys
 import subprocess
 
 try:
-    sys.remove('--push')
+    sys.argv.remove('--push')
     push = True
 except ValueError:
     push = False
