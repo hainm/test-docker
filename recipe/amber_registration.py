@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 import os
-import sys
 import requests
 
 amberc_template = """
@@ -63,7 +62,7 @@ def main():
                 if key and val.strip():
                     user_dict[key.strip().lower().replace(' ', '_')] = val.strip()
         for field in required_fields:
-            assert field in user_dict, 'Must follow \n{}'.format(example)
+            assert field in user_dict, 'Must follow \n{}'.format(amberc_template)
 
     print("For the future deployment, please create $HOME/.amberrc file with below content")
     print(amberc_template.format(**user_dict))
