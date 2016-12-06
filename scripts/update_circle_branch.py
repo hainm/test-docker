@@ -18,11 +18,11 @@ for branch in ['circleci_27', 'circleci_34', 'circleci_35']:
         subprocess.check_call(['git', 'branch', branch])
     subprocess.check_call(['git', 'checkout', branch])
     subprocess.check_call(['git', 'merge', 'master', '--squash'])
-    subprocess.check_call(['git', 'commit', '-m', 'UPLOAD: merge master'])
+    try:
+        subprocess.check_call(['git', 'commit', '-m', 'UPLOAD: merge master'])
+    except subprocess.CalledProcessError:
+        pass
     if push:
-        try:
-            subprocess.check_call(['git', 'push', 'origin', branch])
-        except subprocess.CalledProcessError:
-            pass
+        subprocess.check_call(['git', 'push', 'origin', branch])
 
 subprocess.check_call(['git', 'checkout', 'master'])
