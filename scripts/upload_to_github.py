@@ -8,6 +8,12 @@ travis = os.getenv('TRAVIS')
 travis_os_name = os.getenv('TRAVIS_OS_NAME', '')
 circleci = os.getenv('CIRCLECI', '')
 
+commit_message = subprocess.check_output('git log --format=%B |head -1', shell=True).decode()
+if not commit_message.startswith("UPLOAD"):
+    print("not require to upload. Exit")
+    print('Tip: use git commmit -m "UPLOAD: [your_message]" to upload')
+    sys.exit(0)
+
 if os.getenv("TRAVIS_PULL_REQUEST") == 'false' or os.getenv('CI_PULL_REQUEST'):
     print("This is a pull request. No deployment will be done")
     sys.exit(0)
