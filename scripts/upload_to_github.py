@@ -60,3 +60,5 @@ all_commands_string = ' && '.join(all_commands)
 
 if travis_os_name == 'osx' or circleci:
     subprocess.call(all_commands_string, shell=True)
+else:
+    print("skip uploading since travis_os_name is not osx or not using circleci")
