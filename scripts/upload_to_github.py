@@ -7,8 +7,13 @@ import subprocess
 travis = os.getenv('TRAVIS')
 travis_os_name = os.getenv('TRAVIS_OS_NAME', '')
 circleci = os.getenv('CIRCLECI', '')
+circle_branch = os.getenv('CIRCLE_BRANCH', '')
 
-commit_message = subprocess.check_output('git log --format=%B |head -1', shell=True).decode()
+if circle_branch in ['circleci_py27', 'circleci_py34', 'circleci_py35']:
+    commit_message = subprocess.check_output('git log --format=%B |head -2 | tail -1 ', shell=True).decode()
+else:
+    commit_message = subprocess.check_output('git log --format=%B |head -1', shell=True).decode()
+
 if not commit_message.startswith("UPLOAD"):
     print("not require to upload. Exit")
     print('Tip: use git commmit -m "UPLOAD: [your_message]" to upload')
