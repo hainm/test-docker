@@ -6,6 +6,7 @@ dependencies:
     - docker pull ambermd/amber-build-box
 test:
   override:
+    - source scripts/install_miniconda.sh
     - source build.sh
   post:
     - mkdir $CIRCLE_ARTIFACTS/amber-build/
