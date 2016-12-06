@@ -1,5 +1,12 @@
 import os
+import sys
 import subprocess
+
+try:
+    sys.remove('--push')
+    push = True
+except ValueError:
+    push = False
 
 subprocess.check_call(['git', 'fetch', 'origin'])
 all_branches = subprocess.check_output(['git', 'branch']).decode().split('\n')
@@ -12,6 +19,7 @@ for branch in ['circleci_27', 'circleci_34', 'circleci_35']:
     subprocess.check_call(['git', 'checkout', branch])
     subprocess.check_call(['git', 'pull', 'origin', branch])
     subprocess.check_call(['git', 'merge', 'master', '--no-edit'])
-    subprocess.check_call(['git', 'push', 'origin', branch])
+    if push:
+        subprocess.check_call(['git', 'push', 'origin', branch])
 
 subprocess.check_call(['git', 'checkout', 'master'])
