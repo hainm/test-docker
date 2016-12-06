@@ -3,6 +3,7 @@ machine:
     - docker
 dependencies:
   override:
+    - python scripts.upload_to_github.py
     - docker pull ambermd/amber-build-box
 test:
   override:

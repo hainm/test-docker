@@ -7,8 +7,12 @@ import subprocess
 travis = os.getenv('TRAVIS')
 travis_os_name = os.getenv('TRAVIS_OS_NAME', '')
 travis_branch = os.getenv('TRAVIS_BRANCH', '')
+travis_pull_request = os.getenv('TRAVIS_PULL_REQUEST')
+circleci_pull_request = os.getenv('CI_PULL_REQUEST')
 circleci = os.getenv('CIRCLECI', '')
 circle_branch = os.getenv('CIRCLE_BRANCH', '')
+
+print(circleci_pull_request, circleci, circle_branch)
 
 if circle_branch in ['circleci_py27', 'circleci_py34', 'circleci_py35']:
     commit_message = subprocess.check_output('git log --format=%B |head -2 | tail -1 ', shell=True).decode()
@@ -22,7 +26,10 @@ if not commit_message.startswith("UPLOAD"):
     print('Tip: use git commmit -m "UPLOAD: [your_message]" to upload')
     sys.exit(0)
 
-if os.getenv("TRAVIS_PULL_REQUEST") != 'false' or os.getenv('CI_PULL_REQUEST'):
+if travis_pull_request != 'false':
+    print("This is a pull request. No deployment will be done")
+    sys.exit(0)
+if circleci_pull_request:
     print("This is a pull request. No deployment will be done")
     sys.exit(0)
 
