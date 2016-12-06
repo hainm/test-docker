@@ -14,7 +14,7 @@ if circle_branch in ['circleci_py27', 'circleci_py34', 'circleci_py35']:
 else:
     commit_message = subprocess.check_output('git log --format=%B |head -1', shell=True).decode()
 
-print('commit_message', commit_message)
+print('git commit_message', commit_message)
 
 if not commit_message.startswith("UPLOAD"):
     print("not require to upload. Exit")
