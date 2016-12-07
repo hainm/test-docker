@@ -68,7 +68,7 @@ commands_add_and_push = """
     git push production gh-pages --force
 """.strip().split('\n')
 
-all_commands = commands_init + [commands_copy_and_update_index,] + commands_add_and_push
+all_commands = commands_init + commands_copy_and_update_index + commands_add_and_push
 all_commands_string = ' && '.join(all_commands)
 # print(all_commands_string)
 
