@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
-import requests
+# import requests
 
 PY2 = sys.version_info() < (3, 0)
 
