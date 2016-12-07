@@ -1,12 +1,5 @@
 #!/bin/sh
 
-cat >.amberc <<EOF
-name = test
-institution = test
-city = test
-country = test
-EOF
-
 antechamber -h
 tleap -h
 sqm -h
