@@ -6,9 +6,6 @@ dependencies:
     - docker pull ambermd/amber-build-box
 test:
   override:
-    - source scripts/install_miniconda.sh
-    - source build.sh
+    - python scripts/circleci_build.py
   post:
-    - mkdir $CIRCLE_ARTIFACTS/amber-build/
-    - cp amber*bz2 $CIRCLE_ARTIFACTS/amber-build/
-    - export PATH=/home/ubuntu/miniconda3/bin:$PATH && python scripts/upload_to_github.py
+    - python scripts/circleci_upload.py

@@ -4,7 +4,7 @@ conda build recipe
 
 # there is .amberrc file
 cat > .amberrc <<EOF
-ame = Hai
+Name = Hai
 Institution = Nguyen
 City =  hello
 State or Province = hello
