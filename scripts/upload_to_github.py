@@ -53,12 +53,12 @@ command_copy = 'echo'
 if travis_os_name:
     commands_copy_and_update_index = [
         'for at in $HOME/miniconda*/conda-bld/*/amber*bz2; do '
-        'python ../scripts/copy_and_update_conda_package.py $at at16/'
+        'python ../scripts/copy_and_update_conda_package.py $at at16/; done'
     ]
 if circleci:
     commands_copy_and_update_index = [
         'for at in $CIRCLE_ARTIFACTS/amber-build/amber*bz2; do'
-        'python ../scripts/copy_and_update_conda_package.py $at at16/'
+        'python ../scripts/copy_and_update_conda_package.py $at at16/; done'
     ]
 
 commands_add_and_push = """
