@@ -2,7 +2,7 @@
 
 conda build recipe
 
-# there is .amberrc file
+# there is a .amberrc file in current folder
 cat > .amberrc <<EOF
 Name = Hai
 Institution = Nguyen
