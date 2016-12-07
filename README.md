@@ -53,3 +53,22 @@ Build AmberTools with conda and docker. This is beta version.
      - travis : test building ambermini, full ambertools with GNU compiler, not use docker.
      - circleci: test building ambermini with our ('ambermd/amber-build-box') docker image.
      - Why? just for testing
+
+# Minor edit conda package without rebuilding?
+
+Since building AmberTools is time consuming, you can make minor edit by using 
+```python
+from scripts.edit_package import editing_conda_package
+
+with editing_conda_package(pkg_name, output_dir='./tmp'):
+    # do something here
+    # e.g: add bin/new.py to package
+    with open('bin/new.py', 'w') as fh:
+        fh.write('print("hello there")')
+
+# Note: not well tested
+```
+
+# Continuous integration tips
+
+- push commit without building: git commit -m '[ci skip] your_message_here'
