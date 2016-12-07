@@ -57,7 +57,7 @@ if travis_os_name:
     ]
 if circleci:
     commands_copy_and_update_index = [
-        'for at in $CIRCLE_ARTIFACTS/amber-build/amber*bz2; do'
+        'for at in $CIRCLE_ARTIFACTS/amber-build/amber*bz2; do '
         'python ../scripts/copy_and_update_conda_package.py $at at16/; done'
     ]
 
