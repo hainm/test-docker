@@ -3,7 +3,7 @@ import os
 import sys
 # import requests
 
-PY2 = sys.version_info() < (3, 0)
+PY2 = sys.version_info < (3, 0)
 
 if PY2:
     input = raw_input
@@ -85,6 +85,8 @@ def main():
         user_info = REGISTRATION_TEMPLATE.format(**user_dict)
         # requests.post(user_info, timeout=10.)
         print("Enjoy. Happy computing")
+    else:
+        print("Detecting SKIP_REGISTRATION env. Skip")
 
 if __name__ == '__main__':
     main()
