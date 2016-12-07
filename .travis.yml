@@ -39,6 +39,7 @@ matrix:
 
 install:
  - export PATH=$HOME/miniconda3/bin/:$PATH
+ - export SKIP_REGISTRATION=True
  # - python scripts/travis_build.py
  - scripts/install_miniconda.sh
  - touch $HOME/conda-bld/linux-64/ambermini101-16.20-py25_1.tar.bz2

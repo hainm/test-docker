@@ -33,6 +33,7 @@ cat << EOF | docker run -i \
     conda update --all --yes
     export AMBER_BUILD_TASK=${AMBER_BUILD_TASK}
     echo "Building" \${AMBER_BUILD_TASK}
+    export SKIP_REGISTRATION=True
     if [ "\${AMBER_BUILD_TASK}" == 'ambermini' ]; then
         # build in a single containter
         conda build /feedstock_root/recipe --py 2.7 --quiet || exit 1
