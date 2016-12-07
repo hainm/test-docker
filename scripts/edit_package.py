@@ -46,12 +46,17 @@ def tempfolder():
     rmtree(my_temp)
 
 def main_update_registration():
+    amber_build_task = 'ambertools'
+    py_versions = ['27', ]
+    # amber_build_task = 'ambermini101'
+    # py_versions = ['27', '34', '35']
     version = '16.20'
     build_number = 1
 
-    for py_version in ['27', '34', '35']:
-        basename = ('ambermini101-{version}-py{py_version}_{build_number}.tar.bz2'
-                    .format(version=version, build_number=build_number,
+    for py_version in py_versions:
+        basename = ('{amber_build_task}-{version}-py{py_version}_{build_number}.tar.bz2'
+                    .format(amber_build_task=amber_build_task,
+                            version=version, build_number=build_number,
                             py_version=py_version))
         tar_fn = os.path.abspath(basename)
         reg_file = '/Users/haichit/amber_git/ambertools-conda-build/recipe/amber_registration.py'
