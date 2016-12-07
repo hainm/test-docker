@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 import os
+import sys
 import requests
+
+PY2 = sys.version_info() < (3, 0)
+
+if PY2:
+    input = raw_input
+else:
+    input = input
 
 amberc_template = """
 Name = {name}
