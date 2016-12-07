@@ -11,8 +11,7 @@ Country = {country}
 """
 
 AMBERTOOLS_VERSION='16'
-# REGISTRATION_TEMPLATE = "http://ambermd.org/cgi-bin/AmberTools{version}-get.pl?Conda=true&&Name={name}&Institution={institution}&City={city}&State={state_or_province}&Country={country}"
-REGISTRATION_TEMPLATE = "http://localhost:8000/conda/registration/name/{name}/institution/{institution}"
+REGISTRATION_TEMPLATE = "http://ambermd.org/cgi-bin/AmberTools{version}-get.pl?Conda=true&&Name={name}&Institution={institution}&City={city}&State={state_or_province}&Country={country}"
 required_fields = ['name', 'institution', 'city', 'state_or_province', 'country']
 
 def main():
@@ -25,12 +24,16 @@ def main():
     interactive = True
     print('-'*100)
     print("Looking for $HOME/.amberrc or .amberrc registration file\n")
+    recipe_dir = os.getenv('RECIPE_DIR', '') # for testing
     if os.path.exists('.amberrc'):
         amberrc_file = base
         interactive = False 
     elif os.path.exists(os.path.join(home, base)):
         amberrc_file = os.path.join(home, base)
         interactive = False 
+    elif os.path.exists(os.path.join(recipe_dir, base)):
+        amberrc_file = os.path.join(home, base)
+        interactive = False
     else:
         print("Can not find registration file")
         print("We are asking users to fill out the simple form below, \n"
