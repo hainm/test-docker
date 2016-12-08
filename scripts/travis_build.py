@@ -11,8 +11,11 @@ if (travis_branch.startswith('circleci_') or
     travis_branch.startswith('appveyor')):
     print("This {} brach will not be run on travis. Skip".format(travis_branch))
     sys.exit(0)
-elif commit_message.startswith('SKIP BUILD')
+elif commit_message.startswith('SKIP BUILD'):
     print(commit_message)
+    sys.exit(0)
+elif '[circleci only]' in commit_message:
+    print('skip travis due to [circleci only] flag')
     sys.exit(0)
 else:
     if travis_os_name == 'osx':
