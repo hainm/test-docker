@@ -2,7 +2,8 @@
 {% set ambertools_url = "http://ambermd.org/cgi-bin/AmberTools16-get.pl?Name=HaiNguyen&Institution=Rutgers&City=NewBrunswicks&State=NJ&Country=USA" %}
 {% set version = "16" %}
 {% set bugfix_version = "20" %} # applied update.1  to update.{{bugfix_version}}
-{% set ambertools_version = version + '.' + bugfix_version %}
+{% set build_number = "2" %} # e.g: add Amber16.pdf, add some library (xleap)
+{% set ambertools_version = version + '.' + bugfix_version + '.' + build_number %}
 {% set ambertools_fn = "AmberTools" + version + ".tar.bz2" %}
 
 # AMBER_BUILD_TASK = {'', 'ambermini', 'ambertools'}
@@ -28,7 +29,7 @@ source:
   # url : /home/haichit/amber16/
 
 build:
-  number: 1
+  number: {{ build_number }}
   script_env:
     - AMBER_BUILD_TASK
 

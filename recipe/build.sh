@@ -16,7 +16,7 @@ if [ "$isosx" == "True" ]; then
     export CC=/usr/local/Cellar/gcc/6.2.0/bin/gcc-6
     ./configure -noX11 --with-python `which python` gnu
 else
-    ./configure -noX11 --with-python `which python` gnu
+    ./configure --with-python `which python` gnu
 fi
 source amber.sh
 
@@ -38,6 +38,10 @@ mkdir $PREFIX/dat/ && cp -rf $AMBERHOME/dat/* $PREFIX/dat/
 # handle tleap a bit differently since it requires -I flag
 # TODO: move to copy_and_post_process_bin.py?
 cp $RECIPE_DIR/patch_amberhome/tleap $PREFIX/bin/
+
+# DOC
+mkidr $PREFIX/doc/
+cp $AMBERHOME/doc/Amber*.pdf $PREFIX/doc
 
 # make test: add me
 if [ ${build_task} == 'ambermini' ]; then
