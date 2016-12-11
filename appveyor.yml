@@ -36,11 +36,12 @@ install:
   - conda update conda -y
   - conda update --all -y
   - conda install conda-build -y
-  - conda create -n py34 python=3.4 -y
-  - activate py34
+  - conda create -n py27 python=2.7 -y
+  - activate py27
   - python -c "import sys; print(sys.prefix)"
+  - where python
   - python --version
-  - conda build recipe
+  - conda build recipe --py 2.7
 
 build: false
 
