@@ -40,7 +40,7 @@ mkdir $PREFIX/dat/ && cp -rf $AMBERHOME/dat/* $PREFIX/dat/
 cp $RECIPE_DIR/patch_amberhome/tleap $PREFIX/bin/
 
 # DOC
-mkidr $PREFIX/doc/
+mkdir $PREFIX/doc/
 cp $AMBERHOME/doc/Amber*.pdf $PREFIX/doc
 
 # make test: add me
