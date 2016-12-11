@@ -16,6 +16,21 @@ environment:
     #   ARCH: "64"
 
 install:
+  - set HOME=.
+  - set MSYSTEM=MINGW64
+  - ls C:/msys64/mingw64/lib/
+  - set PATH=C:/msys64/usr/bin;C:/msys64/mingw64/bin;%PATH%
+  - "sh -lc \"pacman -S --noconfirm --needed
+      mingw-w64-x86_64-openblas
+      mingw-w64-x86_64-arpack
+      mingw-w64-x86_64-gcc
+      mingw-w64-x86_64-gcc-fortran
+      mingw-w64-x86_64-ncurses
+      mingw-w64-x86_64-readline
+      mingw-w64-x86_64-python2-numpy
+      tcsh
+      diffutils
+    \""
   - set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
   - conda config --add channels conda-forge
   - conda update conda -y
