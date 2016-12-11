@@ -16,7 +16,7 @@ Build AmberTools with conda and docker. This is beta version.
 ```bash
     conda install -c http://ambermd.org/conda/ ambertools=16
 
-    # current working version with python=3.5
+    # current working version with python=2.7 and 3.5
     conda install -c hainm ambertools=16
 
     # search

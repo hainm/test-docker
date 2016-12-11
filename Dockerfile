@@ -7,6 +7,10 @@ RUN yum install -y \
             gcc \
             patch \
             zlib-devel \
-            bzip2-devel
+            bzip2-devel \
+            libXt-devel \
+            libXext-devel \
+            libXdmcp-devel
 RUN cd /root/ && sh install_miniconda.sh
+ENV PATH=/root/miniconda3/bin:$PATH
 RUN rm /root/install_miniconda.sh
