@@ -5,6 +5,7 @@ import sys
 import subprocess
 
 xleap_paths = ['prep', 'lib', 'parm', 'cmd']
+os.environ['AMBERHOME'] = sys.prefix
 os.environ['XENVIRONMENT'] = os.path.join(sys.prefix, 'dat', 'XaLeap_wcl')
 include_paths = ['-I' + os.path.join(sys.prefix, 'dat', 'leap', path)
                  for path in xleap_paths]
