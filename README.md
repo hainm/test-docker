@@ -81,6 +81,11 @@ with editing_conda_package(pkg_name, output_dir='./tmp'):
 git commit -m '[ci skip] your_message_here'
 ```
 
+- use "UPLOAD" message for uploading
+```bash
+git commit -m 'UPLOAD: my update'
+```
+
 - circleci - LINUX build
    - master: build ambernini with py2.7, 3.4, 3.5
    - circleci_27: build ambertools with py2.7
