@@ -38,11 +38,14 @@ mkdir $PREFIX/dat/ && cp -rf $AMBERHOME/dat/* $PREFIX/dat/
 # handle tleap a bit differently since it requires -I flag
 # TODO: move to copy_and_post_process_bin.py?
 cp $RECIPE_DIR/patch_amberhome/tleap $PREFIX/bin/
-cp $RECIPE_DIR/patch_amberhome/xleap $PREFIX/bin/
-cp $PREFIX/bin/nab $PREFIX/bin/_nab
-cp $RECIPE_DIR/patch_amberhome/nab $PREFIX/bin/
 
-# DOC
+if [ ${build_task} == 'ambertools' ]; then
+    cp $RECIPE_DIR/patch_amberhome/xleap $PREFIX/bin/
+    cp $PREFIX/bin/nab $PREFIX/bin/_nab
+    cp $RECIPE_DIR/patch_amberhome/nab $PREFIX/bin/
+fi
+
+# copy DOC
 mkdir $PREFIX/doc/
 cp $AMBERHOME/doc/Amber*.pdf $PREFIX/doc
 
