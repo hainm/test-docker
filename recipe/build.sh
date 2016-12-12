@@ -23,6 +23,8 @@ source amber.sh
 if [ ${build_task} == 'ambertools' ]; then
     # build whole ambertools
     make install -j4
+    ./configure --with-python `which python` -mpi gnu
+    make install -j4
 else
     # build ambermini
     source $RECIPE_DIR/build_ambermini.sh

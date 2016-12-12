@@ -14,3 +14,6 @@ RUN yum install -y \
 RUN cd /root/ && sh install_miniconda.sh
 ENV PATH=/root/miniconda3/bin:$PATH
 RUN rm /root/install_miniconda.sh
+
+# avoid rebuild
+RUN yum install -y openmpi-devel

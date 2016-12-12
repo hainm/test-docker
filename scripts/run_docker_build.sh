@@ -1,19 +1,27 @@
 #!/usr/bin/env bash
 
-echo "CIRCLE_BRANCH", $CIRCLE_BRANCH
+if [ "#$" = 0 ]; then
+    # circleci build
+    echo "CIRCLE_BRANCH", $CIRCLE_BRANCH
+    buildfull=`python -c "import os;  print(os.getenv('CIRCLE_BRANCH').startswith('circleci_'))"`
+    echo 'buildfull = ' $buildfull
 
-buildfull=`python -c "import os;  print(os.getenv('CIRCLE_BRANCH').startswith('circleci_'))"`
-echo 'buildfull = ' $buildfull
-
-if [ "$buildfull" == "True" ]; then
-    AMBER_BUILD_TASK='ambertools'
-    pyversion=`python -c "import os; env=os.getenv('CIRCLE_BRANCH'); print(env.strip('circleci_'))"`
-    echo "pyversion = " $pyversion
+    if [ "$buildfull" == "True" ]; then
+        AMBER_BUILD_TASK='ambertools'
+        pyversion=`python -c "import os; env=os.getenv('CIRCLE_BRANCH'); print(env.strip('circleci_'))"`
+        echo "pyversion = " $pyversion
+    else
+        AMBER_BUILD_TASK='ambermini'
+    fi
 else
-    AMBER_BUILD_TASK='ambermini'
+    # e.g: build ambertools with python=2.7
+    # bash scripts/run_docker_build.sh ambertools 2.7
+    AMBER_BUILD_TASK=$1 # ambertools or ambermini
+    pyversion=$2
 fi
-
+    
 echo "AMBER_BUILD_TASK = " $AMBER_BUILD_TASK
+echo "Python version = " $pyversion
 
 FEEDSTOCK_ROOT=$(cd "$(dirname "$0")/.."; pwd;)
 echo "FEEDSTOCK_ROOT" $FEEDSTOCK_ROOT
@@ -45,4 +53,5 @@ cat << EOF | docker run -i \
         conda build /feedstock_root/recipe --py $pyversion --quiet || exit 1
     fi
     cp $BZ2FILE /feedstock_root/
+    echo "done. Please check amber*tar.bz2 files in " $FEEDSTOCK_ROOT
 EOF
