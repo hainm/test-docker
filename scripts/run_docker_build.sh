@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ "#$" = 0 ]; then
+if [ $# = 0 ]; then
     # circleci build
     echo "CIRCLE_BRANCH", $CIRCLE_BRANCH
     buildfull=`python -c "import os;  print(os.getenv('CIRCLE_BRANCH').startswith('circleci_'))"`
