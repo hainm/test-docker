@@ -1,7 +1,7 @@
 #!/bin/sh
 
 isosx=`python -c "import sys; print(sys.platform.startswith('darwin'))"`
-build_task=`python -c "import os; print(os.getenv('AMBER_BUILD_TASK'))"`
+build_task=`python -c "import os; print(os.getenv('AMBER_BUILD_TASK')).lower()"`
 echo "amber_build_task", ${build_task}
 
 export AMBERHOME=`pwd`
@@ -9,11 +9,9 @@ export AMBERHOME=`pwd`
 ./update_amber --update
 ./update_amber --show-applied-patches
 if [ "$isosx" == "True" ]; then
-    # ./configure -noX11 --with-python `which python` -macAccelerate clang
-
-    # TODO: clang? (got EMIL error)
-    export CXX=/usr/local/Cellar/gcc/6.2.0/bin/g++-6
-    export CC=/usr/local/Cellar/gcc/6.2.0/bin/gcc-6
+    export CXX=/usr/local/gfortran/bin/g++
+    export CC=/usr/local/gfortran/bin/gcc
+    export FC=/usr/local/gfortran/bin/gfortran
     ./configure -noX11 --with-python `which python` gnu
 else
     ./configure --with-python `which python` gnu
