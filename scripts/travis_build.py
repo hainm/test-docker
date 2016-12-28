@@ -18,10 +18,6 @@ elif '[circleci only]' in commit_message:
     print('skip travis due to [circleci only] flag')
     sys.exit(0)
 else:
-    if travis_os_name == 'osx':
-        check_call('brew tap homebrew/science', shell=True)
-        check_call('brew update', shell=True)
-        check_call('brew install gcc', shell=True)
     if travis_os_name == 'linux':
         check_call('sudo apt-get install -y csh', shell=True)
     check_call('source scripts/install_miniconda.sh', shell=True)
