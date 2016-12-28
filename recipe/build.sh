@@ -1,7 +1,7 @@
 #!/bin/sh
 
 isosx=`python -c "import sys; print(sys.platform.startswith('darwin'))"`
-build_task=`python -c "import os; print(os.getenv('AMBER_BUILD_TASK')).lower()"`
+build_task=`python -c "import os; print(os.getenv('AMBER_BUILD_TASK', '')).lower()"`
 echo "amber_build_task", ${build_task}
 
 export AMBERHOME=`pwd`
