@@ -1,5 +1,17 @@
 #!/bin/sh
 
+amber_build_task=`$PYTHON -c "import os; print(os.getenv('AMBER_BUILD_TASK', 'ambermini').lower())"`
+which python
+if [ "${amber_build_task}" == "ambertools" ]; then
+    python -c "import parmed; print(parmed)"
+    python -c "import pytraj; pytraj.run_tests()"
+    python -c "import sander; print(sander)"
+    which sander
+    which mdgx
+    cpptraj -h
+    # TODO: add more
+fi
+
 antechamber -h
 tleap -h
 sqm -h
