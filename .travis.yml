@@ -36,6 +36,8 @@ matrix:
     - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.4 }
     - { os: osx, env: AMBER_BUILD_TASK=ambermini PYTHON_VERSION=3.5 }
     - { os: osx, env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=2.7 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=3.4 }
+    - { os: osx, env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=3.5 }
 
 install:
  - (git clone https://github.com/amber-md/setup-scripts && sudo bash setup-scripts/scripts/install_gfortran.sh)
