@@ -38,11 +38,13 @@ requirements:
     - zlib
     - bzip2
     - python
+    - numpy
     - mingwpy [win]
   run:
     - zlib
     - bzip2
     - python
+    - numpy
     - requests
 
 about:

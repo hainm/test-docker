@@ -21,9 +21,9 @@ else:
 
 print('git commit message', commit_message)
 
-if not commit_message.startswith("UPLOAD"):
+if not '[upload]' in commit_message:
     print("not require to upload. Exit")
-    print('Tip: use git commmit -m "UPLOAD: [your_message]" to upload')
+    print('Tip: use git commmit -m "[upload]: your_message_here" to upload')
     sys.exit(0)
 
 if circleci_pull_request:

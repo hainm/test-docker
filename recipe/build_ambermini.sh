@@ -1,7 +1,9 @@
 #!/bin/sh
 
-# extract from ${AMBERHOME}/AmberTools/src/Makefile
 echo ${AMBERHOME}
+# (cd ${AMBERHOME}/AmberTools/src/ && make ambermini )
+
+# will remove in AmberTools17
 (cd ${AMBERHOME}/AmberTools/src/byacc && make install )
 (cd ${AMBERHOME}/AmberTools/src/cifparse && make install )
 (cd ${AMBERHOME}/AmberTools/src/xblas && make -j 1 lib-amb && mv libxblas-amb.a ${AMBERHOME}/lib/)
