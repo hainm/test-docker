@@ -4,10 +4,12 @@ import os
 import sys
 import subprocess
 
+{update_prefix}
+
 tleap_paths = ['prep', 'lib', 'parm', 'cmd']
-include_paths = ['-I' + os.path.join(sys.prefix, 'dat', 'leap', path)
+include_paths = ['-I' + os.path.join(prefix, 'dat', 'leap', path)
                  for path in tleap_paths]
-tleap_exe = os.path.join(sys.prefix, 'bin', 'teLeap')
+tleap_exe = os.path.join(prefix, 'bin', 'teLeap')
 commands = [tleap_exe,] + include_paths + sys.argv[1:]
 try:
     subprocess.call(commands)

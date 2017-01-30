@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import subprocess
+
+{update_prefix}
+
+if not os.getenv('REDUCE_HET_DICT', ''):
+    os.environ['REDUCE_HET_DICT'] = os.path.join(prefix, 'dat', 'reduce_wwPDB_het_dict.txt')
+
+reduce_exe = os.path.join(prefix, 'bin', 'to_be_dispatched', 'reduce')
+commands = [reduce_exe,] + sys.argv[1:]
+try:
+    subprocess.call(commands)
+except KeyboardInterrupt:
+    pass
