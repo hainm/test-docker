@@ -48,6 +48,11 @@ Build AmberTools with conda and docker. This is beta version.
 
         # output tar files will be in current folder
         # ls amber*tar.bz2
+
+        Note: Stop docker build
+        - Open another bash terminal
+        - Run "docker ps -a" to see list of container IDs, pick your ID
+        - Run "docker stop your_container_ID"
     ```
 
     - by conda
