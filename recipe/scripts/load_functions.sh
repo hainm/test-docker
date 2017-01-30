@@ -19,22 +19,19 @@ function copy_source_code(){
 }
 
 function copy_files_or_folders(){
-    cp $AMBERHOME/bin/* $PREFIX/bin/
-    python ${RECIPE_DIR}/scripts/patch_amberhome/copy_and_post_process_bin.py
+    # info + license
+    cp $AMBERHOME/README $PREFIX/README.AmberTools
+    cp $AMBERHOME/AmberTools/LICENSE $PREFIX/LICENSE.AmberTools
+
+    # store programs needed to be fixed (reduce, antechamber, ...)
+    mkdir $PREFIX/bin/old
+    python ${RECIPE_DIR}/scripts/patch_amberhome/copy_and_post_process_bin.py $AMBERHOME/bin $PREFIX/bin
     cp -rf $AMBERHOME/lib/* $PREFIX/lib/
     cp -rf $AMBERHOME/include/* $PREFIX/include/
-    mkdir $PREFIX/dat/ && cp -rf $AMBERHOME/dat/* $PREFIX/dat/
-    
-    # overwrite tleap, ...
-    # handle tleap a bit differently since it requires -I flag
-    # TODO: move to copy_and_post_process_bin.py?
-    cp ${RECIPE_DIR}/scripts/patch_amberhome/tleap $PREFIX/bin/
-    
-    if [ "${amber_build_task}" == "ambertools" ]; then
-        cp ${RECIPE_DIR}/scripts/patch_amberhome/xleap $PREFIX/bin/
-        cp $AMBERHOME/bin/nab $PREFIX/bin/_nab
-        cp ${RECIPE_DIR}/scripts/patch_amberhome/nab $PREFIX/bin/
+    if [ ! -d $PREFIX/dat ]; then
+        mkdir $PREFIX/dat
     fi
+    cp -rf $AMBERHOME/dat/* $PREFIX/dat/
     
     # copy DOC
     if [ "$release" == "True" ]; then
