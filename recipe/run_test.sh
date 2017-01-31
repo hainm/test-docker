@@ -44,7 +44,8 @@ function extra_test(){
     python -c "import parmed; print(parmed)"
     python -c "import pytraj; pytraj.run_tests()"
     python -c "import sander; print(sander)"
-    python -c "import pdb4amber; print(pdb4amber)"
+    # not importable in AT16 yet
+    # python -c "import pdb4amber; print(pdb4amber)"
     xleap -h
     sander --version
     sander.LES --version
