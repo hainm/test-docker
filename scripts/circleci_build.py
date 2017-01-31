@@ -9,13 +9,14 @@ if '[skip build]' in commit_message.lower():
     sys.exit(0)
 else:
     # TODO : build in parallel
-    command = """bash scripts/install_miniconda.sh &&
-               bash scripts/run_docker_build.sh ambermini 2.7 &&
-               bash scripts/run_docker_build.sh ambermini 3.4 &&
-               bash scripts/run_docker_build.sh ambermini 3.5 &&
-               bash scripts/run_docker_build.sh ambertools 2.7 &&
-               bash scripts/run_docker_build.sh ambertools 3.4 &&
-               bash scripts/run_docker_build.sh ambertools 3.5
-             """
-    print(command)
-    call(command, shell=True)
+    commands = ['bash scripts/install_miniconda.sh',
+                'bash scripts/run_docker_build.sh ambertools 2.7',
+                'bash scripts/run_docker_build.sh ambertools 3.4',
+                'bash scripts/run_docker_build.sh ambertools 3.5',
+                'bash scripts/run_docker_build.sh ambermini 2.7',
+                'bash scripts/run_docker_build.sh ambermini 3.4',
+                'bash scripts/run_docker_build.sh ambermini 3.5',
+    ] 
+    for command in commands:
+        print(command)
+        call(command, shell=True)
