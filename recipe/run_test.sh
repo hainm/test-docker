@@ -33,6 +33,10 @@ function naive_test(){
     which paramfit
     which addles
     which MMPBSA.py
+    which mdgx
+    which nab
+    which UnitCell
+    which resp
 }
 
 function extra_test(){
@@ -44,10 +48,7 @@ function extra_test(){
     xleap -h
     sander --version
     sander.LES --version
-    mdgx --help
     cpptraj --help
-    nab
-    UnitCell
     resp
     parmed --help
     pdb4amber --help

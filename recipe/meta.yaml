@@ -8,8 +8,8 @@
 
 # AMBER_BUILD_TASK = {'', 'ambermini', 'ambertools'}
 {% if os.getenv('AMBER_BUILD_TASK', 'ambermini') == 'ambermini' %}
-     {%set ambertools_package = 'ambermini101' %}
-     {% set summary = "ambermini101, a subset of AmberTools" %}
+     {%set ambertools_package = 'ambermini' %}
+     {% set summary = "ambermini, a subset of AmberTools" %}
 {% else %}
      {%set ambertools_package = 'ambertools' %}
      {% set summary = "AmberTools is a set of programs for biomolecular simulation and analysis." %}
