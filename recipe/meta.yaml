@@ -7,7 +7,7 @@
 {% set ambertools_fn = "AmberTools" + version + ".tar.bz2" %}
 
 # AMBER_BUILD_TASK = {'', 'ambermini', 'ambertools'}
-{% if os.getenv('AMBER_BUILD_TASK', 'ambermini') == 'ambermini' %}
+{% if os.getenv('AMBER_BUILD_TASK', 'ambermini').lower() == 'ambermini' %}
      {%set ambertools_package = 'ambermini' %}
      {% set summary = "ambermini, a subset of AmberTools" %}
 {% else %}
