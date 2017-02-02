@@ -46,6 +46,24 @@ Build AmberTools with conda and docker. This is beta version.
         # build ambertools with given python version
         bash scripts/run_docker_build.sh ambertools 2.7
 
+        # build all supported versions
+        for pyversion in 2.7 3.4 3.5 3.6; do
+            bash scripts/run_docker_build.sh ambertools $pyversion
+        done
+
+        # Or you can login to docker container and build things there
+        docker run -it --rm -v `pwd`:/working -w /working ambermd/amber-build-box bash
+        # -it : interactive (and more)
+        # --rm : remove the container after exiting
+        # -v : mount current directory as /working
+        # -w : after logging in, change to /working directory
+        # ambermd/amber-build-box : docker image (will be automatically pulled from dockerhub
+                                    if you dont have it locally)
+        # bash : run "bash"
+        # After logging in
+        # conda build recipe --py 2.7
+
+
         # output tar files will be in current folder
         # ls amber*tar.bz2
 
