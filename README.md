@@ -51,6 +51,9 @@ Build AmberTools with conda and docker. This is beta version.
             bash scripts/run_docker_build.sh ambertools $pyversion
         done
 
+        # output tar files will be in current folder
+        # ls amber*tar.bz2
+
         # Or you can login to docker container and build things there
         docker run -it --rm -v `pwd`:/working -w /working ambermd/amber-build-box bash
         # -it : interactive (and more)
@@ -62,10 +65,9 @@ Build AmberTools with conda and docker. This is beta version.
         # bash : run "bash"
         # After logging in
         # conda build recipe --py 2.7
+        # NOTE: In this case, you need to copy built files to current folder
+        # otherwise, all of them will be deleted after exiting docker container.
 
-
-        # output tar files will be in current folder
-        # ls amber*tar.bz2
 
         Note: Stop docker build
         - Open another bash terminal
