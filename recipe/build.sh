@@ -20,10 +20,12 @@ export AMBERHOME=`pwd`
 if [ "$isosx" == "True" ]; then
     # make sure to install gfortran
     # https://gcc.gnu.org/wiki/GFortranBinaries#MacOS
+    # we do not use clang here since we still need
+    # gfortran (so just use included gcc/g++)
     export CXX=/usr/local/gfortran/bin/g++
     export CC=/usr/local/gfortran/bin/gcc
     export FC=/usr/local/gfortran/bin/gfortran
-    ./configure -noX11 --with-python `which python` gnu
+    ./configure --with-python `which python` gnu
 else
     ./configure --with-python `which python` gnu
 fi
@@ -34,10 +36,24 @@ source amber.sh
 if [ "${amber_build_task}" == "ambertools" ]; then
     # build whole ambertools
     make install -j${CPU_COUNT}
-else
+elif [ "${amber_build_task}" == "ambermini" ]; then
     # build ambermini
     # we might adding more packages, so use build_ambermini.sh
     source ${RECIPE_DIR}/build_ambermini.sh
+else
+    # e.g: make sander
+    case ${amber_build_task} in
+        'pytraj'|'parmed'|'pymdgx'|'pysander')
+            (cd AmberTools/src/ && make ${amber_build_task})
+            ;;
+        'pdb4amber')
+            (cd AmberTools/src/ && make parmed)
+            (cd AmberTools/src/ && make pdb4amber)
+            ;;
+        *)
+            (cd AmberTools/src/${amber_build_task} && make)
+            ;;
+    esac
 fi
 
 if [ "$isosx" == "True" ]; then

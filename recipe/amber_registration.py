@@ -18,7 +18,7 @@ State or Province = {state_or_province}
 Country = {country}
 """
 
-AMBERTOOLS_VERSION='16'
+AMBERTOOLS_VERSION='17'
 REGISTRATION_TEMPLATE = "http://ambermd.org/cgi-bin/AmberTools{version}-get.pl?Conda=true&Name={name}&Institution={institution}&City={city}&State={state_or_province}&Country={country}"
 required_fields = ['name', 'institution', 'city', 'state_or_province', 'country']
 
@@ -30,12 +30,11 @@ def main():
                  'city': '', 'state_or_province': '',
                   'country': ''}
     interactive = True
-    print('-'*100)
-    print("Looking for $HOME/.amberrc or .amberrc registration file\n")
     recipe_dir = os.getenv('RECIPE_DIR', '') # for testing
-    print('recipe_dir', recipe_dir)
     skip_registration = os.getenv('SKIP_REGISTRATION', '')
     if not skip_registration:
+        print('-'*100)
+        print("Looking for $HOME/.amberrc or .amberrc registration file\n")
         if os.path.exists('.amberrc'):
             amberrc_file = base
             interactive = False 
@@ -46,7 +45,6 @@ def main():
             amberrc_file = os.path.join(home, base)
             interactive = False
         else:
-            print("Can not find registration file")
             print("We are asking users to fill out the simple form below, \n"
                   "so that we can justify our existence by having a record of who is using the code")
             print('-'*100)
@@ -77,12 +75,13 @@ def main():
                         user_dict[key.strip().lower().replace(' ', '_')] = val.strip()
             for field in required_fields:
                 assert field in user_dict, 'Must follow \n{}'.format(amberc_template)
-
-        print("For the future deployment, please create $HOME/.amberrc file with below content")
+        else:
+            print("For the future deployment, please create $HOME/.amberrc file with below content")
         print(amberc_template.format(**user_dict))
 
         user_dict['version'] = AMBERTOOLS_VERSION
         user_info = REGISTRATION_TEMPLATE.format(**user_dict)
+        # TODO: uncomment below after release
         # requests.post(user_info, timeout=10.)
         print("Enjoy. Happy computing")
     else:

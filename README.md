@@ -46,8 +46,33 @@ Build AmberTools with conda and docker. This is beta version.
         # build ambertools with given python version
         bash scripts/run_docker_build.sh ambertools 2.7
 
+        # build all supported versions
+        for pyversion in 2.7 3.4 3.5 3.6; do
+            bash scripts/run_docker_build.sh ambertools $pyversion
+        done
+
         # output tar files will be in current folder
         # ls amber*tar.bz2
+
+        # Or you can login to docker container and build things there
+        docker run -it --rm -v `pwd`:/working -w /working ambermd/amber-build-box bash
+        # -it : interactive (and more)
+        # --rm : remove the container after exiting
+        # -v : mount current directory as /working
+        # -w : after logging in, change to /working directory
+        # ambermd/amber-build-box : docker image (will be automatically pulled from dockerhub
+                                    if you dont have it locally)
+        # bash : run "bash"
+        # After logging in
+        # conda build recipe --py 2.7
+        # NOTE: In this case, you need to copy built files to current folder
+        # otherwise, all of them will be deleted after exiting docker container.
+
+
+        Note: Stop docker build
+        - Open another bash terminal
+        - Run "docker ps -a" to see list of container IDs, pick your ID
+        - Run "docker stop your_container_ID"
     ```
 
     - by conda
@@ -91,17 +116,12 @@ with editing_conda_package(pkg_name, output_dir='./tmp'):
 git commit -m '[ci skip] your_message_here'
 ```
 
-- use "UPLOAD" message for uploading
+- use "[upload]: enter your message here" message for uploading
 ```bash
 git commit -m 'UPLOAD: my update'
 ```
 
-- circleci - LINUX build
-   - master: build ambernini with py2.7, 3.4, 3.5
-   - circleci_27: build ambertools with py2.7
-   - circleci_34: build ambertools with py3.4
-   - circleci_35: build ambertools with py3.5
-- travis - OSX build
-   - master:
-       - ambernini with py2.7, 3.4. 3.5 
-       - ambertools with py2.7
+- circleci - LINUX build, using docker container
+   - master: build ambernini and ambertools with py2.7, 3.4, 3.5
+- travis - OSX build, using travis OSX image
+   - master: build ambernini and ambertools with py2.7, 3.4, 3.5
