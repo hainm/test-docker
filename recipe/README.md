@@ -1,3 +1,5 @@
+NOTE: Outdated recipe
+
 Build and install binary package locally
 ----------------------------------------
 
