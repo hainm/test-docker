@@ -2,7 +2,7 @@
 
 source devtools/ci/load_functions.sh
 download_ambertools
-install_ambertools_circleci
+build_ambertools_circleci
 
 
 ls $HOME/TMP/amber-conda-bld/non-conda-install
