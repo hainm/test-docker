@@ -4,14 +4,13 @@ url=$AMBERTOOLS_URL # encrypted (check circleci and travis setting)
 tarfile=`python -c "url='$url'; print(url.split('/')[-1])"`
 version='16'
 
-patch_name=patch_bugfix_version
-
 function download_ambertools(){
     wget $url -O $tarfile
     tar -xf $tarfile
 }
 
 function build_ambertools_travis(){
+    patch_name=patch_bugfix_version.ambermini
     mkdir $HOME/TMP
     cd $TRAVIS_BUILD_DIR/amber$version
     cp ../$patch_name .
@@ -21,6 +20,7 @@ function build_ambertools_travis(){
 }
 
 function build_ambertools_circleci(){
+    patch_name=patch_bugfix_version.ambertools
     mkdir $HOME/TMP
     cd $HOME/ambertools-binary-build/amber$version
     cp ../$patch_name .
