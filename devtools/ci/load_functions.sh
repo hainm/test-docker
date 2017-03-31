@@ -22,10 +22,12 @@ function build_ambertools_travis(){
 
 function build_ambertools_circleci(){
     patch_name=patch_bugfix_version.ambertools
+    BUILD_SCRIPT=$HOME/ambertools-binary-build/amber$version/AmberTools/src/conda_tools/build_all.py
     mkdir $HOME/TMP
     cd $HOME/ambertools-binary-build/amber$version
     cp ../$patch_name .
     patch -p0 AmberTools/src/conda-recipe/meta.yaml  <$patch_name
     cd $HOME/TMP
-    python $HOME/ambertools-binary-build/amber$version/AmberTools/src/conda_tools/build_all.py --exclude-osx --sudo
+    python $BUILD_SCRIPT --exclude-osx --sudo -t ambermini --py 2.7
+    python $BUILD_SCRIPT --exclude-osx --sudo
 }
