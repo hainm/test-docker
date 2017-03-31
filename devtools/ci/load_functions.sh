@@ -10,11 +10,12 @@ function download_ambertools(){
 }
 
 function build_ambertools_travis(){
+    # ambermini for now
     patch_name=patch_bugfix_version.ambermini
     mkdir $HOME/TMP
     cd $TRAVIS_BUILD_DIR/amber$version
     cp ../$patch_name .
-    patch -p0 AmberTools/src/conda-recipe/meta.yaml  <$patch_name
+    patch -p0 AmberTools/src/conda-ambermini-recipe/meta.yaml  <$patch_name
     cd $HOME/TMP
     conda build $TRAVIS_BUILD_DIR/amber$version/AmberTools/src/conda-ambermini-recipe/
 }
