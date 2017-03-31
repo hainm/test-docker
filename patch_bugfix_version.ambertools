@@ -1,0 +1,12 @@
+diff --git a/AmberTools/src/conda-recipe/meta.yaml b/AmberTools/src/conda-recipe/meta.yaml
+index e46301e..9664701 100644
+--- a/AmberTools/src/conda-recipe/meta.yaml
++++ b/AmberTools/src/conda-recipe/meta.yaml
+@@ -1,6 +1,6 @@
+ {% set ambertools_url = "../../../" %} # point to $AMBERHOME
+ {% set version = "17" %}
+-{% set bugfix_version = "0" %} 
++{% set bugfix_version = "1" %}
+ {% set build_number = "0" %}
+ {% set ambertools_version = version + '.' + bugfix_version %}
+ 

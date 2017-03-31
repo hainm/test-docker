@@ -1,3 +1,3 @@
 #!/bin/sh
 
-wget https://dl.dropboxusercontent.com/u/5494759/AmberTools16.tar.bz2
+wget $AMBERTOOLS_RC_URL -O AmberTools.tar.bz2

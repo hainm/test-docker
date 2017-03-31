@@ -1,11 +1,16 @@
 machine:
   services:
     - docker
+
 dependencies:
   override:
-    - docker pull ambermd/amber-build-box
+      - docker pull ambermd/amber-build-box
+
 test:
   override:
-    - python scripts/circleci_build.py
+    - source devtools/ci/circleci_build.sh
+    - bash devtools/ci/circleci_test.sh || exit 1
   post:
-    - python scripts/circleci_upload.py
+    - mkdir $CIRCLE_ARTIFACTS/ambertools-build
+    - ls $HOME/TMP/
+    - cp -rf $HOME/TMP/* $CIRCLE_ARTIFACTS/ambertools-build
