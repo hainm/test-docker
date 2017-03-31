@@ -4,6 +4,8 @@ url=$AMBERTOOLS_URL # encrypted (check circleci and travis setting)
 tarfile=`python -c "url='$url'; print(url.split('/')[-1])"`
 version='16'
 
+patch_name=patch_bugfix_version
+
 function download_ambertools(){
     wget $url -O $tarfile
     tar -xf $tarfile
@@ -11,12 +13,18 @@ function download_ambertools(){
 
 function build_ambertools_travis(){
     mkdir $HOME/TMP
+    cd $TRAVIS_BUILD_DIR/ambertools-binary-build/amber$version
+    cp ../$patch_name .
+    patch -p0 AmberTools/src/conda-recipe/meta.yaml  <$patch_name .
     cd $HOME/TMP
     conda build $TRAVIS_BUILD_DIR/ambertools-binary-build/amber$version/AmberTools/src/conda-ambermini-recipe/
 }
 
 function build_ambertools_circleci(){
     mkdir $HOME/TMP
+    cd $HOME/ambertools-binary-build/amber$version
+    cp ../$patch_name .
+    patch -p0 AmberTools/src/conda-recipe/meta.yaml  <$patch_name .
     cd $HOME/TMP
     python $HOME/ambertools-binary-build/amber$version/AmberTools/src/conda_tools/build_all.py --exclude-osx --sudo
 }
