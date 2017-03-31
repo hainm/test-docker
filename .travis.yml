@@ -25,14 +25,14 @@ env:
 
 matrix:
   include:
-    - { os: osx, env: AMBER_BUILD_TASK=ambertools PYTHON_VERSION=3.6 }
+    - { os: osx, env: PYTHON_VERSION=3.6 }
 
 install:
-    - (git clone https://github.com/amber-md/setup-scripts && sudo bash setup-scripts/scripts/install_gfortran.sh)
     - source devtools/ci/load_functions.sh
+    - download_ambertools
+    - (git clone https://github.com/amber-md/setup-scripts && sudo bash setup-scripts/scripts/install_gfortran.sh)
     - source scripts/install_miniconda.sh
     - export PATH=$HOME/miniconda3/bin/:$PATH
-    - download_ambertools
     - build_ambertools_travis
 
 script: echo "hello"
