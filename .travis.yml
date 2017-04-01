@@ -36,7 +36,13 @@ install:
     - build_ambertools_travis
 
 script: echo "hello"
+
 after_success:
-  - python scripts/upload_to_github.py
+  - cd $TRAVIS_BUILD_DIR && python scripts/upload_to_github.py
+
 notifications:
-  email: false
+  email:
+    recipients:
+      - nhai.qn@gmail.com
+    on_success: never
+    on_failure: always
