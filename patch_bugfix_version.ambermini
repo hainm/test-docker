@@ -5,7 +5,7 @@ index 37c3f7d..fcf0f22 100644
 @@ -1,5 +1,5 @@
  {% set version = "17" %}
 -{% set bugfix_version = "0" %} 
-+{% set bugfix_version = "1" %} 
++{% set bugfix_version = "0" %} 
  {% set build_number = "0" %}
  {% set ambertools_version = version + '.' + bugfix_version %}
  {% set ambertools_package = 'ambermini' %}
