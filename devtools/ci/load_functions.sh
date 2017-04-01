@@ -15,7 +15,7 @@ function build_ambertools_travis(){
     cd $TRAVIS_BUILD_DIR/amber$version
     cp ../patch_bugfix_version.* .
     patch -p0 AmberTools/src/conda-ambermini-recipe/meta.yaml  <patch_bugfix_version.ambermini
-    patch -p0 AmberTools/src/conda-recipe/meta.yaml  <patch_bugfix_version.ambertools
+    patch -p0 AmberTools/src/conda-ambertools-all-python/meta.yaml <patch_bugfix_version.ambertools
     cd $HOME/TMP
     conda build $TRAVIS_BUILD_DIR/amber$version/AmberTools/src/conda-ambermini-recipe/
 }
@@ -27,7 +27,7 @@ function build_ambertools_circleci(){
     cd $HOME/ambertools-binary-build/amber$version
     cp ../patch_bugfix_version.* .
     patch -p0 AmberTools/src/conda-ambermini-recipe/meta.yaml  <patch_bugfix_version.ambermini
-    patch -p0 AmberTools/src/conda-recipe/meta.yaml  <patch_bugfix_version.ambertools
+    patch -p0 AmberTools/src/conda-ambertools-all-python/meta.yaml <patch_bugfix_version.ambertools
     cd $HOME/TMP
     python $BUILD_SCRIPT --exclude-osx --sudo -t ambermini --py 2.7
     python $BUILD_SCRIPT --exclude-osx --sudo
