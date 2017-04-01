@@ -17,7 +17,7 @@ function build_ambertools_travis(){
     patch -p0 AmberTools/src/conda-ambermini-recipe/meta.yaml  <patch_bugfix_version.ambermini
     patch -p0 AmberTools/src/conda-ambertools-all-python/meta.yaml <patch_bugfix_version.ambertools
     cd $HOME/TMP
-    conda build $TRAVIS_BUILD_DIR/amber$version/AmberTools/src/conda-ambermini-recipe/
+    python $BUILD_SCRIPT --exclude-linux -t ambermini --py 2.7
 }
 
 function build_ambertools_circleci(){
