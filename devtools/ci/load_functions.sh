@@ -11,6 +11,7 @@ function download_ambertools(){
 
 function build_ambertools_travis(){
     # ambermini for now
+    BUILD_SCRIPT=$TRAVIS_BUILD_DIR/amber$version/AmberTools/src/conda_tools/build_all.py
     mkdir $HOME/TMP
     cd $TRAVIS_BUILD_DIR/amber$version
     cp ../patch_bugfix_version.* .
