@@ -4,5 +4,7 @@
 Auto-build AmberTools with conda and docker.
 
 - Build AmberTools with bugfixes
-    - Update bugfix number in  `./patch_bugfix_version`
+    - Update bugfix number
+         - patch_bugfix_version.ambermini
+         - patch_bugfix_version.ambertools
     - Make a pull request to this branch
