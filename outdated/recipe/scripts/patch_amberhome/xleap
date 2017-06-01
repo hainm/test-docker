@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import subprocess
+
+{update_prefix}
+
+xleap_paths = ['prep', 'lib', 'parm', 'cmd']
+os.environ['XENVIRONMENT'] = os.path.join(prefix, 'dat', 'XaLeap_wcl')
+include_paths = ['-I' + os.path.join(prefix, 'dat', 'leap', path)
+                 for path in xleap_paths]
+xleap_exe = os.path.join(prefix, 'bin', 'xaLeap')
+commands = [xleap_exe,] + include_paths + sys.argv[1:]
+try:
+    subprocess.call(commands)
+except KeyboardInterrupt:
+    pass
+

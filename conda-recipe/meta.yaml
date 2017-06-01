@@ -1,0 +1,60 @@
+{% set ambertools_url = "../../../" %} # point to $AMBERHOME
+{% set version = "17" %}
+{% set bugfix_version = "0" %} 
+{% set build_number = "0" %}
+{% set ambertools_version = version + '.' + bugfix_version %}
+
+# if this recipe is inside AmberTools/src, you do not need to worry about this
+{% set ambertools_fn = "AmberTools" + version + ".tar.bz2" %}
+
+# AMBER_BUILD_TASK = {'', 'ambermini', 'ambertools'}
+{% if os.getenv('AMBER_BUILD_TASK', 'ambertools').lower() == 'ambermini' %}
+     {%set ambertools_package = 'ambermini' %}
+     {% set summary = "ambermini, a subset of AmberTools" %}
+{% elif os.getenv('AMBER_BUILD_TASK', 'ambertools').lower() == 'ambertools' %}
+     {%set ambertools_package = 'ambertools' %}
+     {% set summary = "AmberTools is a set of programs for biomolecular simulation and analysis." %}
+{% else %}
+     {%set ambertools_package = os.getenv("AMBER_BUILD_TASK", "").lower() + '-ambertools' %}
+     {% set summary = ambertools_package %}
+{% endif %}
+
+package:
+  name: {{ ambertools_package }}
+  version: {{ ambertools_version }}
+
+# Note: will not work for win
+# build from URL
+# source:
+#   fn : {{ ambertools_fn }}
+#   url : {{ ambertools_url }}
+  
+  # Un-comment if using local path, must use file:/// if using tar file
+  # url : file:///home/haichit/AmberTools{{version}}.tar.bz2
+  # or
+
+build:
+  number: {{ build_number }}
+  script_env:
+    - AMBER_BUILD_TASK
+
+requirements:
+  build:
+    - zlib
+    - bzip2
+    - python
+    - numpy
+    - cython
+    - libgcc [linux]
+  run:
+    - zlib
+    - bzip2
+    - python
+    - numpy
+    - requests
+    - libgcc [linux]
+
+about:
+    home: https://ambermd.org
+    license: GNU General Public License (GPL)
+    summary: {{ summary }}

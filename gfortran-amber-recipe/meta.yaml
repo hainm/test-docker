@@ -1,0 +1,16 @@
+# This package is intended for MacOS
+#
+package:
+    name: ambertools-libgfortran
+    version: 6.1.0
+requirements:
+  build:
+    - python
+    - conda-build
+
+about:
+    description: libgfortran for AmberTools binary package
+    doc_url: https://gcc.gnu.org/wiki/GFortran
+    home: https://gcc.gnu.org/fortran/
+    license: GPL3
+    summary: GNU Fortran runtime library

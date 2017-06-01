@@ -1,0 +1,25 @@
+{% set version = "17" %}
+{% set bugfix_version = "0" %} 
+{% set build_number = "0" %}
+{% set ambertools_version = version + '.' + bugfix_version %}
+{% set ambertools_package = 'ambermini' %}
+{% set summary = "A subset of AmberTools" %}
+
+package:
+  name: {{ ambertools_package }}
+  version: {{ ambertools_version }}
+
+build:
+  number: {{ build_number }}
+
+requirements:
+  build:
+    - libgcc [linux]
+    - python
+  run:
+    - libgcc [linux]
+
+about:
+    home: https://ambermd.org
+    license: GNU General Public License (GPL)
+    summary: {{ summary }}
