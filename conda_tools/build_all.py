@@ -29,15 +29,11 @@ from glob import glob
 
 CONTAINER_FOLDER = 'amber-conda-bld'
 THIS_PATH = os.path.abspath(os.path.dirname(__file__))
-AMBERHOME = os.path.abspath(THIS_PATH + '/../../../../')
-DOCKER_BUILD_SCRIPT = os.path.join(
-    AMBERHOME,
-    'AmberTools/src/ambertools-binary-build/conda-recipe/scripts/run_docker_build.sh')
 BZ2_FILES = []
+SUGGESTED_BINARY_FOLDER = 'AmberTools/src/ambertools-binary-build'
 
-if not os.path.exists(AMBERHOME + '/AmberTools'):
-    print("AmberTools does not exist in {}".format(AMBERHOME))
-    sys.exit(1)
+# local
+import utils
 
 
 def built_tarfile_dir(build_commands):
@@ -100,9 +96,19 @@ def build_all_python_verions_in_one_package(container_folder, dry_run=False):
         combine_command, container_folder, dry_run=dry_run)
 
 
-def perform_build_with_docker(opt, container_folder, py_versions=[
+def perform_build_with_docker(AMBERHOME, opt, container_folder, py_versions=[
         '2.7',
 ]):
+    DOCKER_BUILD_SCRIPT = os.path.join(
+        THIS_PATH, '..',
+        'conda-recipe/scripts/run_docker_build.sh')
+    assert os.path.exists(DOCKER_BUILD_SCRIPT)
+
+    final_dir = os.path.join(AMBERHOME, SUGGESTED_BINARY_FOLDER)
+    cmd_cp = 'cp -rf {} {}'.format(THIS_PATH, final_dir)
+    if not os.path.exists(os.path.join(AMBERHOME, SUGGESTED_BINARY_FOLDER)):
+        utils.sh(cmd_cp)
+
     build_task = opt.build_task
     if opt.build_task == 'ambertools_pack_all_pythons':
         final_python_versions = [
@@ -192,8 +198,12 @@ def perform_build_without_docker(opt,
 
 
 def main(args=None):
-    global CONTAINER_FOLDER, DOCKER_BUILD_SCRIPT, BZ2_FILES
+    global CONTAINER_FOLDER, BZ2_FILES, THIS_PATH
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--amberhome",
+        default='',
+        help="amber root dir")
     parser.add_argument(
         "--exclude-linux",
         action='store_true',
@@ -247,6 +257,13 @@ def main(args=None):
         help='use sudo to move files. Note: for circleci')
     opt = parser.parse_args(args)
 
+    AMBERHOME = (os.path.abspath(opt.amberhome or 
+                 os.path.abspath(THIS_PATH + '/../../../../')))
+
+    if not os.path.exists(AMBERHOME + '/AmberTools'):
+        print("AmberTools does not exist in {}".format(AMBERHOME))
+        sys.exit(1)
+
     if opt.py is None and opt.build_task == 'ambertools':
         py_versions = ['2.7', '3.4', '3.5', '3.6']
         opt.build_task = 'ambertools_pack_all_pythons'
@@ -278,7 +295,6 @@ def main(args=None):
 
     assert os.path.exists(recipe_dir)
     assert os.path.exists(ambertools_src)
-    assert os.path.exists(DOCKER_BUILD_SCRIPT)
     assert os.path.exists(pack_non_conda_package_script)
 
     build_task = opt.build_task
@@ -321,6 +337,7 @@ def main(args=None):
                 '2.7',
             ] if build_task == 'ambermini' else py_versions
             perform_build_with_docker(
+                AMBERHOME=AMBERHOME,
                 opt=opt,
                 container_folder=container_folder_linux,
                 py_versions=final_verions)

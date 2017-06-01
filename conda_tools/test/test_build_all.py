@@ -12,6 +12,7 @@ BUILD_SCRIPT = os.path.join(this_dir, '..', 'build_all.py')
 
 # ../
 import build_all
+import utils
 
 
 @contextmanager
@@ -67,3 +68,10 @@ def test_build_all_cmd_with_assertion():
         print('lines', lines)
 
         assert expected_lines == lines
+
+
+@patch('build_all.perform_build_with_docker')
+def test_using_amber_dir_for_argument(_):
+    tmp = 'junkdfaf'
+    utils.sh("mkdir -p {}/AmberTools".format(tmp))
+    build_all.main(['--amberhome', tmp, '-d'])
