@@ -12,6 +12,7 @@ BUILD_SCRIPT = os.path.join(this_dir, '..', 'build_all.py')
 
 # ../
 import build_all
+import utils
 
 
 @contextmanager
@@ -48,11 +49,13 @@ def test_build_all_cmd():
 
 
 def test_build_all_cmd_with_assertion():
+    package = os.path.basename(utils.get_package_dir(os.path.join('..', 'conda-ambertools-all-python')))
+    print('package', package)
     all_lines = [
-        'amber-conda-bld/osx-64/ambertools-17.0-0.tar.bz2',
-        'amber-conda-bld/linux-64/ambertools-17.0-0.tar.bz2',
-        'amber-conda-bld/non-conda-install/osx-64.ambertools-17.0-0.tar.bz2',
-        'amber-conda-bld/non-conda-install/linux-64.ambertools-17.0-0.tar.bz2'
+        'amber-conda-bld/osx-64/{}'.format(package),
+        'amber-conda-bld/linux-64/{}'.format(package),
+        'amber-conda-bld/non-conda-install/osx-64.{}'.format(package),
+        'amber-conda-bld/non-conda-install/linux-64.{}'.format(package),
     ]
 
     cmd = ['python', BUILD_SCRIPT, '-d']

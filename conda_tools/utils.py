@@ -4,9 +4,11 @@ import subprocess
 
 
 def get_package_dir(conda_recipe, py=2.7):
-    output = subprocess.check_output(
-        ['conda', 'build', '--output', conda_recipe, '--py', str(py)])
-    return output.decode()
+    cmd = ['conda', 'build', '--output', conda_recipe, '--py', str(py)]
+    print('cmd', cmd)
+    print('conda_recipe', conda_recipe)
+    output = subprocess.check_output(cmd)
+    return output.decode().replace('\n', '')
 
 
 def tar_xf(fn):
