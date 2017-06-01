@@ -30,9 +30,7 @@ def test_pack_non_conda_package():
     opt.output_dir = '.'
     opt.date = False
     opt.dry_run = False
-    with patch('update_gfortran_libs_osx.main') as mock_g_main:
-        pack_non_conda_package(opt)
-        mock_g_main.assert_called_with(['--copy-gfortran'])
+    pack_non_conda_package(opt)
 
 
 @unittest.skipUnless(has_gfortran_local, 'Must have gfortran in /usr/local')
