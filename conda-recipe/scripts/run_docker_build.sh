@@ -11,7 +11,7 @@ amberhome=$(cd "$(dirname "$0")/../../../../../"; pwd;)
 echo "amberhome" $amberhome
 DOCKER_IMAGE=ambermd/amber-build-box
 BZ2FILE=/root/miniconda3/conda-bld/linux-64/amber*.tar.bz2
-BUILD_ALL_SCRIPT=/amberhome/AmberTools/src/binary-build/conda_tools/build_all.py
+BUILD_ALL_SCRIPT=/amberhome/AmberTools/src/ambertools-binary-build/conda_tools/build_all.py
 
 echo "Running docker image $DOCKER_IMAGE"
 echo "Mouting $amberhome as /amberhome"

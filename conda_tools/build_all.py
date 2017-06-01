@@ -32,7 +32,7 @@ THIS_PATH = os.path.abspath(os.path.dirname(__file__))
 AMBERHOME = os.path.abspath(THIS_PATH + '/../../../../')
 DOCKER_BUILD_SCRIPT = os.path.join(
     AMBERHOME,
-    'AmberTools/src/binary-build/conda-recipe/scripts/run_docker_build.sh')
+    'AmberTools/src/ambertools-binary-build/conda-recipe/scripts/run_docker_build.sh')
 BZ2_FILES = []
 
 if not os.path.exists(AMBERHOME + '/AmberTools'):
