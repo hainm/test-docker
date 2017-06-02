@@ -19,7 +19,7 @@ required_libs = [
 def get_dylibs(fn):
     output = subprocess.check_output(['otool', '-L', fn]).decode()
     lines = [line.split()[0] for line in output.split('\n') if line]
-    return lines[2:]
+    return lines[1:]
 
 
 # Note: we port conda-build "add_rpath" here to avoid adding conda-build

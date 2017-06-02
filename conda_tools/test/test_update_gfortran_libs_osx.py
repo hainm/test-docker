@@ -21,6 +21,7 @@ def gfortran_dylib():
 
 def test_get_dylibs(gfortran_dylib):
     expected = [
+        '/usr/local/gfortran/lib/libgfortran.3.dylib',
         '/usr/local/gfortran/lib/libquadmath.0.dylib',
         '/usr/lib/libSystem.B.dylib',
         '/usr/local/gfortran/lib/libgcc_s.1.dylib'

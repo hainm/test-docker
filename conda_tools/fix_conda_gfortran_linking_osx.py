@@ -1,17 +1,3 @@
-# Aim: Mostly for phenix users and those don't like using Miniconda
-
-# 1. wget url_to_tar_file.tar
-# 2. tar -xf url_to_tar_file.tar
-# 3. source amber17/ambersh
-# 4. Just it
-""" Usage example: python pack_binary_without_conda_install.py ambertools-17.0.1-py27_1.tar.bz2
-
-Note: You can use file pattern
-
-This script will unpack that bz2 file, then do some editing, then pack it to ./non-conda-install folder.
-This should be done after doing conda-build
-"""
-
 import argparse
 
 # local file, in the same folder as this script
