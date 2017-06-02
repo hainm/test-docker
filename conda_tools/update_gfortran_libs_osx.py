@@ -41,7 +41,7 @@ def add_rpath(path, rpath, verbose=False):
         print("Skipping -add_rpath, file already has LC_RPATH set")
         return
     else:
-        print(stderr, file=sys.stderr)
+        print(stderr)
         if p.returncode:
             raise RuntimeError(
                 "install_name_tool failed with exit status %d" % p.returncode)
