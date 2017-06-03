@@ -44,6 +44,7 @@ def test_get_dependence():
     deps = ugo.get_dependence('/usr/local/gfortran/lib/libgfortran.3.dylib')
     print('deps', deps)
     assert deps == [
+        '/usr/local/gfortran/lib/libgfortran.3.dylib',
         '/usr/local/gfortran/lib/libquadmath.0.dylib',
         '/usr/local/gfortran/lib/libgcc_s.1.dylib'
     ]
