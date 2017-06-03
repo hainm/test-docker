@@ -50,6 +50,10 @@ def sh(command):
     subprocess.check_call(command, shell=True)
 
 
+def add_path(my_path='/usr/local/gfortran/bin'):
+    os.environ['PATH'] = my_path + ':' + os.environ.get('PATH', '')
+
+
 def copy_tarfile_to_build_folder(build_commands,
                                  container_folder,
                                  dry_run=False):
@@ -254,6 +258,10 @@ def main(args=None):
         py_versions = [
             str(opt.py),
         ]
+
+    if sys.platform.startswith('darwin'):
+        # force macos build to use gfortran/gcc/g++
+        add_path(my_path='/usr/local/gfortran/bin')
 
     ORIGINAL_FOLDER = os.getcwd()
     print("Current directory = {}".format(ORIGINAL_FOLDER))
