@@ -19,7 +19,7 @@ required_libs = [
 def get_dylibs(fn):
     output = subprocess.check_output(['otool', '-L', fn]).decode()
     lines = [line.split()[0] for line in output.split('\n') if line]
-    return lines[2:]
+    return lines[1:]
 
 
 # Note: we port conda-build "add_rpath" here to avoid adding conda-build
@@ -41,7 +41,7 @@ def add_rpath(path, rpath, verbose=False):
         print("Skipping -add_rpath, file already has LC_RPATH set")
         return
     else:
-        print(stderr, file=sys.stderr)
+        print(stderr)
         if p.returncode:
             raise RuntimeError(
                 "install_name_tool failed with exit status %d" % p.returncode)

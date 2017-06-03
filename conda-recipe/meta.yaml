@@ -1,5 +1,5 @@
 {% set ambertools_url = "../../../" %} # point to $AMBERHOME
-{% set version = "17" %}
+{% set version = "0" %}
 {% set bugfix_version = "0" %} 
 {% set build_number = "0" %}
 {% set ambertools_version = version + '.' + bugfix_version %}
