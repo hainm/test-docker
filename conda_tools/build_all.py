@@ -283,7 +283,7 @@ def main(args=None):
     recipe_dir = os.path.abspath(THIS_PATH + '/../conda-recipe')
     ambertools_src = os.path.abspath(THIS_PATH + '/../../')
     pack_non_conda_package_script = os.path.join(
-        THIS_PATH, 'pack_binary_without_conda_install.py')
+        THIS_PATH, 'pack_non_conda.py')
 
     assert os.path.exists(recipe_dir)
     assert os.path.exists(ambertools_src)

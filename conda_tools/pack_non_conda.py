@@ -4,7 +4,7 @@
 # 2. tar -xf url_to_tar_file.tar
 # 3. source amber17/ambersh
 # 4. Just it
-""" Usage example: python pack_binary_without_conda_install.py ambertools-17.0.1-py27_1.tar.bz2
+""" Usage example: python pack_non_conda.py ambertools-17.0.1-py27_1.tar.bz2
 
 Note: You can use file pattern
 
