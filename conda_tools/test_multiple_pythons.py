@@ -18,16 +18,19 @@ def run_test(package_dir, amberhome, TEST_SCRIPT):
     if is_conda_package(package_dir):
         subprocess.check_call('bash {}'.format(TEST_SCRIPT), shell=True)
     else:
-        subprocess.check_call("source {}/amber.sh && bash {}".format(amberhome,
-            TEST_SCRIPT), shell=True)
+        subprocess.check_call(
+            "source {}/amber.sh && bash {}".format(amberhome, TEST_SCRIPT),
+            shell=True)
 
 
-def install_ambertools(package_dir, env_name, tmp_dir='junk_folder', pyver='2.7'):
+def install_ambertools(package_dir,
+                       env_name,
+                       tmp_dir='junk_folder',
+                       pyver='2.7'):
     if is_conda_package(package_dir):
         # conda
         subprocess.check_call(
-            'conda install {} -n {}'.format(package_dir, env_name),
-            shell=True)
+            'conda install {} -n {}'.format(package_dir, env_name), shell=True)
     else:
         amberhome = os.path.abspath(os.path.join(tmp_dir, AMBER_VERSION))
         # non-conda
@@ -85,10 +88,11 @@ def ensure_no_gfortran_local(amberhome):
     for fn in get_tested_files(amberhome):
         cmd = ['otool', '-L', fn]
         try:
-            output = subprocess.check_output(cmd, stderr=subprocess.PIPE).decode()
+            output = subprocess.check_output(
+                cmd, stderr=subprocess.PIPE).decode()
         except subprocess.CalledProcessError:
             output = ''
-        if  '/usr/local/gfortran' in output:
+        if '/usr/local/gfortran' in output:
             errors.append(fn)
 
     return errors
@@ -110,11 +114,10 @@ def get_tested_files(dest):
     files_in_bin = glob.glob(os.path.join(dest, 'bin/*'))
     return [
         fn
-        for fn in so_files + files_in_bin
-                           + glob.glob(os.path.join(dest, 'bin/to_be_dispatched/*'))
-                           + glob.glob(os.path.join(dest, 'lib/*dylib'))
+        for fn in so_files + files_in_bin + glob.glob(
+            os.path.join(dest, 'bin/to_be_dispatched/*')) + glob.glob(
+                os.path.join(dest, 'lib/*dylib'))
     ]
-
 
 
 def main(args=None):
@@ -123,7 +126,7 @@ def main(args=None):
     parser.add_argument("-py", dest='pyvers')
     opt = parser.parse_args(args)
     package_dir = opt.package_dir
-    tmp_dir = 'junk_folder' # only exists if non-conda package
+    tmp_dir = 'junk_folder'  # only exists if non-conda package
 
     conda_recipe = os.path.abspath(
         os.path.join(os.path.dirname(__file__), '..', 'conda-recipe'))
@@ -131,7 +134,9 @@ def main(args=None):
     print('conda_recipe', conda_recipe)
     print('run_test', run_test)
 
-    pyvers = [opt.pyvers, ] if opt.pyvers else ['2.7', '3.4', '3.5', '3.6']
+    pyvers = [
+        opt.pyvers,
+    ] if opt.pyvers else ['2.7', '3.4', '3.5', '3.6']
     print('Python versions = {}'.format(pyvers))
     print('conda package = {}'.format(is_conda_package(package_dir)))
 
@@ -145,7 +150,8 @@ def main(args=None):
                 # do not set CONDA_PREFIX to trigger
                 # unset PYTHONPATH in run_test.sh in this case.
                 os.environ['CONDA_PREFIX'] = ''
-                amberhome = os.path.join(os.path.abspath(tmp_dir), AMBER_VERSION)
+                amberhome = os.path.join(
+                    os.path.abspath(tmp_dir), AMBER_VERSION)
 
             install_ambertools(package_dir, env_name, pyver=py)
             if sys.platform.startswith('darwin'):
@@ -155,7 +161,9 @@ def main(args=None):
 
         # check libgfortran
         if errors:
-            print("ERROR: Files should not have /usr/local/gfortran in its content")
+            print(
+                "ERROR: Files should not have /usr/local/gfortran in its content"
+            )
             print(errors)
             sys.exit(1)
         else:

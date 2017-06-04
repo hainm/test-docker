@@ -87,11 +87,8 @@ def test_get_so_files(mock_get_dependence, mock_check_output):
 @patch('update_gfortran_libs_osx.get_dependence')
 @patch('update_gfortran_libs_osx.get_dylibs')
 @patch('update_gfortran_libs_osx.get_will_be_fixed_files')
-def test_update_rpath(mock_will_be_fixed_files,
-                      mock_get_dylib,
-                      mock_get_dependence,
-                      mock_add_rpath,
-                      mock_check_call):
+def test_update_rpath(mock_will_be_fixed_files, mock_get_dylib,
+                      mock_get_dependence, mock_add_rpath, mock_check_call):
     mock_get_dependence.return_value = EXPECTED_DEPS
     mock_will_be_fixed_files.return_value = [
         'lib/python2.7/site-packages/pytraj/trajectory/frame.so',

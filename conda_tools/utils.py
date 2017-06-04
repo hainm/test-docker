@@ -35,7 +35,7 @@ def set_compiler_env():
         # os.environ['CC'] = '/usr/local/gfortran/bin/gcc'
         # not using absolute path to trick nab
         # Make sure to add /usr/local/gfortran/bin to PATH
-        os.environ['CC'] = 'gcc' # not using absolute path to trick nab
+        os.environ['CC'] = 'gcc'  # not using absolute path to trick nab
         os.environ['FC'] = '/usr/local/gfortran/bin/gfortran'
 
 
