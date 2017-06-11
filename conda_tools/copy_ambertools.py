@@ -45,7 +45,8 @@ def copy_tree(dry_run=False):
         mkdir_ambertree()
         # development version
         extra_dirs = [
-            os.path.join(amberhome, folder) for folder in extra_folders_or_files
+            os.path.join(amberhome, folder)
+            for folder in extra_folders_or_files
         ]
 
         for source_dir in extra_dirs:
@@ -76,29 +77,34 @@ def copy_tree(dry_run=False):
                             source_dir = os.path.join(amberhome, folder)
                             target_dir = '.'
                         else:
-                            source_dir = os.path.join(amberhome, root_dir, folder)
+                            source_dir = os.path.join(amberhome, root_dir,
+                                                      folder)
                             target_dir = root_dir
-                        if not _having_one_of_them(source_dir, excluded_folders):
+                        if not _having_one_of_them(source_dir,
+                                                   excluded_folders):
                             files = glob(source_dir)
-                            print(
-                                'copying {} to {}'.format(source_dir, target_dir))
+                            print('copying {} to {}'.format(
+                                source_dir, target_dir))
                             if not os.path.exists(source_dir):
-                                print('WARNING NOT FOUND: {}'.format(source_dir))
+                                print(
+                                    'WARNING NOT FOUND: {}'.format(source_dir))
                             if not os.path.exists(target_dir):
-                                print('WARNING NOT FOUND target_dir: {}'.format(
-                                    target_dir))
+                                print('WARNING NOT FOUND target_dir: {}'.
+                                      format(target_dir))
                             assert os.path.exists(target_dir)
                             if not dry_run:
                                 for fn in files:
-                                    subprocess.call(['cp', '-r', fn, target_dir])
+                                    subprocess.call(
+                                        ['cp', '-r', fn, target_dir])
     else:
-        print("not having mkrelease_at in AMBERHOME={}, assume this is a released version".format(amberhome))
+        print(
+            "not having mkrelease_at in AMBERHOME={}, assume this is a released version".
+            format(amberhome))
         for fn in glob(amberhome + '/*'):
             cmd = ['cp', '-r', fn, '.']
-                print(' '.join(cmd))
+            print(' '.join(cmd))
             if not dry_run:
                 subprocess.check_call(cmd)
-
 
 
 def main():
