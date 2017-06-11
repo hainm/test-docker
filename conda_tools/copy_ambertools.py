@@ -95,9 +95,8 @@ def copy_tree(dry_run=False):
         print("not having mkrelease_at in AMBERHOME={}, assume this is a released version".format(amberhome))
         for fn in glob(amberhome + '/*'):
             cmd = ['cp', '-r', fn, '.']
-            if dry_run:
                 print(' '.join(cmd))
-            else:
+            if not dry_run:
                 subprocess.check_call(cmd)
 
 
