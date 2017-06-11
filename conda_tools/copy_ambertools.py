@@ -35,66 +35,76 @@ def copy_tree(dry_run=False):
                            os.path.join(this_path, '../conda-recipe'))
     print('recipe_dir', recipe_dir)
     print('this_path', this_path)
-    amberhome = os.path.join(recipe_dir, *['..'] * 4)
-    mkrelease_at_file = os.path.join(amberhome, 'mkrelease_at')
+    amberhome = os.path.abspath(os.path.join(recipe_dir, *['..'] * 4))
     assert os.path.exists(recipe_dir)
     assert os.path.exists(amberhome)
     assert os.path.exists(os.path.join(amberhome, 'AmberTools'))
-    assert os.path.exists(mkrelease_at_file)
 
-    extra_dirs = [
-        os.path.join(amberhome, folder) for folder in extra_folders_or_files
-    ]
+    mkrelease_at_file = os.path.join(amberhome, 'mkrelease_at')
+    if os.path.exists(mkrelease_at_file):
+        mkdir_ambertree()
+        # development version
+        extra_dirs = [
+            os.path.join(amberhome, folder) for folder in extra_folders_or_files
+        ]
 
-    for source_dir in extra_dirs:
-        target_dir = os.path.join('AmberTools', 'src')
-        print('copying {} to {}'.format(source_dir, target_dir))
-        if not dry_run:
-            subprocess.call(['cp', '-r', source_dir, target_dir])
+        for source_dir in extra_dirs:
+            target_dir = os.path.join('AmberTools', 'src')
+            print('copying {} to {}'.format(source_dir, target_dir))
+            if not dry_run:
+                subprocess.call(['cp', '-r', source_dir, target_dir])
 
-    with open(mkrelease_at_file) as fh:
-        for line in fh.readlines():
-            line = line.strip()
-            if line.startswith('$TAR'):
-                folder_or_folders = line.split('/')[-1]
-                if '{' in folder_or_folders:
-                    # list of folders
-                    # {x,y,z}
-                    folders = folder_or_folders.replace('{', '').replace(
-                        '}', '').split(',')
-                else:
-                    # single folder
-                    folders = [
-                        folder_or_folders,
-                    ]
-                root_dir = '/'.join(line.split('/')[1:-1])
-
-                for folder in folders:
-                    if not root_dir:
-                        source_dir = os.path.join(amberhome, folder)
-                        target_dir = '.'
+        with open(mkrelease_at_file) as fh:
+            for line in fh.readlines():
+                line = line.strip()
+                if line.startswith('$TAR'):
+                    folder_or_folders = line.split('/')[-1]
+                    if '{' in folder_or_folders:
+                        # list of folders
+                        # {x,y,z}
+                        folders = folder_or_folders.replace('{', '').replace(
+                            '}', '').split(',')
                     else:
-                        source_dir = os.path.join(amberhome, root_dir, folder)
-                        target_dir = root_dir
-                    if not _having_one_of_them(source_dir, excluded_folders):
-                        files = glob(source_dir)
-                        print(
-                            'copying {} to {}'.format(source_dir, target_dir))
-                        if not os.path.exists(source_dir):
-                            print('WARNING NOT FOUND: {}'.format(source_dir))
-                        if not os.path.exists(target_dir):
-                            print('WARNING NOT FOUND target_dir: {}'.format(
-                                target_dir))
-                        assert os.path.exists(target_dir)
-                        if not dry_run:
-                            for fn in files:
-                                subprocess.call(['cp', '-r', fn, target_dir])
+                        # single folder
+                        folders = [
+                            folder_or_folders,
+                        ]
+                    root_dir = '/'.join(line.split('/')[1:-1])
+
+                    for folder in folders:
+                        if not root_dir:
+                            source_dir = os.path.join(amberhome, folder)
+                            target_dir = '.'
+                        else:
+                            source_dir = os.path.join(amberhome, root_dir, folder)
+                            target_dir = root_dir
+                        if not _having_one_of_them(source_dir, excluded_folders):
+                            files = glob(source_dir)
+                            print(
+                                'copying {} to {}'.format(source_dir, target_dir))
+                            if not os.path.exists(source_dir):
+                                print('WARNING NOT FOUND: {}'.format(source_dir))
+                            if not os.path.exists(target_dir):
+                                print('WARNING NOT FOUND target_dir: {}'.format(
+                                    target_dir))
+                            assert os.path.exists(target_dir)
+                            if not dry_run:
+                                for fn in files:
+                                    subprocess.call(['cp', '-r', fn, target_dir])
+    else:
+        print("not having mkrelease_at in AMBERHOME={}, assume this is a released version".format(amberhome))
+        for fn in glob(amberhome + '/*'):
+            cmd = ['cp', '-r', fn, '.']
+            if dry_run:
+                print(' '.join(cmd))
+            else:
+                subprocess.check_call(cmd)
+
 
 
 def main():
-    mkdir_ambertree()
     copy_tree()
 
 
 if __name__ == '__main__':
-    main()
+    copy_tree(dry_run=True)
