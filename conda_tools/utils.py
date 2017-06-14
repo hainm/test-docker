@@ -32,10 +32,7 @@ def set_compiler_env():
         # we do not use clang here since we still need
         # gfortran (so just use included gcc/g++)
         os.environ['CXX'] = '/usr/local/gfortran/bin/g++'
-        # os.environ['CC'] = '/usr/local/gfortran/bin/gcc'
-        # not using absolute path to trick nab
-        # Make sure to add /usr/local/gfortran/bin to PATH
-        os.environ['CC'] = 'gcc' # not using absolute path to trick nab
+        os.environ['CC'] = '/usr/local/gfortran/bin/gcc'
         os.environ['FC'] = '/usr/local/gfortran/bin/gfortran'
 
 

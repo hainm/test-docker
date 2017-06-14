@@ -7,11 +7,11 @@ import unittest
 from mock import patch
 
 sys.path.insert(0, '..')
-from pack_binary_without_conda_install import pack_non_conda_package
+from pack_non_conda import pack_non_conda_package
 
 this_dir = os.path.dirname(__file__)
 PACK_SCRIPT = os.path.join(this_dir, '..',
-                           'pack_binary_without_conda_install.py')
+                           'pack_non_conda.py')
 FAKE_TAR = os.path.join(this_dir, 'fake_data', 'fake.tar.bz2')
 has_gfortran_local = os.path.exists('/usr/local/gfortran/')
 

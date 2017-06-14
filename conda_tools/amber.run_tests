@@ -128,8 +128,7 @@ def create_test_suite(excluded_tests):
 
     def gather(suite_dict, test_dir):
         for task, suite in suite_dict.items():
-            suite_dict[task] = [(test_name, test_dir)
-                    for test_name in suite]
+            suite_dict[task] = [(test_name, test_dir) for test_name in suite]
 
     gather(ambertools_test_suite_dict, ambertools_test_dir)
     gather(amber_test_suite_dict, amber_test_dir)
@@ -185,9 +184,12 @@ def test_me(opt):
     test_task = opt.task
 
     try:
-        test_suite = test_suite_dict[test_task] if test_task != 'all' else 'all'
+        test_suite = test_suite_dict[
+            test_task] if test_task != 'all' else 'all'
     except KeyError:
-        test_suite = [(test_task, ambertools_test_dir),]
+        test_suite = [
+            (test_task, ambertools_test_dir),
+        ]
 
     def run_all(test_suite):
         for (me, test_dir) in test_suite:
@@ -195,7 +197,8 @@ def test_me(opt):
                 output, time_diff = execute(['make', me])
                 TIME_DICT[me] = time_diff
                 ALL_OUTPUTS.extend(output.split('\n'))
-                if ('Program error' in output or 'possible FAILURE' in output or
+                if ('Program error' in output or
+                        'possible FAILURE' in output or
                         'No rule to make target' in output):
                     ERRORS.append(output)
 

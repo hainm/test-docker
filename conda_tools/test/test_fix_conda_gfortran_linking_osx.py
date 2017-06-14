@@ -3,6 +3,7 @@
 import os
 import sys
 from mock import patch
+import shutil
 
 sys.path.insert(0, '..')
 from fix_conda_gfortran_linking_osx import repack_conda_package, main
@@ -26,9 +27,12 @@ def test_repack_conda_package():
     with patch('update_gfortran_libs_osx.main') as mock_g_main:
         repack_conda_package(opt)
         mock_g_main.assert_called_with([])
+    os.remove(os.path.basename(FAKE_TAR))
 
 
 def test_main():
-    output_dir = 'tmp/heyhey'
+    junk = './tmp_fdasfda'
+    output_dir = '{}/heyhey'.format(junk)
     main([FAKE_TAR, '-o', output_dir])
     assert os.path.exists(os.path.join(output_dir, os.path.basename(FAKE_TAR)))
+    shutil.rmtree(junk)
