@@ -19,12 +19,6 @@ import os
 import sys
 import subprocess
 
-try:
-    test_task = sys.argv[1]
-except IndexError:
-    test_task = 'fast'
-print('test_task = {}'.format(test_task))
-
 
 @contextmanager
 def change_folder(where):
