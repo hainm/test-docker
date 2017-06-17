@@ -230,13 +230,14 @@ def test_me(opt):
             n_program_errors += 1
         if 'possible FAILURE' in line:
             n_fails += 1
+
+    if n_fails > 0:
+        cat_dif_files(amberhome)
+
     print("{} file comparisons passed".format(n_passes))
     print("{} file comparisons failed".format(n_fails))
     print("{} tests experienced errors".format(n_program_errors))
     print(TIME_DICT)
-
-    if n_fails > 0:
-        cat_dif_files(amberhome)
 
     assert len(ERRORS) == 0
 
@@ -253,7 +254,12 @@ def main(args=None):
     opt = parser.parse_args(args)
     if opt.exclude:
         # "test.parmed, test.pytraj"
-        opt.exclude = opt.exclude.split(',')
+        if os.path.isfile(opt.exclude):
+            with open(opt.exclude) as fh:
+                opt.exclude = fh.read().replace('\n', '').split(',')
+        else:
+            opt.exclude = opt.exclude.split(',')
+        print('exclude', opt.exclude)
     test_me(opt)
 
 
