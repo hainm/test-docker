@@ -29,8 +29,8 @@ from glob import glob
 
 
 CONTAINER_FOLDER = 'amber-conda-bld'
-THIS_PATH = os.path.abspath(os.path.dirname(__file__))
-AMBER_BINARY_BUILD_DIR = os.path.abspath(THIS_PATH + '/../')
+AMBER_BINARY_BUILD_DIR = os.path.abspath(os.path.dirname(__file__))
+CONDA_TOOLS_DIR = os.path.join(AMBER_BINARY_BUILD_DIR, 'conda_tools')
 DOCKER_BUILD_SCRIPT = os.path.join(
     AMBER_BINARY_BUILD_DIR,
     'conda-recipe/scripts/run_docker_build.sh'
@@ -74,9 +74,9 @@ def copy_tarfile_to_build_folder(build_commands,
 def build_all_python_verions_in_one_package(container_folder, dry_run=False):
     # build full AmberTools for python 2.7 first
     os.environ['AMBER_BUILD_TASK'] = 'ambertools'
-    recipe_dir = os.path.abspath(os.path.join(THIS_PATH, '../conda-recipe'))
+    recipe_dir = os.path.abspath(os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-recipe'))
     tmp_recipe_dir = os.path.abspath(
-        os.path.join(THIS_PATH, '../conda-multi-python'))
+        os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-multi-python'))
     py2_build_command = ['conda', 'build', recipe_dir, '--py', '2.7']
     if dry_run:
         print(py2_build_command)
@@ -199,7 +199,7 @@ def perform_build_without_docker(opt,
 
 
 def main(args=None):
-    global CONTAINER_FOLDER, DOCKER_BUILD_SCRIPT, BZ2_FILES, THIS_PATH
+    global CONTAINER_FOLDER, DOCKER_BUILD_SCRIPT, BZ2_FILES
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--exclude-linux",
@@ -268,7 +268,7 @@ def main(args=None):
         # force macos build to use gfortran/gcc/g++
         add_path(my_path='/usr/local/gfortran/bin')
 
-    opt.amberhome = opt.amberhome or os.path.abspath(THIS_PATH + '/../../../../')
+    opt.amberhome = opt.amberhome or os.path.abspath(AMBER_BINARY_BUILD_DIR + '/../../../')
     assert_amber_src_exists(opt.amberhome)
 
     ORIGINAL_FOLDER = os.getcwd()
@@ -286,11 +286,10 @@ def main(args=None):
         os.mkdir(container_folder_linux)
     container_folder_linux = os.path.abspath(container_folder_linux)
 
-    THIS_PATH = os.path.abspath(os.path.dirname(__file__))
-    recipe_dir = os.path.abspath(THIS_PATH + '/../conda-recipe')
-    ambertools_src = os.path.abspath(THIS_PATH + '/../../')
+    recipe_dir = os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-recipe')
+    ambertools_src = os.path.abspath(os.path.join(opt.amberhome, 'AmberTools', 'src'))
     pack_non_conda_package_script = os.path.join(
-        THIS_PATH, 'pack_non_conda.py')
+        CONDA_TOOLS_DIR, 'pack_non_conda.py')
 
     assert os.path.exists(recipe_dir)
     assert os.path.exists(ambertools_src)
