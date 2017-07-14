@@ -27,18 +27,20 @@ import subprocess
 import argparse
 from glob import glob
 
+
 CONTAINER_FOLDER = 'amber-conda-bld'
 THIS_PATH = os.path.abspath(os.path.dirname(__file__))
-AMBERHOME = os.path.abspath(THIS_PATH + '/../../../../')
+AMBER_BINARY_BUILD_DIR = os.path.abspath(THIS_PATH + '/../')
 DOCKER_BUILD_SCRIPT = os.path.join(
-    AMBERHOME,
-    'AmberTools/src/ambertools-binary-build/conda-recipe/scripts/run_docker_build.sh'
+    AMBER_BINARY_BUILD_DIR,
+    'conda-recipe/scripts/run_docker_build.sh'
 )
 BZ2_FILES = []
 
-if not os.path.exists(AMBERHOME + '/AmberTools'):
-    print("AmberTools does not exist in {}".format(AMBERHOME))
-    sys.exit(1)
+def assert_amber_src_exists(amberhome):
+    if not os.path.exists(amberhome+ '/AmberTools'):
+        print("AmberTools does not exist in {}".format(amberhome))
+        sys.exit(1)
 
 
 def built_tarfile_dir(build_commands):
@@ -150,7 +152,7 @@ def perform_build_with_docker(opt, container_folder, py_versions=[
             print(output)
 
     for tarfile in all_tarfiles:
-        abspath_tarfile = os.path.join(AMBERHOME, 'linux-64', tarfile)
+        abspath_tarfile = os.path.join(opt.amberhome, 'linux-64', tarfile)
 
         move_command = ['mv', abspath_tarfile, container_folder]
         if opt.sudo:
@@ -197,7 +199,7 @@ def perform_build_without_docker(opt,
 
 
 def main(args=None):
-    global CONTAINER_FOLDER, DOCKER_BUILD_SCRIPT, BZ2_FILES
+    global CONTAINER_FOLDER, DOCKER_BUILD_SCRIPT, BZ2_FILES, THIS_PATH
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--exclude-linux",
@@ -228,6 +230,8 @@ def main(args=None):
         help="which target you want to build? (default ambertools?)")
     parser.add_argument(
         '-d', "--dry-run", action='store_true', dest="dry_run", help="dry run")
+    parser.add_argument(
+        "--amberhome", help="Path to amber source code")
     parser.add_argument(
         '--py',
         default=None,
@@ -264,6 +268,9 @@ def main(args=None):
         # force macos build to use gfortran/gcc/g++
         add_path(my_path='/usr/local/gfortran/bin')
 
+    opt.amberhome = opt.amberhome or os.path.abspath(THIS_PATH + '/../../../../')
+    assert_amber_src_exists(opt.amberhome)
+
     ORIGINAL_FOLDER = os.getcwd()
     print("Current directory = {}".format(ORIGINAL_FOLDER))
     # store built files
@@ -292,7 +299,7 @@ def main(args=None):
 
     build_task = opt.build_task
     print('AMBER_BUILD_TASK = {}'.format(build_task))
-    print('AMBERHOME = {}'.format(AMBERHOME))
+    print('AMBERHOME = {}'.format(opt.amberhome))
     print('recipe dir = {}'.format(recipe_dir))
 
     # go to AmberTools/src
@@ -320,7 +327,7 @@ def main(args=None):
                 py_versions=py_versions)
         else:
             print("Linux build via docker container")
-            os.chdir(AMBERHOME)
+            os.chdir(opt.amberhome)
             print('Current working dir = {}'.format(os.getcwd()))
 
             # ambermini do not require python but still need to pass here
