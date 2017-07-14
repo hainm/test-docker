@@ -12,6 +12,8 @@ package:
 
 build:
   number: {{ build_number }}
+  script_env:
+    - AMBER_SRC
 
 requirements:
   build:

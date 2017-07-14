@@ -335,6 +335,7 @@ def main(args=None):
     print('Current working dir = {}'.format(os.getcwd()))
 
     os.environ['AMBER_BUILD_TASK'] = build_task
+    os.environ['AMBER_SRC'] = opt.amberhome
 
     # OSX build using your MacOS computer
     if not opt.exclude_osx:
