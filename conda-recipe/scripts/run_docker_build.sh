@@ -2,30 +2,34 @@
 
 AMBER_BUILD_TASK=$1 # ambertools or ambertools_pack_all_pythons or ambermini
 pyversion=$2
-dry_run=$3 # True/False
-    
-echo "AMBER_BUILD_TASK = " $AMBER_BUILD_TASK
-echo "Python version = " $pyversion
+amberhome=$3
+ambertools_binary_build_dir=$4
+dry_run=$5 # True/False # Always the last
 
-amberhome=$(cd "$(dirname "$0")/../../../../../"; pwd;)
-echo "amberhome" $amberhome
 DOCKER_IMAGE=ambermd/amber-build-box
 BZ2FILE=/root/miniconda3/conda-bld/linux-64/amber*.tar.bz2
-BUILD_ALL_SCRIPT=/amberhome/AmberTools/src/ambertools-binary-build/conda_tools/build_all.py
+BUILD_ALL_SCRIPT=/ambertools-binary-build/build_all.py
 
+echo "ambertools_binary_build_dir" $ambertools_binary_build_dir
+echo "AMBER_BUILD_TASK = " $AMBER_BUILD_TASK
+echo "Python version = " $pyversion
+echo "amberhome" $amberhome
 echo "Running docker image $DOCKER_IMAGE"
 echo "Mouting $amberhome as /amberhome"
+echo "Mouting $ambertools_binary_build_dir as /ambertools-binary-build"
 
 # docker info
 
 cat << EOF | docker run -i \
                         --rm \
                         -v ${amberhome}:/amberhome \
+                        -v ${ambertools_binary_build_dir}:/ambertools-binary-build \
                         -a stdin -a stdout -a stderr \
                         $DOCKER_IMAGE \
                         bash || exit $?
 
     export PATH=/root/miniconda3/bin:\$PATH
+    export AMBER_SRC=${amberhome}
     # conda update --all --yes
     export AMBER_BUILD_TASK=${AMBER_BUILD_TASK}
     dry_run=$dry_run
@@ -35,9 +39,11 @@ cat << EOF | docker run -i \
     cd \$HOME/TMP
 
     if [ "\$dry_run" = "True" ]; then
-        python $BUILD_ALL_SCRIPT --py $pyversion --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user -d
+        python $BUILD_ALL_SCRIPT --py $pyversion --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user -d \
+               --amberhome /amberhome
     else
-        python $BUILD_ALL_SCRIPT --py $pyversion --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user
+        python $BUILD_ALL_SCRIPT --py $pyversion --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user \
+               --amberhome /amberhome
     fi
 
     if [ ! -d /amberhome/linux-64/ ]; then

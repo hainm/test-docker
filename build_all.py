@@ -127,7 +127,11 @@ def perform_build_with_docker(opt, container_folder, py_versions=[
             DOCKER_BUILD_SCRIPT,
             build_task,
             ver,
+            opt.amberhome,
+            AMBER_BINARY_BUILD_DIR,
         ]
+        print('docker_command_build')
+        print(" ".join(docker_command_build))
 
         # dry run to immediately getting output.
 
