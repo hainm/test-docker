@@ -35,7 +35,7 @@ def copy_tree(dry_run=False):
                            os.path.join(this_path, '../conda-recipe'))
     print('recipe_dir', recipe_dir)
     print('this_path', this_path)
-    amberhome = os.path.abspath(os.path.join(recipe_dir, *['..'] * 4))
+    amberhome = os.path.abspath(os.getenv('AMBER_SRC'))
     assert os.path.exists(recipe_dir)
     assert os.path.exists(amberhome)
     assert os.path.exists(os.path.join(amberhome, 'AmberTools'))

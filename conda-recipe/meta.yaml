@@ -37,6 +37,7 @@ build:
   number: {{ build_number }}
   script_env:
     - AMBER_BUILD_TASK
+    - AMBER_SRC
 
 requirements:
   build:
