@@ -37,6 +37,21 @@ DOCKER_BUILD_SCRIPT = os.path.join(
 )
 BZ2_FILES = []
 
+
+def write_meta_file(amber_ver):
+    # assume amber_ver is this format 17.4
+    version, bugfix = amber_ver.split('.')
+    recipe_dir = os.path.join(os.path.dirname(__file__),
+            'conda-ambertools-all-python')
+    with open(os.path.join(recipe_dir, 'meta.template')) as fh, \
+         open(os.path.join(recipe_dir, 'meta.yaml'), 'w') as fh_new:
+         content = fh.read()
+         content = content.replace('{% set version = "0" %}',
+                                   '{{% set version = "{}" %}}'.format(version))
+         content = content.replace('{% set bugfix_version = "0" %}',
+                                   '{{% set bugfix_version = "{}" %}}'.format(bugfix))
+         fh_new.write(content)
+
 def assert_amber_src_exists(amberhome):
     if not os.path.exists(amberhome+ '/AmberTools'):
         print("AmberTools does not exist in {}".format(amberhome))
@@ -129,6 +144,7 @@ def perform_build_with_docker(opt, container_folder, py_versions=[
             ver,
             opt.amberhome,
             AMBER_BINARY_BUILD_DIR,
+            opt.ambertools_version,
         ]
         print('docker_command_build')
         print(" ".join(docker_command_build))
@@ -242,6 +258,12 @@ def main(args=None):
         help=
         'Python version. Default: build all versions (2.7, 3.4, 3.5, 3.6)')
     parser.add_argument(
+        '-v',
+        '--ambertools-version',
+        help=
+        'AmberTools version, must be something like 17.4',
+        required=True)
+    parser.add_argument(
         '--no-docker',
         action='store_true',
         dest="no_docker",
@@ -271,6 +293,8 @@ def main(args=None):
     if sys.platform.startswith('darwin'):
         # force macos build to use gfortran/gcc/g++
         add_path(my_path='/usr/local/gfortran/bin')
+
+    write_meta_file(opt.ambertools_version)
 
     opt.amberhome = opt.amberhome or os.path.abspath(AMBER_BINARY_BUILD_DIR + '/../../../')
     assert_amber_src_exists(opt.amberhome)

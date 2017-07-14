@@ -4,7 +4,8 @@ AMBER_BUILD_TASK=$1 # ambertools or ambertools_pack_all_pythons or ambermini
 pyversion=$2
 amberhome=$3
 ambertools_binary_build_dir=$4
-dry_run=$5 # True/False # Always the last
+ambertools_version=$5
+dry_run=$6 # True/False # Always the last
 
 DOCKER_IMAGE=ambermd/amber-build-box
 BZ2FILE=/root/miniconda3/conda-bld/linux-64/amber*.tar.bz2
@@ -40,10 +41,10 @@ cat << EOF | docker run -i \
 
     if [ "\$dry_run" = "True" ]; then
         python $BUILD_ALL_SCRIPT --py $pyversion --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user -d \
-               --amberhome /amberhome
+               --amberhome /amberhome -v $ambertools_version
     else
         python $BUILD_ALL_SCRIPT --py $pyversion --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user \
-               --amberhome /amberhome
+               --amberhome /amberhome -v $ambertools_version
     fi
 
     if [ ! -d /amberhome/linux-64/ ]; then
