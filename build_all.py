@@ -281,6 +281,7 @@ def main(args=None):
         action='store_true',
         help='use sudo to move files. Note: for circleci')
     opt = parser.parse_args(args)
+    opt.amberhome = os.path.abspath(opt.amberhome)
 
     if opt.py is None and opt.build_task == 'ambertools':
         py_versions = ['2.7', '3.4', '3.5', '3.6']

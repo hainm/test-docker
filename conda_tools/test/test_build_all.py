@@ -8,7 +8,8 @@ from shutil import rmtree
 
 this_dir = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(this_dir, '..'))
-BUILD_SCRIPT = os.path.join(this_dir, '..', 'build_all.py')
+sys.path.insert(0, os.path.join(this_dir, '..', '..'))
+BUILD_SCRIPT = os.path.join(this_dir, '..', '..', 'build_all.py')
 
 # ../
 import build_all

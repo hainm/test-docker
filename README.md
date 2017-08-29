@@ -8,3 +8,6 @@ Auto-build AmberTools with conda and docker.
          - patch_bugfix_version.ambermini
          - patch_bugfix_version.ambertools
     - Make a pull request to this branch
+
+- Working versions
+    conda-build==2.1.15
