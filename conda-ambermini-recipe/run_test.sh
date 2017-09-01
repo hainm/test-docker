@@ -12,8 +12,6 @@ function test_ambermini(){
     charmmgen -h
     espgen -h
     match_atomname -h
-    # parmcal -h # parmcal does not have -h option
-    parmchk -h
     parmchk2 -h
     prepgen -h
     residuegen -h
