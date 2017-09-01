@@ -10,11 +10,13 @@ this_dir = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(this_dir, '..'))
 sys.path.insert(0, os.path.join(this_dir, '..', '..'))
 BUILD_SCRIPT = os.path.join(this_dir, '..', '..', 'build_all.py')
+amberhome = os.path.join(os.getenv('HOME'), 'amber_git', 'amber')
 
 # ../
 import build_all
 import utils
 
+extend_cmd = ['-v', '18.0', '--amberhome', amberhome]
 
 @contextmanager
 def tempfolder():
@@ -26,25 +28,20 @@ def tempfolder():
     rmtree(my_temp)
 
 
-@patch('subprocess.check_call')
-def test_build_all_main(check_call):
-    build_all.main([])
-
-
 def test_build_all_cmd():
-    cmd = ['python', BUILD_SCRIPT, '-d']
+    cmd = ['python', BUILD_SCRIPT, '-d'] + extend_cmd
     with tempfolder():
         subprocess.check_call(cmd)
 
-    cmd = ['python', BUILD_SCRIPT, '-d', '--exclude-osx']
+    cmd = ['python', BUILD_SCRIPT, '-d', '--exclude-osx'] + extend_cmd
     with tempfolder():
         subprocess.check_call(cmd)
 
-    cmd = ['python', BUILD_SCRIPT, '-d', '--exclude-linux']
+    cmd = ['python', BUILD_SCRIPT, '-d', '--exclude-linux'] + extend_cmd
     with tempfolder():
         subprocess.check_call(cmd)
 
-    cmd = ['python', BUILD_SCRIPT, '-d', '--no-docker']
+    cmd = ['python', BUILD_SCRIPT, '-d', '--no-docker'] + extend_cmd
     with tempfolder():
         subprocess.check_call(cmd)
 
@@ -62,7 +59,7 @@ def test_build_all_cmd_with_assertion():
         'amber-conda-bld/non-conda-install/linux-64.{}'.format(package),
     ]
 
-    cmd = ['python', BUILD_SCRIPT, '-d']
+    cmd = ['python', BUILD_SCRIPT, '-d'] + extend_cmd
     with tempfolder():
         tdir = os.getcwd()
         expected_lines = [os.path.join(tdir, line) for line in all_lines]
