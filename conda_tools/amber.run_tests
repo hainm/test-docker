@@ -324,7 +324,7 @@ def main(args=None):
                 opt.exclude = fh.read().replace('\n', '').split(',')
         else:
             opt.exclude = opt.exclude.split(',')
-        print('exclude', opt.exclude)
+        print('TEST EXCLUDED', opt.exclude)
     errors = test_me(opt)
     assert len(errors) == 0
 
