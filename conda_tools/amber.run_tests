@@ -276,7 +276,7 @@ def test_me(opt):
     print(TIME_DICT)
     with open('test_timing.log', 'w') as fh:
         for k, v in TIME_DICT.items():
-            fh.write("{}: {:06.2f} (s)".format(k, v))
+            fh.write("{}: {:06.2f} (s)\n".format(k, v))
 
     with open('test_summary.log', 'w') as fh:
         summary = """
@@ -285,6 +285,7 @@ def test_me(opt):
 {} tests experienced errors
 """.format(n_passes, n_fails, n_program_errors)
         fh.write(summary)
+        print(summary)
 
     assert len(ERRORS) == 0
 
