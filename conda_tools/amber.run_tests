@@ -260,21 +260,31 @@ def test_me(opt):
 
     n_passes = n_fails = n_program_errors = 0
 
-    for line in ALL_OUTPUTS:
-        if 'PASSED' in line:
-            n_passes += 1
-        if 'Program error' in line:
-            n_program_errors += 1
-        if 'possible FAILURE' in line:
-            n_fails += 1
+    with open('test_out.log', 'w') as fh:
+        for line in ALL_OUTPUTS:
+            fh.write(line + '\n')
+            if 'PASSED' in line:
+                n_passes += 1
+            if 'Program error' in line:
+                n_program_errors += 1
+            if 'possible FAILURE' in line:
+                n_fails += 1
 
     if n_fails > 0:
         cat_dif_files(amberhome)
 
-    print("{} file comparisons passed".format(n_passes))
-    print("{} file comparisons failed".format(n_fails))
-    print("{} tests experienced errors".format(n_program_errors))
     print(TIME_DICT)
+    with open('test_timing.log', 'w') as fh:
+        for k, v in TIME_DICT.items():
+            fh.write("{}: {:06.2f} (s)".format(k, v))
+
+    with open('test_summary.log', 'w') as fh:
+        summary = """
+{} file comparisons passed
+{} file comparisons failed
+{} tests experienced errors
+""".format(n_passes, n_fails, n_program_errors)
+        fh.write(summary)
 
     assert len(ERRORS) == 0
 
