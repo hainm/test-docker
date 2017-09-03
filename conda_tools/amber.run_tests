@@ -180,22 +180,24 @@ def run_chunk(rank, test_suite_chunks):
     return TIME_DICT, ALL_OUTPUTS, ERRORS
 
 
-def run_all(test_suite, serial=False):
+def run_all(test_suite, num_cpus):
     import multiprocessing
     import functools
     import numpy as np
 
-    if serial:
+    if num_cpus == 1:
         print("Run test in serial")
         return run_chunk(0, [test_suite])
     else:
         print("Run test in parallel")
-        ncpus = min(len(test_suite), multiprocessing.cpu_count())
-        print('ncpus', ncpus)
-        test_suite_chunks = np.array_split(test_suite, ncpus)
-        pool = multiprocessing.Pool(ncpus)
+        if num_cpus < 1:
+            num_cpus = multiprocessing.cpu_count()
+        num_cpus = min(len(test_suite), num_cpus)
+        print('num_cpus', num_cpus)
+        test_suite_chunks = np.array_split(test_suite, num_cpus)
+        pool = multiprocessing.Pool(num_cpus)
         func =  functools.partial(run_chunk, test_suite_chunks=test_suite_chunks) 
-        outputs = pool.map(func, range(ncpus))
+        outputs = pool.map(func, range(num_cpus))
 
         TIME_DICT = outputs[0][0]
         for t in outputs[1:]:
@@ -248,7 +250,7 @@ def test_me(opt):
         print(amberhome + '/AmberTools/test/')
         test_folder = ambertools_test_dir
 
-    TIME_DICT, ALL_OUTPUTS, ERRORS = run_all(test_suite, serial=opt.serial)
+    TIME_DICT, ALL_OUTPUTS, ERRORS = run_all(test_suite, opt.num_cpus)
 
     if ERRORS:
         for out in ERRORS:
@@ -284,8 +286,9 @@ def main(args=None):
     parser.add_argument('-x', '--exclude',
             default=[],
             help='Exlude tests')
-    parser.add_argument('-s', '--serial',
-            action='store_true',
+    parser.add_argument('-n', '--num-cpus',
+            default=-1,
+            type=int,
             help='Run test in serial')
     opt = parser.parse_args(args)
     if opt.exclude:
