@@ -215,6 +215,19 @@ def run_all(test_suite, num_cpus):
         return TIME_DICT, ALL_OUTPUTS, ERRORS
 
 
+def timer(msg=''):
+    def wrap_0(func):
+        def wrap(*args, **kwargs):
+            t0 = time()
+            out = func(*args, **kwargs)
+            print("Finished {} in {:04.2f} (minutes)".format(msg,
+                (time() - t0) / 60.))
+            return out
+        return wrap
+    return wrap_0
+
+
+@timer(msg='testing AmberTools')
 def test_me(opt):
     sanderapi_tests = [
         'test.parm7', 'Fortran', 'Fortran2', 'C', 'CPP', 'Python', 'clean'
@@ -287,7 +300,7 @@ def test_me(opt):
         fh.write(summary)
         print(summary)
 
-    assert len(ERRORS) == 0
+    return ERRORS
 
 
 def main(args=None):
@@ -312,7 +325,8 @@ def main(args=None):
         else:
             opt.exclude = opt.exclude.split(',')
         print('exclude', opt.exclude)
-    test_me(opt)
+    errors = test_me(opt)
+    assert len(errors) == 0
 
 
 if __name__ == '__main__':
