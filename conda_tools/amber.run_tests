@@ -105,9 +105,8 @@ def create_test_suite(excluded_tests):
         ],
         'rism': ['test.rism1d', 'test.rism3d.periodic'],
         'python': [
-            'test.pytraj',
-            # 'test.pymsmt', 'test.pytraj', 'test.parmed', 'test.pdb4amber',
-            # 'test.pymsmt'
+            'test.pytraj', 'test.parmed', 'test.pdb4amber',
+            'test.pymsmt'
         ],
     }
 
