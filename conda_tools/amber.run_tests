@@ -184,6 +184,7 @@ def run_all(test_suite, num_cpus):
     import multiprocessing
     import functools
     import numpy as np
+    import random
 
     if num_cpus == 1:
         print("Run test in serial")
@@ -194,7 +195,8 @@ def run_all(test_suite, num_cpus):
             num_cpus = multiprocessing.cpu_count()
         num_cpus = min(len(test_suite), num_cpus)
         print('num_cpus', num_cpus)
-        test_suite_chunks = np.array_split(test_suite, num_cpus)
+        random.shuffle(test_suite)
+        test_suite_chunks = np.array_split(list(set(test_suite)), num_cpus)
         pool = multiprocessing.Pool(num_cpus)
         func =  functools.partial(run_chunk, test_suite_chunks=test_suite_chunks) 
         outputs = pool.map(func, range(num_cpus))
