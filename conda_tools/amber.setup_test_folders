@@ -20,6 +20,7 @@ DATDIR={amber_prefix}/dat
 LIBDIR={amber_prefix}/lib
 INCDIR={amber_prefix}/include
 PYTHON=python
+SKIP_PYTHON=no
 SHARED_SUFFIX={shared_suffix}
 """
 
