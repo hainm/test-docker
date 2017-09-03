@@ -105,7 +105,8 @@ def create_test_suite(excluded_tests):
         ],
         'rism': ['test.rism1d', 'test.rism3d.periodic'],
         'python': [
-            'test.pytraj', 'test.parmed', 'test.pdb4amber',
+            'test.pytraj', 'test.parmed',
+            'test.pdb4amber',
             'test.pymsmt'
         ],
     }
@@ -160,6 +161,56 @@ def execute(command):
     return output, time_diff
 
 
+def run_chunk(rank, test_suite_chunks):
+    # type: (List[[str, str]]) -> None
+    TIME_DICT = dict()
+    ALL_OUTPUTS = []
+    ERRORS = []
+    test_suite = test_suite_chunks[rank]
+    print('rank=', rank, 'test_suite', test_suite)
+    for (test_name, test_dir) in test_suite:
+        with change_folder(test_dir):
+            output, time_diff = execute(['make', test_name])
+            TIME_DICT[test_name] = time_diff
+            ALL_OUTPUTS.extend(output.split('\n'))
+            if ('Program error' in output or
+                    'possible FAILURE' in output or
+                    'No rule to make target' in output):
+                ERRORS.append(output)
+    return TIME_DICT, ALL_OUTPUTS, ERRORS
+
+
+def run_all(test_suite, serial=False):
+    import multiprocessing
+    import functools
+    import numpy as np
+
+    if serial:
+        print("Run test in serial")
+        return run_chunk(0, [test_suite])
+    else:
+        print("Run test in parallel")
+        ncpus = min(len(test_suite), multiprocessing.cpu_count())
+        print('ncpus', ncpus)
+        test_suite_chunks = np.array_split(test_suite, ncpus)
+        pool = multiprocessing.Pool(ncpus)
+        func =  functools.partial(run_chunk, test_suite_chunks=test_suite_chunks) 
+        outputs = pool.map(func, range(ncpus))
+
+        TIME_DICT = outputs[0][0]
+        for t in outputs[1:]:
+            TIME_DICT.update(t[0])
+
+        ALL_OUTPUTS = outputs[0][1]
+        for a in outputs[1:]:
+            ALL_OUTPUTS.extend(a[1])
+
+        ERRORS = outputs[0][2]
+        for e in outputs[1:]:
+            ERRORS.extend(e[2])
+        return TIME_DICT, ALL_OUTPUTS, ERRORS
+
+
 def test_me(opt):
     sanderapi_tests = [
         'test.parm7', 'Fortran', 'Fortran2', 'C', 'CPP', 'Python', 'clean'
@@ -178,22 +229,14 @@ def test_me(opt):
 
     try:
         test_suite = test_suite_dict[
-            test_task] if test_task != 'all' else 'all'
+            test_task] if test_task != 'all' else sum(test_suite_dict.values(), [])
+        if test_task == 'python':
+            test_suite.extend(test_suite_dict['sanderapi'])
     except KeyError:
         test_suite = [
             (test_task, ambertools_test_dir),
         ]
 
-    def run_all(test_suite):
-        for (me, test_dir) in test_suite:
-            with change_folder(test_dir):
-                output, time_diff = execute(['make', me])
-                TIME_DICT[me] = time_diff
-                ALL_OUTPUTS.extend(output.split('\n'))
-                if ('Program error' in output or
-                        'possible FAILURE' in output or
-                        'No rule to make target' in output):
-                    ERRORS.append(output)
 
     print('test_suite', sorted(test_suite))
     # amberXX/test/
@@ -205,16 +248,7 @@ def test_me(opt):
         print(amberhome + '/AmberTools/test/')
         test_folder = ambertools_test_dir
 
-    if test_task == 'all':
-        for _, test_suite in test_suite_dict.items():
-            run_all(test_suite)
-    else:
-        if test_task == 'python':
-            # need to test sanderapi too
-            run_all(test_suite_dict['sanderapi'])
-
-        print('test_folder', test_folder)
-        run_all(test_suite)
+    TIME_DICT, ALL_OUTPUTS, ERRORS = run_all(test_suite, serial=opt.serial)
 
     if ERRORS:
         for out in ERRORS:
@@ -250,6 +284,9 @@ def main(args=None):
     parser.add_argument('-x', '--exclude',
             default=[],
             help='Exlude tests')
+    parser.add_argument('-s', '--serial',
+            action='store_true',
+            help='Run test in serial')
     opt = parser.parse_args(args)
     if opt.exclude:
         # "test.parmed, test.pytraj"
