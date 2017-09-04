@@ -65,6 +65,8 @@ def get_tests_from_test_name(test_name, makefile_fn):
         if word != '\\'
     ]
     my_lines.pop(0)
+    if my_lines[0].startswith('-cd'):
+        return ' '.join(my_lines)
     return my_lines
 
 
@@ -220,8 +222,11 @@ def timer(msg=''):
         def wrap(*args, **kwargs):
             t0 = time()
             out = func(*args, **kwargs)
-            print("Finished {} in {:04.2f} (minutes)".format(msg,
-                (time() - t0) / 60.))
+            long_msg = "Finished {} in {:04.2f} (minutes)".format(msg,
+                    (time() - t0) / 60.)
+            print(long_msg)
+            with open('test_summary.log', 'a') as fh:
+                fh.write(long_msg + '\n')
             return out
         return wrap
     return wrap_0
