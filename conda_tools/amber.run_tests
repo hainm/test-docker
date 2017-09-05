@@ -135,14 +135,16 @@ def create_test_suite(excluded_tests):
     return all_suits
 
 
-def execute(command):
+def execute(cmds):
     then = time()
     # adapted from StackOverflow
     # http://stackoverflow.com/a/4418193
-    print(' '.join(command))
+    command = ' '.join(cmds)
+    print(command)
     output_lines = []
     process = subprocess.Popen(
-        command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        shell=True)
 
     # Poll process for new output until finished
     while True:
@@ -171,14 +173,13 @@ def run_chunk(rank, test_suite_chunks):
     test_suite = test_suite_chunks[rank]
     print('rank=', rank, 'test_suite', test_suite)
     for (test_name, test_dir) in test_suite:
-        with change_folder(test_dir):
-            output, time_diff = execute(['make', test_name])
-            TIME_DICT[test_name] = time_diff
-            ALL_OUTPUTS.extend(output.split('\n'))
-            if ('Program error' in output or
-                    'possible FAILURE' in output or
-                    'No rule to make target' in output):
-                ERRORS.append(output)
+        output, time_diff = execute(['cd', test_dir, '&&', 'make', test_name])
+        TIME_DICT[test_name] = time_diff
+        ALL_OUTPUTS.extend(output.split('\n'))
+        if ('Program error' in output or
+                'possible FAILURE' in output or
+                'No rule to make target' in output):
+            ERRORS.append(output)
     return TIME_DICT, ALL_OUTPUTS, ERRORS
 
 
