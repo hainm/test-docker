@@ -28,19 +28,18 @@ def change_folder(where):
     os.chdir(here)
 
 
-def cat_dif_files(amberhome):
-    print('*' * 50)
-    print("Oops")
-    print('*' * 50)
-    with change_folder(amberhome):
-        output = subprocess.check_output(
-            'find . -iname "*.dif"', shell=True).decode()
+def gather_dif_files(amberhome):
+    print("Writing diff files to test_dif.log")
+    with open('test_dif.log', 'w') as fdif:
+        with change_folder(amberhome):
+            output = subprocess.check_output(
+                'find . -iname "*.dif"', shell=True).decode()
 
-        files = [fn for fn in output.split('\n') if fn]
-        for fn in files:
-            with open(fn) as fh:
-                print(fn)
-                print(fh.read())
+            files = [fn for fn in output.split('\n') if fn]
+            for fn in files:
+                with open(fn) as fh:
+                    fdif.write('FILENAME: {}\n'.format(fn))
+                    fdif.write(fh.read())
 
 
 def get_tests_from_test_name(test_name, makefile_fn):
@@ -289,8 +288,7 @@ def test_me(opt):
             if 'possible FAILURE' in line:
                 n_fails += 1
 
-    if n_fails > 0:
-        cat_dif_files(amberhome)
+    gather_dif_files(amberhome)
 
     print(TIME_DICT)
     with open('test_timing.log', 'w') as fh:
