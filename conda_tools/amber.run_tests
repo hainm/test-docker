@@ -256,8 +256,9 @@ def test_me(opt):
         if test_task == 'python':
             test_suite.extend(test_suite_dict['sanderapi'])
     except KeyError:
+        test_dir = amber_test_dir if opt.use_amber_test_dir else ambertools_test_dir
         test_suite = [
-            (test_task, ambertools_test_dir),
+            (test_task, test_dir),
         ]
 
 
@@ -321,6 +322,9 @@ def main(args=None):
             default=-1,
             type=int,
             help='Run test in serial')
+    parser.add_argument('-d', '--use-amber-test-dir',
+            action='store_true',
+            help='Explicitly run test in $AMBERHOME/test folder')
     opt = parser.parse_args(args)
     if opt.exclude:
         # "test.parmed, test.pytraj"
