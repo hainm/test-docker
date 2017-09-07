@@ -18,6 +18,10 @@ from contextlib import contextmanager
 import os
 import sys
 import subprocess
+import numpy as np
+import multiprocessing
+import functools
+import random
 
 
 @contextmanager
@@ -153,7 +157,6 @@ def execute(cmds):
             break
         sys.stdout.write('.')
         sys.stdout.flush()
-
         output_lines.append(nextline)
     output = ''.join(output_lines)
     now = time()
@@ -163,6 +166,19 @@ def execute(cmds):
     else:
         print('{0:.1f} (s), PASSED'.format(time_diff))
     return output, time_diff
+
+
+def run_circleci(test_suite):
+    node_index = int(os.getenv('CIRCLE_NODE_INDEX'))
+    node_total = int(os.getenv('CIRCLE_NODE_TOTAL'))
+    print("Running on circleci containers")
+    print('node_index = ', node_index)
+    print('node_total= ', node_total)
+
+    if node_index is None:
+        raise ValueError("Must have CIRCLE_NODE_INDEX and CIRCLE_NODE_TOTAL env")
+    test_suite_chunks = np.array_split(sorted(set(test_suite)), node_total)
+    return run_chunk(0, [test_suite_chunks[node_index],])
 
 
 def run_chunk(rank, test_suite_chunks):
@@ -188,11 +204,6 @@ def run_chunk(rank, test_suite_chunks):
 
 
 def run_all(test_suite, num_cpus):
-    import multiprocessing
-    import functools
-    import numpy as np
-    import random
-
     if num_cpus == 1:
         print("Run test in serial")
         return run_chunk(0, [test_suite])
@@ -204,6 +215,7 @@ def run_all(test_suite, num_cpus):
         print('num_cpus', num_cpus)
         random.shuffle(test_suite)
         test_suite_chunks = np.array_split(list(set(test_suite)), num_cpus)
+        print('test_suite_chunks', test_suite_chunks)
         pool = multiprocessing.Pool(num_cpus)
         func =  functools.partial(run_chunk, test_suite_chunks=test_suite_chunks) 
         outputs = pool.map(func, range(num_cpus))
@@ -276,7 +288,10 @@ def test_me(opt):
         print(amberhome + '/AmberTools/test/')
         test_folder = ambertools_test_dir
 
-    TIME_DICT, ALL_OUTPUTS, ERRORS = run_all(test_suite, opt.num_cpus)
+    if opt.circleci:
+        TIME_DICT, ALL_OUTPUTS, ERRORS = run_circleci(test_suite)
+    else:
+        TIME_DICT, ALL_OUTPUTS, ERRORS = run_all(test_suite, opt.num_cpus)
 
     if ERRORS:
         for out in ERRORS:
@@ -329,6 +344,9 @@ def main(args=None):
     parser.add_argument('-d', '--use-amber-test-dir',
             action='store_true',
             help='Explicitly run test in $AMBERHOME/test folder')
+    parser.add_argument('-c', '--circleci',
+            action='store_true',
+            help='If True, run test in parallel using circleci containers')
     opt = parser.parse_args(args)
     if opt.exclude:
         # "test.parmed, test.pytraj"
