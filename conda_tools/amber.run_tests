@@ -219,6 +219,7 @@ def run_all(test_suite, num_cpus):
         pool = multiprocessing.Pool(num_cpus)
         func =  functools.partial(run_chunk, test_suite_chunks=test_suite_chunks) 
         outputs = pool.map(func, range(num_cpus))
+        pool.close()
 
         TIME_DICT = outputs[0][0]
         for t in outputs[1:]:
