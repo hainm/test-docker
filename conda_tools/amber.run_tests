@@ -307,7 +307,8 @@ def test_me(opt):
                 n_passes += 1
             if 'Program error' in line:
                 n_program_errors += 1
-            if 'possible FAILURE' in line:
+            if ('possible FAILURE' in line or
+                'FAILED' in line):
                 n_fails += 1
 
     gather_dif_files(amberhome)
