@@ -314,8 +314,9 @@ def test_me(opt):
 
     print(TIME_DICT)
     with open('test_timing.log', 'w') as fh:
-        for k, v in TIME_DICT.items():
-            fh.write("{}: {:06.2f} (s)\n".format(k, v))
+        for k, v in sorted(TIME_DICT.items(), key=lambda x: x[1],
+                          reverse=True):
+            fh.write("{:32}: {:06.2f} (s)\n".format(k, v))
 
     with open('test_summary.log', 'w') as fh:
         summary = """
