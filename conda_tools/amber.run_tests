@@ -302,7 +302,12 @@ def test_me(opt):
 
     with open('test_out.log', 'w') as fh:
         for line in ALL_OUTPUTS:
-            fh.write(line + '\n')
+            try:
+                fh.write(line + '\n')
+            except UnicodeError:
+                # UnicodeEncodeError: 'ascii' codec can't encode character u'\u2018' in position 18: ordinal not in range(128)
+                # FIXME: why?
+                pass
             if 'PASSED' in line:
                 n_passes += 1
             if 'Program error' in line:
