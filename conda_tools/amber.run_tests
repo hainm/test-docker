@@ -77,8 +77,11 @@ def get_tests_from_test_name(test_name, makefile_fn, deeper=False):
             break
     index_0 = index
 
-    for index in range(index_0 + 1, 1000):
-        if lines[index].startswith('test.'):
+    for index in range(index_0 + 1, 10000):
+        try:
+            if lines[index].startswith('test.'):
+                break
+        except IndexError:
             break
 
     index_next = index
@@ -159,6 +162,13 @@ def create_test_suite(excluded_tests):
     return all_suits
 
 
+def failed(output):
+    return ('Program error' in output or
+            'possible FAILURE' in output or
+            'No rule to make target' in output or
+            'FAILED' in output)
+
+
 def execute(cmds):
     then = time()
     # adapted from StackOverflow
@@ -181,7 +191,7 @@ def execute(cmds):
     output = ''.join(output_lines)
     now = time()
     time_diff = now - then
-    if 'Program error' in output or 'possible FAILURE' in output or 'No rule to make target' in output:
+    if failed(output):
         print('{0:.1f} (s), FAILURE'.format(time_diff))
     else:
         print('{0:.1f} (s), PASSED'.format(time_diff))
@@ -218,15 +228,13 @@ def run_chunk(rank, test_suite_chunks, add_make=True):
         lines = output.split('\n')
         ALL_OUTPUTS.extend(lines)
         for index, line in enumerate(lines):
-            if ('Program error' in line or
-                    'possible FAILURE' in line or
-                    'No rule to make target' in line):
+            if failed(line):
                 ERRORS.append('==> ' + " ".join(cmds))
                 ERRORS.append(" ".join(lines[index-1:index+1]))
     return TIME_DICT, ALL_OUTPUTS, ERRORS
 
 
-def run_all(test_suite, num_cpus, add_make=True):
+def run_all(test_suite, num_cpus, add_make=False):
     if num_cpus == 1:
         print("Run test in serial")
         return run_chunk(0, [test_suite], add_make)
@@ -292,35 +300,42 @@ def test_me(opt):
     test_task = opt.task
 
     try:
+        if opt.task in ['serial.MM.0', 'serial.MM.1']:
+            test_task_update = 'serial.MM'
+        elif opt.task in ['serial.QMMM.0', 'serial.QMMM.1']:
+            test_task_update = 'serial.QMMM'
+        else:
+            test_task_update = test_task
         test_suite = test_suite_dict[
-            test_task] if test_task != 'all' else sum(test_suite_dict.values(), [])
-        if test_task == 'python':
+            test_task_update] if test_task_update != 'all' else sum(test_suite_dict.values(), [])
+        if test_task_update == 'python':
             test_suite.extend(test_suite_dict['sanderapi'])
     except KeyError:
-        print("HELLO THERE")
-        print('test_task', test_task)
         test_dir = amber_test_dir if opt.use_amber_test_dir else ambertools_test_dir
         test_suite = [
             (test_task, test_dir),
         ]
 
-    if opt.no_make:
+    if not opt.make:
         suite = []
-        print('test_suite', test_suite)
         for test_task, test_dir in test_suite:
             if 'AmberTools' in test_dir:
                 makefile = os.path.join(ambertools_test_dir, 'Makefile')
             else:
                 makefile = os.path.join(amber_test_dir, 'Makefile')
-            print('makefile', makefile)
-            print(get_bunch_of_individual_tests(test_task, makefile))
-            print(get_tests_from_test_name(test_task, makefile))
             suite.extend([(tn, test_dir) for tn in
                 get_bunch_of_individual_tests(test_task, makefile)])
         test_suite = suite[:]
-
+        if opt.task in {'serial.MM.0', 'serial.MM.1', 'serial.QMMM.0',
+                'serial.QMMM.1'}:
+            index = int(opt.task.split('.')[-1])
+            test_suite = np.array_split(test_suite, 2)[index].tolist()
+            test_suite = [tuple(t) for t in test_suite]
 
     print('test_suite', sorted(test_suite))
+    if opt.collect_only:
+        return []
+
     # amberXX/test/
     if test_task in ['serial.MM', 'serial.QMMM', 'serial.sander.SEBOMD']:
         print('serial MM and QMMM')
@@ -333,7 +348,7 @@ def test_me(opt):
     if opt.circleci:
         TIME_DICT, ALL_OUTPUTS, ERRORS = run_circleci(test_suite)
     else:
-        TIME_DICT, ALL_OUTPUTS, ERRORS = run_all(test_suite, opt.num_cpus, not opt.no_make)
+        TIME_DICT, ALL_OUTPUTS, ERRORS = run_all(test_suite, opt.num_cpus, opt.make)
 
     if ERRORS:
         for out in ERRORS:
@@ -396,9 +411,12 @@ def main(args=None):
     parser.add_argument('-c', '--circleci',
             action='store_true',
             help='If True, run test in parallel using circleci containers')
-    parser.add_argument('--no-make',
+    parser.add_argument('--make',
             action='store_true',
             help='If True, run test in parallel using circleci containers')
+    parser.add_argument('--collect-only',
+            action='store_true',
+            help='If True, only collect test suite and print to stdout')
     opt = parser.parse_args(args)
     if opt.exclude:
         # "test.parmed, test.pytraj"
