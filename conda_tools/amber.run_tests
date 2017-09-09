@@ -21,6 +21,7 @@ import subprocess
 import numpy as np
 import multiprocessing
 import functools
+import itertools
 import random
 
 
@@ -47,15 +48,32 @@ def gather_dif_files(amberhome):
                     fdif.write(fh.read())
 
 
-def get_tests_from_test_name(test_name, makefile_fn):
+def get_bunch_of_individual_tests(test_name, makefile):
+    first_layer = get_tests_from_test_name(test_name, makefile, False)
+    if first_layer[0].startswith('cd'):
+        return get_tests_from_test_name(test_name, makefile, True)
+    second_layer = []
+    for line in itertools.chain.from_iterable([
+        get_tests_from_test_name(tn, makefile, True) for tn in first_layer]):
+        if line:
+            second_layer.append(line)
+    return second_layer
+
+
+def get_tests_from_test_name(test_name, makefile_fn, deeper=False):
+    # type: (str, str, bool) -> List[str]
     # test.serial.sander.MM has a bunch of small tests.
     with open(makefile_fn) as fh:
-        lines = fh.readlines()
+        lines = [(line.replace('$(BINDIR)', '$AMBERHOME/bin')
+                      .replace('$(MAKE)', 'make')
+                      .replace('-', '')
+                      .replace('$(NETCDF)', '$AMBERHOME/include/netcdf.mod'))
+                for line in fh.readlines()]
 
     index_0 = 0
     index_next = -1
     for index, line in enumerate(lines):
-        if line.startswith(test_name):
+        if line.startswith(test_name + ':'):
             break
     index_0 = index
 
@@ -64,14 +82,16 @@ def get_tests_from_test_name(test_name, makefile_fn):
             break
 
     index_next = index
-    my_lines = [
-        word for word in ''.join(lines[index_0:index_next]).strip().split()
-        if word != '\\'
-    ]
-    my_lines.pop(0)
-    if my_lines[0].startswith('-cd'):
-        return ' '.join(my_lines)
-    return my_lines
+    if deeper:
+        return [line.strip().replace('-', '')
+                for line in lines[index_0+1:index_next] if not line.startswith('#') and line.strip()]
+    else:
+        my_lines = [
+            word for word in ''.join(lines[index_0:index_next]).strip().split()
+            if word != '\\'
+        ]
+        my_lines.pop(0)
+        return my_lines
 
 
 def create_test_suite(excluded_tests):
@@ -181,7 +201,7 @@ def run_circleci(test_suite):
     return run_chunk(0, [test_suite_chunks[node_index],])
 
 
-def run_chunk(rank, test_suite_chunks):
+def run_chunk(rank, test_suite_chunks, add_make=True):
     # type: (List[[str, str]]) -> None
     TIME_DICT = dict()
     ALL_OUTPUTS = []
@@ -189,7 +209,10 @@ def run_chunk(rank, test_suite_chunks):
     test_suite = test_suite_chunks[rank]
     print('rank=', rank, 'test_suite', test_suite)
     for (test_name, test_dir) in test_suite:
-        cmds = ['cd', test_dir, '&&', 'make', test_name]
+        if add_make:
+            cmds = ['cd', test_dir, '&&', 'make', test_name]
+        else:
+            cmds = ['cd', test_dir, '&&', test_name]
         output, time_diff = execute(cmds)
         TIME_DICT[test_name] = time_diff
         lines = output.split('\n')
@@ -203,10 +226,10 @@ def run_chunk(rank, test_suite_chunks):
     return TIME_DICT, ALL_OUTPUTS, ERRORS
 
 
-def run_all(test_suite, num_cpus):
+def run_all(test_suite, num_cpus, add_make=True):
     if num_cpus == 1:
         print("Run test in serial")
-        return run_chunk(0, [test_suite])
+        return run_chunk(0, [test_suite], add_make)
     else:
         print("Run test in parallel")
         if num_cpus < 1:
@@ -217,7 +240,8 @@ def run_all(test_suite, num_cpus):
         test_suite_chunks = np.array_split(list(set(test_suite)), num_cpus)
         print('test_suite_chunks', test_suite_chunks)
         pool = multiprocessing.Pool(num_cpus)
-        func =  functools.partial(run_chunk, test_suite_chunks=test_suite_chunks) 
+        func =  functools.partial(run_chunk, test_suite_chunks=test_suite_chunks,
+                add_make=add_make) 
         outputs = pool.map(func, range(num_cpus))
         pool.close()
 
@@ -273,10 +297,27 @@ def test_me(opt):
         if test_task == 'python':
             test_suite.extend(test_suite_dict['sanderapi'])
     except KeyError:
+        print("HELLO THERE")
+        print('test_task', test_task)
         test_dir = amber_test_dir if opt.use_amber_test_dir else ambertools_test_dir
         test_suite = [
             (test_task, test_dir),
         ]
+
+    if opt.no_make:
+        suite = []
+        print('test_suite', test_suite)
+        for test_task, test_dir in test_suite:
+            if 'AmberTools' in test_dir:
+                makefile = os.path.join(ambertools_test_dir, 'Makefile')
+            else:
+                makefile = os.path.join(amber_test_dir, 'Makefile')
+            print('makefile', makefile)
+            print(get_bunch_of_individual_tests(test_task, makefile))
+            print(get_tests_from_test_name(test_task, makefile))
+            suite.extend([(tn, test_dir) for tn in
+                get_bunch_of_individual_tests(test_task, makefile)])
+        test_suite = suite[:]
 
 
     print('test_suite', sorted(test_suite))
@@ -292,7 +333,7 @@ def test_me(opt):
     if opt.circleci:
         TIME_DICT, ALL_OUTPUTS, ERRORS = run_circleci(test_suite)
     else:
-        TIME_DICT, ALL_OUTPUTS, ERRORS = run_all(test_suite, opt.num_cpus)
+        TIME_DICT, ALL_OUTPUTS, ERRORS = run_all(test_suite, opt.num_cpus, not opt.no_make)
 
     if ERRORS:
         for out in ERRORS:
@@ -353,6 +394,9 @@ def main(args=None):
             action='store_true',
             help='Explicitly run test in $AMBERHOME/test folder')
     parser.add_argument('-c', '--circleci',
+            action='store_true',
+            help='If True, run test in parallel using circleci containers')
+    parser.add_argument('--no-make',
             action='store_true',
             help='If True, run test in parallel using circleci containers')
     opt = parser.parse_args(args)
