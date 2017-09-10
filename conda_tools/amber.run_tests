@@ -23,6 +23,12 @@ import multiprocessing
 import functools
 import itertools
 import random
+import json
+import logging
+
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 
 @contextmanager
@@ -34,7 +40,7 @@ def change_folder(where):
 
 
 def gather_dif_files(amberhome):
-    print("Writing diff files to test_dif.log")
+    logging.info("Writing diff files to test_dif.log")
     with open('test_dif.log', 'w') as fdif:
         with change_folder(amberhome):
             output = subprocess.check_output(
@@ -42,7 +48,7 @@ def gather_dif_files(amberhome):
 
             files = [fn for fn in output.split('\n') if fn]
             for fn in files:
-                print(fn)
+                logging.info(fn)
                 with open(fn) as fh:
                     fdif.write('FILENAME: {}\n'.format(fn))
                     fdif.write(fh.read())
@@ -109,7 +115,16 @@ def get_tests_from_test_name(test_name, makefile_fn, deeper=False):
         return my_lines
 
 
+def remove_excluded_lines(excluded_lines, target):
+    # type: (List[str], List[Tuple(str, str)]) -> None
+    for line in excluded_lines:
+        for line2 in target:
+            if line in line2[0]:
+                target.remove(line2)
+
+
 def create_test_suite(excluded_tests):
+    # type: (List[str]) -> Dict[str, List[str]]
     amberhome = os.getenv('AMBERHOME')
     if amberhome is None:
         raise EnvironmentError("Must set AMBERHOME")
@@ -220,9 +235,9 @@ def execute(cmds):
 def run_circleci(test_suite):
     node_index = int(os.getenv('CIRCLE_NODE_INDEX'))
     node_total = int(os.getenv('CIRCLE_NODE_TOTAL'))
-    print("Running on circleci containers")
-    print('node_index = ', node_index)
-    print('node_total= ', node_total)
+    logging.info("Running on circleci containers")
+    logging.info('node_index = ', node_index)
+    logging.info('node_total= ', node_total)
 
     if node_index is None:
         raise ValueError("Must have CIRCLE_NODE_INDEX and CIRCLE_NODE_TOTAL env")
@@ -236,7 +251,7 @@ def run_chunk(rank, test_suite_chunks, add_make=True):
     ALL_OUTPUTS = []
     ERRORS = []
     test_suite = test_suite_chunks[rank]
-    print('rank=', rank, 'test_suite', test_suite)
+    logging.debug('rank={}, test_suite={}'.format(rank, test_suite))
     for (test_name, test_dir) in test_suite:
         if add_make:
             cmds = ['cd', test_dir, '&&', 'make', test_name]
@@ -255,17 +270,16 @@ def run_chunk(rank, test_suite_chunks, add_make=True):
 
 def run_all(test_suite, num_cpus, add_make=False):
     if num_cpus == 1:
-        print("Run test in serial")
+        logging.info("Run test in serial")
         return run_chunk(0, [test_suite], add_make)
     else:
-        print("Run test in parallel")
+        logging.info("Run test in parallel")
         if num_cpus < 1:
             num_cpus = multiprocessing.cpu_count()
         num_cpus = min(len(test_suite), num_cpus)
         print('num_cpus', num_cpus)
         random.shuffle(test_suite)
         test_suite_chunks = np.array_split(list(set(test_suite)), num_cpus)
-        print('test_suite_chunks', test_suite_chunks)
         pool = multiprocessing.Pool(num_cpus)
         func =  functools.partial(run_chunk, test_suite_chunks=test_suite_chunks,
                 add_make=add_make) 
@@ -315,7 +329,7 @@ def test_me(opt):
     ERRORS = []
     ALL_OUTPUTS = []
     TIME_DICT = {}
-    test_suite_dict = create_test_suite(opt.exclude)
+    test_suite_dict = create_test_suite(opt.exclude and opt.exclude.get('test_name') or [])
     test_task = opt.task
 
     try:
@@ -351,17 +365,21 @@ def test_me(opt):
             test_suite = np.array_split(test_suite, 2)[index].tolist()
             test_suite = [tuple(t) for t in test_suite]
 
-    print('test_suite', sorted(test_suite))
+    remove_excluded_lines(opt.exclude and opt.exclude.get('test_line') or [], test_suite)
+    print('test_suite')
+    for tn in sorted(test_suite):
+        logging.debug(tn)
+
     if opt.collect_only:
         return []
 
     # amberXX/test/
     if test_task in ['serial.MM', 'serial.QMMM', 'serial.sander.SEBOMD']:
-        print('serial MM and QMMM')
+        logging.info('serial MM and QMMM')
         test_folder = amber_test_dir
     # amberXX/AmberTools/test/
     else:
-        print(amberhome + '/AmberTools/test/')
+        logging.info(amberhome + '/AmberTools/test/')
         test_folder = ambertools_test_dir
 
     if opt.circleci:
@@ -418,7 +436,8 @@ def main(args=None):
             default='fast',
             help='test task')
     parser.add_argument('-x', '--exclude',
-            default=[],
+            type=dict,
+            default=None,
             help='Exlude tests')
     parser.add_argument('-n', '--num-cpus',
             default=-1,
@@ -435,15 +454,18 @@ def main(args=None):
             help='If True, run test in parallel using circleci containers')
     parser.add_argument('--collect-only',
             action='store_true',
-            help='If True, only collect test suite and print to stdout')
+            help='If True, only collect test suite and logging.info to stdout')
+    parser.add_argument('--debug',
+            action='store_true',
+            help='If True, debug')
     opt = parser.parse_args(args)
+    if opt.debug:
+        logger.setLevel(logging.DEBUG)
+
     if opt.exclude:
         # "test.parmed, test.pytraj"
-        if os.path.isfile(opt.exclude):
-            with open(opt.exclude) as fh:
-                opt.exclude = fh.read().replace('\n', '').split(',')
-        else:
-            opt.exclude = opt.exclude.split(',')
+        with open(opt.exclude) as fh:
+            opt.exclude = json.loads(fh.read())
         print('TEST EXCLUDED', opt.exclude)
     errors = test_me(opt)
     assert len(errors) == 0
