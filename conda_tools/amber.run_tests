@@ -48,6 +48,14 @@ def gather_dif_files(amberhome):
                     fdif.write(fh.read())
 
 
+def get_env_from_lines(env_name, lines):
+    # type: (str, List[str]) -> str
+    for line in lines:
+        if line.startswith(env_name + '='):
+            break
+    return line.split('=')[-1].strip()
+
+
 def get_bunch_of_individual_tests(test_name, makefile):
     first_layer = get_tests_from_test_name(test_name, makefile, False)
     if first_layer[0].startswith('cd'):
@@ -63,9 +71,13 @@ def get_bunch_of_individual_tests(test_name, makefile):
 def get_tests_from_test_name(test_name, makefile_fn, deeper=False):
     # type: (str, str, bool) -> List[str]
     # test.serial.sander.MM has a bunch of small tests.
+    config_fn = os.path.join(os.getenv('AMBERHOME'), 'config.h')
+    amber_source = get_env_from_lines('AMBER_SOURCE', open(config_fn).readlines())
+
     with open(makefile_fn) as fh:
         lines = [(line.replace('$(BINDIR)', '$AMBERHOME/bin')
                       .replace('$(MAKE)', 'make')
+                      .replace('$(AMBER_SOURCE)', amber_source)
                       .replace('-', '')
                       .replace('$(NETCDF)', '$AMBERHOME/include/netcdf.mod'))
                 for line in fh.readlines()]
@@ -166,7 +178,14 @@ def failed(output):
     return ('Program error' in output or
             'possible FAILURE' in output or
             'No rule to make target' in output or
+            'command not found' in output or
             'FAILED' in output)
+
+
+def program_error(output):
+    return ('Program error' in output or
+            'No rule to make target' in output or
+            'command not found' in output)
 
 
 def execute(cmds):
@@ -366,7 +385,7 @@ def test_me(opt):
                 pass
             if 'PASSED' in line:
                 n_passes += 1
-            if 'Program error' in line:
+            if program_error(line):
                 n_program_errors += 1
             if ('possible FAILURE' in line or
                 'FAILED' in line):
