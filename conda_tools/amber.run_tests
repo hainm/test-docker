@@ -29,6 +29,7 @@ import logging
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
 @contextmanager
@@ -84,9 +85,11 @@ def get_tests_from_test_name(test_name, makefile_fn, deeper=False):
         lines = [(line.replace('$(BINDIR)', '$AMBERHOME/bin')
                       .replace('$(MAKE)', 'make')
                       .replace('$(AMBER_SOURCE)', amber_source)
-                      .replace('-', '')
                       .replace('$(NETCDF)', '$AMBERHOME/include/netcdf.mod'))
                 for line in fh.readlines()]
+        for index, line in enumerate(lines):
+            if line.strip().startswith('-'):
+                lines[index] = line.replace('-', '', 1)
 
     index_0 = 0
     index_next = -1
@@ -367,6 +370,7 @@ def test_me(opt):
 
     remove_excluded_lines(opt.exclude and opt.exclude.get('test_line') or [], test_suite)
     print('test_suite')
+    print('Number of tests = %s' % len(test_suite))
     for tn in sorted(test_suite):
         logging.debug(tn)
 
