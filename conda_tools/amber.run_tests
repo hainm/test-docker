@@ -436,7 +436,6 @@ def main(args=None):
             default='fast',
             help='test task')
     parser.add_argument('-x', '--exclude',
-            type=dict,
             default=None,
             help='Exlude tests')
     parser.add_argument('-n', '--num-cpus',
