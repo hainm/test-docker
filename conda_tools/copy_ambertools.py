@@ -29,6 +29,10 @@ def _having_one_of_them(name, word_set):
     return False
 
 
+def _copy_folder(source_dir, target_dir):
+    subprocess.call(['cp', '-r', source_dir, target_dir])
+
+
 def copy_tree(dry_run=False):
     # use mkrelease_at as a file source
     recipe_dir = os.getenv('RECIPE_DIR',
@@ -36,6 +40,8 @@ def copy_tree(dry_run=False):
     print('recipe_dir', recipe_dir)
     print('this_path', this_path)
     amberhome = os.path.abspath(os.getenv('AMBER_SRC'))
+    print('recipe_dir', recipe_dir)
+    print('amberhome', amberhome)
     assert os.path.exists(recipe_dir)
     assert os.path.exists(amberhome)
     assert os.path.exists(os.path.join(amberhome, 'AmberTools'))
@@ -53,7 +59,7 @@ def copy_tree(dry_run=False):
             target_dir = os.path.join('AmberTools', 'src')
             print('copying {} to {}'.format(source_dir, target_dir))
             if not dry_run:
-                subprocess.call(['cp', '-r', source_dir, target_dir])
+                _copy_folder(source_dir, target_dir)
 
         with open(mkrelease_at_file) as fh:
             for line in fh.readlines():
@@ -94,8 +100,7 @@ def copy_tree(dry_run=False):
                             assert os.path.exists(target_dir)
                             if not dry_run:
                                 for fn in files:
-                                    subprocess.call(
-                                        ['cp', '-r', fn, target_dir])
+                                    _copy_folder(fn, target_dir)
     else:
         print(
             "not having mkrelease_at in AMBERHOME={}, assume this is a released version".
@@ -104,7 +109,7 @@ def copy_tree(dry_run=False):
             cmd = ['cp', '-r', fn, '.']
             print(' '.join(cmd))
             if not dry_run:
-                subprocess.check_call(cmd)
+                _copy_folder(fn, '.')
 
 
 def main():
