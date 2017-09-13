@@ -40,10 +40,12 @@ cat << EOF | docker run -i \
     cd \$HOME/TMP
 
     if [ "\$dry_run" = "True" ]; then
-        python $BUILD_ALL_SCRIPT --py $pyversion --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user -d \
+        echo "python $BUILD_ALL_SCRIPT --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user -d \
+               --amberhome /amberhome -v $ambertools_version"
+        python $BUILD_ALL_SCRIPT --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user -d \
                --amberhome /amberhome -v $ambertools_version
     else
-        python $BUILD_ALL_SCRIPT --py $pyversion --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user \
+        python $BUILD_ALL_SCRIPT --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user \
                --amberhome /amberhome -v $ambertools_version
     fi
 
