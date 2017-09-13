@@ -89,7 +89,7 @@ def copy_tarfile_to_build_folder(build_commands,
 def build_all_python_verions_in_one_package(container_folder, dry_run=False,
         py_versions=['3.4', '3.5', '3.6']):
     # build full AmberTools for python 2.7 first
-    print("py_versions", py_versions)
+    print("Start with python 2.7. Additional versions", py_versions)
     os.environ['AMBER_BUILD_TASK'] = 'ambertools'
     recipe_dir = os.path.abspath(os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-recipe'))
     tmp_recipe_dir = os.path.abspath(
