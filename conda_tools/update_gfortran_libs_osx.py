@@ -54,7 +54,7 @@ def get_will_be_fixed_files():
         fn
         for fn in so_files + glob.glob('bin/*') + glob.glob(
             'bin/to_be_dispatched/*') + glob.glob('lib/*dylib')
-        if get_dependence(fn)
+        if os.path.isfile(fn) and get_dependence(fn)
     ]
 
 
