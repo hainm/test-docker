@@ -86,8 +86,10 @@ def copy_tarfile_to_build_folder(build_commands,
         os.path.join(container_folder, os.path.basename(built_file)))
 
 
-def build_all_python_verions_in_one_package(container_folder, dry_run=False):
+def build_all_python_verions_in_one_package(container_folder, dry_run=False,
+        py_versions=['2.7', '3.4', '3.5', '3.6']):
     # build full AmberTools for python 2.7 first
+    print("py_versions", py_versions)
     os.environ['AMBER_BUILD_TASK'] = 'ambertools'
     recipe_dir = os.path.abspath(os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-recipe'))
     tmp_recipe_dir = os.path.abspath(
@@ -99,7 +101,8 @@ def build_all_python_verions_in_one_package(container_folder, dry_run=False):
         subprocess.check_call(py2_build_command)
 
     # build only python packages in AmberTools
-    for pyver in ['3.4', '3.5', '3.6']:
+    for pyver in py_versions:
+        print('pyver', pyver)
         build_command = ['conda', 'build', tmp_recipe_dir, '--py', pyver]
         if dry_run:
             print(build_command)
@@ -128,7 +131,7 @@ def perform_build_with_docker(opt, container_folder, py_versions=[
     build_task = opt.build_task
     if opt.build_task == 'ambertools_pack_all_pythons':
         final_python_versions = [
-            '2.7',
+            '2.7'
         ]
         print("Ignoring {}".format(str(py_versions)))
     else:
@@ -195,7 +198,8 @@ def perform_build_without_docker(opt,
         if opt.build_task == 'ambertools_pack_all_pythons':
             print('Build a single AmberTools with different Python versions')
             build_all_python_verions_in_one_package(
-                container_folder=container_folder, dry_run=opt.dry_run)
+                container_folder=container_folder, dry_run=opt.dry_run,
+                py_versions=py_versions)
         else:
             for ver in py_versions:
                 build_commands = ['conda', 'build', recipe_dir, '--py', ver]
@@ -254,6 +258,7 @@ def main(args=None):
         "--amberhome", help="Path to amber source code")
     parser.add_argument(
         '--py',
+        '--py-version',
         default=None,
         help=
         'Python version. Default: build all versions (2.7, 3.4, 3.5, 3.6)')
@@ -283,8 +288,8 @@ def main(args=None):
     opt = parser.parse_args(args)
     opt.amberhome = os.path.abspath(opt.amberhome)
 
-    if opt.py is None and opt.build_task == 'ambertools':
-        py_versions = ['2.7', '3.4', '3.5', '3.6']
+    if opt.build_task == 'ambertools':
+        py_versions = [str(opt.py),] if opt.py else ['2.7', '3.4', '3.5', '3.6']
         opt.build_task = 'ambertools_pack_all_pythons'
     else:
         py_versions = [

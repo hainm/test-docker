@@ -10,7 +10,7 @@ this_dir = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(this_dir, '..'))
 sys.path.insert(0, os.path.join(this_dir, '..', '..'))
 BUILD_SCRIPT = os.path.join(this_dir, '..', '..', 'build_all.py')
-amberhome = os.path.join(os.getenv('HOME'), 'amber_git', 'amber')
+amberhome = os.path.join(this_dir, 'fake_data', 'fake_amber')
 
 # ../
 import build_all
@@ -71,3 +71,7 @@ def test_build_all_cmd_with_assertion():
         print('lines', lines)
 
         assert expected_lines == lines
+
+
+def test_build_single_python_verions():
+    build_all.main(['--py', '2.7', '-d'] + extend_cmd)

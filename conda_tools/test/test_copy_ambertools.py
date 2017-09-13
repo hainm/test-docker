@@ -30,4 +30,4 @@ def test_copy_ambertools(mock_getenv, mock_copy):
     cam.mkdir_ambertree()
     cam.copy_tree()
     os.chdir(cwd)
-    mock_copy.assert_called_with(ambertools_src, '.')
+    mock_copy.assert_called_with(os.path.join(fake_amberhome, 'linux-64'), '.')
