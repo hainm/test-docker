@@ -16,7 +16,10 @@ def tar_xf(fn):
 
 
 def sh(cmd):
-    subprocess.check_call(cmd, shell=True)
+    try:
+        subprocess.check_call(cmd, shell=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output.decode())
 
 
 def update_amber():
