@@ -87,7 +87,7 @@ def copy_tarfile_to_build_folder(build_commands,
 
 
 def build_all_python_verions_in_one_package(container_folder, dry_run=False,
-        py_versions=['2.7', '3.4', '3.5', '3.6']):
+        py_versions=['3.4', '3.5', '3.6']):
     # build full AmberTools for python 2.7 first
     print("py_versions", py_versions)
     os.environ['AMBER_BUILD_TASK'] = 'ambertools'
@@ -197,9 +197,15 @@ def perform_build_without_docker(opt,
     if opt.build_task != 'ambermini':
         if opt.build_task == 'ambertools_pack_all_pythons':
             print('Build a single AmberTools with different Python versions')
+            final_version = py_versions[:]
+            try:
+                # we will build py2.7 seperately
+                final_version.remove('2.7')
+            except ValueError:
+                pass
             build_all_python_verions_in_one_package(
                 container_folder=container_folder, dry_run=opt.dry_run,
-                py_versions=py_versions)
+                py_versions=final_version)
         else:
             for ver in py_versions:
                 build_commands = ['conda', 'build', recipe_dir, '--py', ver]
