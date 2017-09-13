@@ -88,7 +88,7 @@ def get_dependence(orig_lib):
     else:
         return [
             lib for lib in get_dylibs(orig_lib)
-            if lib.startswith('/usr/local/gfortran/lib/')
+            if lib.startswith('/usr/local/gfortran/lib/') and os.path.isfile(lib)
         ]
 
 
