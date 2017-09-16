@@ -81,15 +81,19 @@ def get_tests_from_test_name(test_name, makefile_fn, deeper=False):
     config_fn = os.path.join(os.getenv('AMBERHOME'), 'config.h')
     amber_source = get_env_from_lines('AMBER_SOURCE', open(config_fn).readlines())
 
-    with open(makefile_fn) as fh:
-        lines = [(line.replace('$(BINDIR)', '$AMBERHOME/bin')
-                      .replace('$(MAKE)', 'make')
-                      .replace('$(AMBER_SOURCE)', amber_source)
-                      .replace('$(NETCDF)', '$AMBERHOME/include/netcdf.mod'))
-                for line in fh.readlines()]
-        for index, line in enumerate(lines):
-            if line.strip().startswith('-'):
-                lines[index] = line.replace('-', '', 1)
+    if hasattr(makefile_fn, 'readlines'):
+        lines = makefile_fn.readlines()
+    else:
+        with open(makefile_fn) as fh:
+            lines = fh.readlines()
+    lines = [(line.replace('$(BINDIR)', '$AMBERHOME/bin')
+                  .replace('$(MAKE)', 'make')
+                  .replace('$(AMBER_SOURCE)', amber_source)
+                  .replace('$(NETCDF)', '$AMBERHOME/include/netcdf.mod'))
+            for line in lines]
+    for index, line in enumerate(lines):
+        if line.strip().startswith('-'):
+            lines[index] = line.replace('-', '', 1)
 
     index_0 = 0
     index_next = -1
