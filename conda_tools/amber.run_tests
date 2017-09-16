@@ -162,6 +162,9 @@ def create_test_suite(excluded_tests):
             'test.mmpbsa',
             'test.mm_pbsa',
         ],
+        'pbsa': [
+            'test.pbsa',
+        ],
         'rism': ['test.rism1d', 'test.rism3d.periodic'],
         'python': [
             'test.pytraj', 'test.parmed',
