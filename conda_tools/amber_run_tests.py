@@ -83,6 +83,8 @@ def get_tests_from_test_name(test_name, makefile_fn, deeper=False):
 
     if hasattr(makefile_fn, 'readlines'):
         lines = makefile_fn.readlines()
+    elif isinstance(makefile_fn, list):
+        lines = makefile_fn
     else:
         with open(makefile_fn) as fh:
             lines = fh.readlines()

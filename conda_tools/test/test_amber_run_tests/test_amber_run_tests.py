@@ -9,3 +9,6 @@ def test_get_tests_from_test_name():
             ['test.serial.MM', 'test.serial.QMMM',
              'test.serial.sander.SEBOMD',
              'test.serial.emil', 'test.serial.sanderapi']
+
+    assert ar.get_bunch_of_individual_tests('test.serial', 'Makefile.amber') == \
+            []
