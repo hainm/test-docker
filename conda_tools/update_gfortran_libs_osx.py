@@ -48,7 +48,7 @@ def add_rpath(path, rpath, verbose=False):
 
 
 def get_will_be_fixed_files(prefix):
-    so_files = get_so_files(prefix)
+    so_files = get_so_files(os.path.join(prefix, 'lib'))
     print('so_files', so_files)
     fns = []
     for fn in (so_files +
