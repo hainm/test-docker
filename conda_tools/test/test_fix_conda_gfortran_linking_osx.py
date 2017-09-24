@@ -26,7 +26,7 @@ def test_repack_conda_package():
     opt.dry_run = False
     with patch('update_gfortran_libs_osx.main') as mock_g_main:
         repack_conda_package(opt)
-        mock_g_main.assert_called_with([])
+        mock_g_main.assert_called_with(['.'])
     os.remove(os.path.basename(FAKE_TAR))
 
 

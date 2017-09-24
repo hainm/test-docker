@@ -28,7 +28,7 @@ def repack_conda_package(opt):
             conda=True):
         # we do not include libgfortran here
         # will add amber-libgfortran requirement in meta file?
-        update_gfortran_libs_osx.main([])
+        update_gfortran_libs_osx.main(['.'])
 
 
 if __name__ == '__main__':
