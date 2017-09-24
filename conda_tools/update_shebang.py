@@ -3,11 +3,14 @@
 Example:
     python update_shebang.py $AMBERHOME
 """
+import os
 import argparse
+import glob
+import subprocess
 
 
 def update_python_env(bin_dir):
-    files = [fn for fn in glob(bin_dir + '/*') if os.path.isfile(fn)]
+    files = [fn for fn in glob.glob(bin_dir + '/*') if os.path.isfile(fn)]
     for fn in files:
         try:
             content = ''
@@ -29,7 +32,7 @@ def main(args=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("prefix")
     opt = parser.parse_args(args)
-    update_python_env(os.path.join(prefix, 'bin'))
+    update_python_env(os.path.join(opt.prefix, 'bin'))
 
 
 if __name__ == '__main__':
