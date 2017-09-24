@@ -1,9 +1,10 @@
+import sys
 import os
-import fix_rpath_osx
 from mock import patch
 import pytest
 
-
+sys.path.insert(0, '..')
+import fix_rpath_osx
 amberhome = '/Users/haichit/amber_git/tmp/amber16/'
 
 
