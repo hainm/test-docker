@@ -128,6 +128,7 @@ def update_rpath(prefix, g_dest='lib/amber_3rd_party/', copy_gfortran=True):
             subprocess.check_call(cmd_id)
 
     for fn in will_be_fixed:
+        print("FIXING: %s " % fn)
         # we will store all gfortran-relates files in
         # $AMBERHOME/lib/amber_3rd_party
         if fn.endswith('.dylib'):
