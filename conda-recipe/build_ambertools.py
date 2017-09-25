@@ -8,7 +8,7 @@ conda_tools_dir = os.path.join(THIS_RECIPE, '..', 'conda_tools')
 sys.path.insert(0, conda_tools_dir)
 import utils # conda_tools
 import copy_ambertools
-import fix_rpaths_osx
+import fix_rpath_osx
 from copy_built_ambertools import copy_to_prefix
 
 def main():
@@ -45,9 +45,9 @@ def main():
     
     if isosx:
         # fix rpath
-        # $PYTHON ${RECIPE_DIR}/../conda_tools/fix_rpaths_osx.py $AMBERHOME/bin/
-        # $PYTHON ${RECIPE_DIR}/../conda_tools/fix_rpaths_osx.py $AMBERHOME/lib/
-        fix_rpaths_osx.main([amberhome])
+        # $PYTHON ${RECIPE_DIR}/../conda_tools/fix_rpath_osx.py $AMBERHOME/bin/
+        # $PYTHON ${RECIPE_DIR}/../conda_tools/fix_rpath_osx.py $AMBERHOME/lib/
+        fix_rpath_osx.main([amberhome])
     
     copy_to_prefix(amberhome, prefix)
 
