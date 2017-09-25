@@ -23,7 +23,7 @@ fi
 
 if [ "$CIRCLECI" = "true" ]; then
     msg="circle build $CIRCLE_BUILD_NUM, from $CIRCLE_BUILD_URL"
-    cp $CIRCLE_ARTIFACTS/ambertools-build/non-conda-install/linux-64.*.tar.bz2 \
+    cp $HOME/TMP/ambertools-build/non-conda-install/linux-64.*.tar.bz2 \
         $HOME/$tarfile.gz
 fi
 
