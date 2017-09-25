@@ -26,7 +26,6 @@ import random
 import json
 import logging
 
-
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -68,8 +67,8 @@ def get_bunch_of_individual_tests(test_name, makefile):
     if first_layer[0].startswith('cd'):
         return get_tests_from_test_name(test_name, makefile, True)
     second_layer = []
-    for line in itertools.chain.from_iterable([
-        get_tests_from_test_name(tn, makefile, True) for tn in first_layer]):
+    for line in itertools.chain.from_iterable(
+        [get_tests_from_test_name(tn, makefile, True) for tn in first_layer]):
         if line:
             second_layer.append(line)
     return second_layer
@@ -79,14 +78,14 @@ def get_tests_from_test_name(test_name, makefile_fn, deeper=False):
     # type: (str, str, bool) -> List[str]
     # test.serial.sander.MM has a bunch of small tests.
     config_fn = os.path.join(os.getenv('AMBERHOME'), 'config.h')
-    amber_source = get_env_from_lines('AMBER_SOURCE', open(config_fn).readlines())
+    amber_source = get_env_from_lines('AMBER_SOURCE',
+                                      open(config_fn).readlines())
 
     with open(makefile_fn) as fh:
-        lines = [(line.replace('$(BINDIR)', '$AMBERHOME/bin')
-                      .replace('$(MAKE)', 'make')
-                      .replace('$(AMBER_SOURCE)', amber_source)
-                      .replace('$(NETCDF)', '$AMBERHOME/include/netcdf.mod'))
-                for line in fh.readlines()]
+        lines = [(line.replace('$(BINDIR)', '$AMBERHOME/bin').replace(
+            '$(MAKE)', 'make').replace('$(AMBER_SOURCE)', amber_source)
+                  .replace('$(NETCDF)', '$AMBERHOME/include/netcdf.mod'))
+                 for line in fh.readlines()]
         for index, line in enumerate(lines):
             if line.strip().startswith('-'):
                 lines[index] = line.replace('-', '', 1)
@@ -107,11 +106,15 @@ def get_tests_from_test_name(test_name, makefile_fn, deeper=False):
 
     index_next = index
     if deeper:
-        return [line.strip().replace('make k', 'make -k')
-                for line in lines[index_0+1:index_next] if not line.startswith('#') and line.strip()]
+        return [
+            line.strip().replace('make k', 'make -k')
+            for line in lines[index_0 + 1:index_next]
+            if not line.startswith('#') and line.strip()
+        ]
     else:
         my_lines = [
-            word for word in ''.join(lines[index_0:index_next]).strip().split()
+            word
+            for word in ''.join(lines[index_0:index_next]).strip().split()
             if word != '\\'
         ]
         my_lines.pop(0)
@@ -166,11 +169,8 @@ def create_test_suite(excluded_tests):
             'test.pbsa',
         ],
         'rism': ['test.rism1d', 'test.rism3d.periodic'],
-        'python': [
-            'test.pytraj', 'test.parmed',
-            'test.pdb4amber',
-            'test.pymsmt'
-        ],
+        'python':
+        ['test.pytraj', 'test.parmed', 'test.pdb4amber', 'test.pymsmt'],
     }
 
     for test_suite_dict in [amber_test_suite_dict, ambertools_test_suite_dict]:
@@ -180,7 +180,6 @@ def create_test_suite(excluded_tests):
                     test_suite_dict[k].remove(test)
                 except ValueError:
                     pass
-
 
     def gather(suite_dict, test_dir):
         for task, suite in suite_dict.items():
@@ -196,17 +195,14 @@ def create_test_suite(excluded_tests):
 
 
 def failed(output):
-    return ('Program error' in output or
-            'possible FAILURE' in output or
-            'No rule to make target' in output or
-            'command not found' in output or
-            'FAILED' in output)
+    return ('Program error' in output or 'possible FAILURE' in output
+            or 'No rule to make target' in output
+            or 'command not found' in output or 'FAILED' in output)
 
 
 def program_error(output):
-    return ('Program error' in output or
-            'No rule to make target' in output or
-            'command not found' in output)
+    return ('Program error' in output or 'No rule to make target' in output
+            or 'command not found' in output)
 
 
 def execute(cmds):
@@ -217,8 +213,7 @@ def execute(cmds):
     print(command)
     output_lines = []
     process = subprocess.Popen(
-        command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-        shell=True)
+        command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
 
     # Poll process for new output until finished
     while True:
@@ -246,9 +241,12 @@ def run_circleci(test_suite):
     logging.info('node_total= ', node_total)
 
     if node_index is None:
-        raise ValueError("Must have CIRCLE_NODE_INDEX and CIRCLE_NODE_TOTAL env")
+        raise ValueError(
+            "Must have CIRCLE_NODE_INDEX and CIRCLE_NODE_TOTAL env")
     test_suite_chunks = np.array_split(sorted(set(test_suite)), node_total)
-    return run_chunk(0, [test_suite_chunks[node_index],])
+    return run_chunk(0, [
+        test_suite_chunks[node_index],
+    ])
 
 
 def run_chunk(rank, test_suite_chunks, add_make=True):
@@ -270,7 +268,7 @@ def run_chunk(rank, test_suite_chunks, add_make=True):
         for index, line in enumerate(lines):
             if failed(line):
                 ERRORS.append('==> ' + " ".join(cmds))
-                ERRORS.append(" ".join(lines[index-1:index+1]))
+                ERRORS.append(" ".join(lines[index - 1:index + 1]))
     return TIME_DICT, ALL_OUTPUTS, ERRORS
 
 
@@ -287,8 +285,8 @@ def run_all(test_suite, num_cpus, add_make=False):
         random.shuffle(test_suite)
         test_suite_chunks = np.array_split(list(set(test_suite)), num_cpus)
         pool = multiprocessing.Pool(num_cpus)
-        func =  functools.partial(run_chunk, test_suite_chunks=test_suite_chunks,
-                add_make=add_make) 
+        func = functools.partial(
+            run_chunk, test_suite_chunks=test_suite_chunks, add_make=add_make)
         outputs = pool.map(func, range(num_cpus))
         pool.close()
 
@@ -311,13 +309,15 @@ def timer(msg=''):
         def wrap(*args, **kwargs):
             t0 = time()
             out = func(*args, **kwargs)
-            long_msg = "Finished {} in {:04.2f} (minutes)".format(msg,
-                    (time() - t0) / 60.)
+            long_msg = "Finished {} in {:04.2f} (minutes)".format(
+                msg, (time() - t0) / 60.)
             print(long_msg)
             with open('test_summary.log', 'a') as fh:
                 fh.write(long_msg + '\n')
             return out
+
         return wrap
+
     return wrap_0
 
 
@@ -335,7 +335,14 @@ def test_me(opt):
     ERRORS = []
     ALL_OUTPUTS = []
     TIME_DICT = {}
-    test_suite_dict = create_test_suite(opt.exclude and opt.exclude.get('test_name') or [])
+    test_suite_dict = create_test_suite(
+        opt.exclude and opt.exclude.get('test_name') or [])
+    sanderapi_python_suite = {
+        'sanderapi_python': [
+            ('make Python', os.path.join(amberhome, 'test', 'sanderapi')),
+            ('make Python', os.path.join(amberhome, 'test', 'sanderlesapi')),
+        ]
+    }
     test_task = opt.task
 
     try:
@@ -346,9 +353,10 @@ def test_me(opt):
         else:
             test_task_update = test_task
         test_suite = test_suite_dict[
-            test_task_update] if test_task_update != 'all' else sum(test_suite_dict.values(), [])
+            test_task_update] if test_task_update != 'all' else sum(
+                test_suite_dict.values(), [])
         if test_task_update == 'python':
-            test_suite.extend(test_suite_dict['sanderapi'])
+            test_suite.extend([])
     except KeyError:
         test_dir = amber_test_dir if opt.use_amber_test_dir else ambertools_test_dir
         test_suite = [
@@ -362,16 +370,22 @@ def test_me(opt):
                 makefile = os.path.join(ambertools_test_dir, 'Makefile')
             else:
                 makefile = os.path.join(amber_test_dir, 'Makefile')
-            suite.extend([(tn, test_dir) for tn in
-                get_bunch_of_individual_tests(test_task, makefile)])
+            suite.extend(
+                [(tn, test_dir)
+                 for tn in get_bunch_of_individual_tests(test_task, makefile)])
         test_suite = suite[:]
-        if opt.task in {'serial.MM.0', 'serial.MM.1', 'serial.QMMM.0',
-                'serial.QMMM.1'}:
+        if opt.task == 'python':
+            print("Adding sander{les}api to python test suite")
+            test_suite.extend(sanderapi_python_suite['sanderapi_python'])
+        if opt.task in {
+                'serial.MM.0', 'serial.MM.1', 'serial.QMMM.0', 'serial.QMMM.1'
+        }:
             index = int(opt.task.split('.')[-1])
             test_suite = np.array_split(test_suite, 2)[index].tolist()
             test_suite = [tuple(t) for t in test_suite]
 
-    remove_excluded_lines(opt.exclude and opt.exclude.get('test_line') or [], test_suite)
+    remove_excluded_lines(
+        opt.exclude and opt.exclude.get('test_line') or [], test_suite)
     print('test_suite')
     print('Number of tests = %s' % len(test_suite))
     for tn in sorted(test_suite):
@@ -392,7 +406,8 @@ def test_me(opt):
     if opt.circleci:
         TIME_DICT, ALL_OUTPUTS, ERRORS = run_circleci(test_suite)
     else:
-        TIME_DICT, ALL_OUTPUTS, ERRORS = run_all(test_suite, opt.num_cpus, opt.make)
+        TIME_DICT, ALL_OUTPUTS, ERRORS = run_all(test_suite, opt.num_cpus,
+                                                 opt.make)
 
     if ERRORS:
         for out in ERRORS:
@@ -412,16 +427,15 @@ def test_me(opt):
                 n_passes += 1
             if program_error(line):
                 n_program_errors += 1
-            if ('possible FAILURE' in line or
-                'FAILED' in line):
+            if ('possible FAILURE' in line or 'FAILED' in line):
                 n_fails += 1
 
     gather_dif_files(amberhome)
 
     print(TIME_DICT)
     with open('test_timing.log', 'w') as fh:
-        for k, v in sorted(TIME_DICT.items(), key=lambda x: x[1],
-                          reverse=True):
+        for k, v in sorted(
+                TIME_DICT.items(), key=lambda x: x[1], reverse=True):
             fh.write("{:32}: {:06.2f} (s)\n".format(k, v))
 
     with open('test_summary.log', 'w') as fh:
@@ -439,31 +453,29 @@ def test_me(opt):
 def main(args=None):
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t', '--task',
-            default='fast',
-            help='test task')
-    parser.add_argument('-x', '--exclude',
-            default=None,
-            help='Exlude tests')
-    parser.add_argument('-n', '--num-cpus',
-            default=-1,
-            type=int,
-            help='Run test in serial')
-    parser.add_argument('-d', '--use-amber-test-dir',
-            action='store_true',
-            help='Explicitly run test in $AMBERHOME/test folder')
-    parser.add_argument('-c', '--circleci',
-            action='store_true',
-            help='If True, run test in parallel using circleci containers')
-    parser.add_argument('--make',
-            action='store_true',
-            help='If True, run test in parallel using circleci containers')
-    parser.add_argument('--collect-only',
-            action='store_true',
-            help='If True, only collect test suite and logging.info to stdout')
-    parser.add_argument('--debug',
-            action='store_true',
-            help='If True, debug')
+    parser.add_argument('-t', '--task', default='fast', help='test task')
+    parser.add_argument('-x', '--exclude', default=None, help='Exlude tests')
+    parser.add_argument(
+        '-n', '--num-cpus', default=-1, type=int, help='Run test in serial')
+    parser.add_argument(
+        '-d',
+        '--use-amber-test-dir',
+        action='store_true',
+        help='Explicitly run test in $AMBERHOME/test folder')
+    parser.add_argument(
+        '-c',
+        '--circleci',
+        action='store_true',
+        help='If True, run test in parallel using circleci containers')
+    parser.add_argument(
+        '--make',
+        action='store_true',
+        help='If True, run test in parallel using circleci containers')
+    parser.add_argument(
+        '--collect-only',
+        action='store_true',
+        help='If True, only collect test suite and logging.info to stdout')
+    parser.add_argument('--debug', action='store_true', help='If True, debug')
     opt = parser.parse_args(args)
     if opt.debug:
         logger.setLevel(logging.DEBUG)
