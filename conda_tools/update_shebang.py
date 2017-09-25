@@ -16,7 +16,7 @@ def update_python_env(bin_dir):
             content = ''
             with open(fn) as fh:
                 line = fh.readline().strip()
-                if 'bin/python' in line:
+                if line.endswith('python'):
                     fh.seek(0)
                     content = fh.read().replace(line, '#!/usr/bin/env python')
             # overwrite
