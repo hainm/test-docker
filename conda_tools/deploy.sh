@@ -1,4 +1,3 @@
-set -ex
 version=16
 ambertools_version=18
 tarfile=amber$version.tar
