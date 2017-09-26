@@ -1,5 +1,6 @@
 set -ex
 version=16
+ambertools_version=18
 tarfile=amber$version.tar
 platform=`python -c '
 import sys
@@ -17,7 +18,11 @@ cp $HOME/ambertools-binary-build/conda_tools/amber.py27.sh $HOME/amber${version}
 
 if [ "$TRAVIS" = "true" ]; then
     msg="travis build $TRAVIS_BUILD_NUMBER"
-    tar -cf $tarfile amber$version/{amber.sh,bin,lib,include,dat}
+    mkdir amber${ambertools_version}
+    cp -rf amber$version/{amber.sh,bin,lib,include,dat} amber${ambertools_version}/
+    cp $HOME/ambertools-binary-build/conda_tools/{amber.setup_test_folders,amber.run_tests} \
+        amber${ambertools_version}/bin/
+    tar -cf $tarfile amber${ambertools_version}/{amber.sh,bin,lib,include,dat}
     gzip $tarfile
 fi
 
