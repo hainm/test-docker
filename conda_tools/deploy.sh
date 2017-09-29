@@ -39,5 +39,5 @@ git add .
 ls ${prefix}*
 
 git commit -m "$msg"
-git remote add production https://${AT_GH_TOKEN}@github.com/$AT_GH_USER/$AT_GH_REPO_BINARY_DEV
+git remote add production https://${AT_GH_TOKEN}@github.com/$AT_GH_USER/$AT_GH_REPO_BINARY_DEV > /dev/null
 git push production master -f
