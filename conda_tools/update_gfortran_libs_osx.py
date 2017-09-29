@@ -47,15 +47,17 @@ def add_rpath(path, rpath, verbose=False):
                 "install_name_tool failed with exit status %d" % p.returncode)
 
 
-# assume you are in $AMBERHOME
-def get_will_be_fixed_files():
-    so_files = get_so_files()
-    return [
-        fn
-        for fn in so_files + glob.glob('bin/*') + glob.glob(
-            'bin/to_be_dispatched/*') + glob.glob('lib/*dylib')
-        if os.path.isfile(fn) and get_dependence(fn)
-    ]
+def get_will_be_fixed_files(prefix):
+    so_files = get_so_files(os.path.join(prefix, 'lib'))
+    print('so_files', so_files)
+    fns = []
+    for fn in (so_files +
+               glob.glob(os.path.join(prefix, 'bin/*')) +
+               glob.glob(os.path.join(prefix, 'bin/to_be_dispatched/*')) +
+               glob.glob(os.path.join(prefix, 'lib/*dylib'))):
+        if os.path.isfile(fn) and get_dependence(fn):
+            fns.append(fn)
+    return fns
 
 
 def get_so_files(dest='.'):
@@ -102,9 +104,9 @@ def change_to_rpath_dot_lib(dep, fn):
     return ' '.join(cmd)
 
 
-def update_rpath(g_dest='lib/amber_3rd_party/', copy_gfortran=True):
+def update_rpath(prefix, g_dest='lib/amber_3rd_party/', copy_gfortran=True):
     # current folder
-    will_be_fixed = get_will_be_fixed_files()
+    will_be_fixed = get_will_be_fixed_files(prefix)
     gfortran_files = [os.path.join(g_dest, fn) for fn in required_libs]
     all_files = will_be_fixed
 
@@ -126,6 +128,7 @@ def update_rpath(g_dest='lib/amber_3rd_party/', copy_gfortran=True):
             subprocess.check_call(cmd_id)
 
     for fn in will_be_fixed:
+        print("FIXING: %s " % fn)
         # we will store all gfortran-relates files in
         # $AMBERHOME/lib/amber_3rd_party
         if fn.endswith('.dylib'):
@@ -139,17 +142,18 @@ def update_rpath(g_dest='lib/amber_3rd_party/', copy_gfortran=True):
 
 def main(args=None):
     parser = argparse.ArgumentParser()
+    parser.add_argument("prefix")
     parser.add_argument("--copy-gfortran", action="store_true")
     opt = parser.parse_args(args)
-    dest = 'lib/amber_3rd_party'
+    dest = os.path.join(opt.prefix, 'lib', 'amber_3rd_party')
     try:
         os.makedirs(dest)
     except OSError:
         pass
     if opt.copy_gfortran:
         copy_gfortran_libs(
-            g_dir='/usr/local/gfortran/lib', dest='lib/amber_3rd_party/')
-    update_rpath(copy_gfortran=opt.copy_gfortran)
+            g_dir='/usr/local/gfortran/lib', dest=dest)
+    update_rpath(opt.prefix, g_dest=dest, copy_gfortran=opt.copy_gfortran)
 
 
 if __name__ == '__main__':

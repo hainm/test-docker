@@ -19,6 +19,7 @@ import argparse
 
 # local file, in the same folder as this script
 from edit_package import editing_conda_package
+import update_shebang
 
 
 def main():
@@ -43,28 +44,9 @@ def pack_non_conda_package(opt):
             output_dir=opt.output_dir,
             add_date=opt.date,
             dry_run=opt.dry_run):
-        update_python_env('./bin/')
+        update_shebang.update_python_env('./bin/')
 
         # No need to copy here since we alread done in conda build step?
-
-
-def update_python_env(bin_dir):
-    files = [fn for fn in glob(bin_dir + '/*') if os.path.isfile(fn)]
-    for fn in files:
-        try:
-            content = ''
-            with open(fn) as fh:
-                line = fh.readline().strip()
-                if 'bin/python' in line:
-                    fh.seek(0)
-                    content = fh.read().replace(line, '#!/usr/bin/env python')
-            # overwrite
-            if content:
-                with open(fn, 'w') as fh:
-                    fh.write(content)
-                subprocess.check_call(['chmod', '+x', fn])
-        except UnicodeError:
-            pass
 
 
 if __name__ == '__main__':
