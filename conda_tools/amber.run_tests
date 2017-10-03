@@ -82,10 +82,13 @@ def get_tests_from_test_name(test_name, makefile_fn, deeper=False):
                                       open(config_fn).readlines())
 
     with open(makefile_fn) as fh:
-        lines = [(line.replace('$(BINDIR)', '$AMBERHOME/bin').replace(
-            '$(MAKE)', 'make').replace('$(AMBER_SOURCE)', amber_source)
-                  .replace('$(NETCDF)', '$AMBERHOME/include/netcdf.mod'))
-                 for line in fh.readlines()]
+        lines = [(line.replace('$(BINDIR)', '$AMBERHOME/bin')
+                      .replace('$(MAKE)', 'make')
+                      .replace('$(AMBER_SOURCE)', amber_source)
+                      .replace('$(NETCDF)', '$AMBERHOME/include/netcdf.mod')
+                      .replace('$(TESTRISMSFF)', 'testrism')
+                      )
+                 for line in fh.readlines()] # yapf: disable
         for index, line in enumerate(lines):
             if line.strip().startswith('-'):
                 lines[index] = line.replace('-', '', 1)
