@@ -35,7 +35,7 @@ cd $AT_GH_REPO_BINARY_DEV
 rm -rf .git
 git init .
 split -b 40000000 $HOME/$tarfile.gz $prefix
-git add .
+git add tmp*AT*
 ls ${prefix}*
 
 git commit -m "$msg"
