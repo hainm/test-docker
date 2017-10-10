@@ -19,9 +19,11 @@ if [ "$TRAVIS" = "true" ]; then
     msg="travis build $TRAVIS_BUILD_NUMBER"
     mkdir amber${ambertools_version}
     cp -rf amber$version/{amber.sh,bin,lib,include,dat} amber${ambertools_version}/
+    echo "date = `date`"
+    echo `date` > amber${ambertools_version}/date.log
     cp $HOME/ambertools-binary-build/conda_tools/{amber.setup_test_folders,amber.run_tests} \
         amber${ambertools_version}/bin/
-    tar -cf $tarfile amber${ambertools_version}/{amber.sh,bin,lib,include,dat}
+    tar -cf $tarfile amber${ambertools_version}/{date.log,amber.sh,bin,lib,include,dat}
     gzip $tarfile
 fi
 
