@@ -1,6 +1,6 @@
 - Install AmberTools conda version
 ```
-conda install ambertools= -c http://ambermd.org/downloads/ambertools/conda/
+conda install ambertools=17 -c http://ambermd.org/downloads/ambertools/conda/
 ```
 
 - Working versions
