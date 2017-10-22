@@ -1,0 +1,6 @@
+FROM ambermd/amber-build-box
+
+# wget https://cmake.org/files/v3.9/cmake-3.9.4.tar.gz
+ADD cmake-3.9.4.tar.gz /opt/
+RUN cd /opt/cmake-3.9.4 && ./bootstrap
+RUN cd /opt/cmake-3.9.4 && gmake
