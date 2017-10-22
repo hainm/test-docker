@@ -1,3 +1,4 @@
+# docker build -t ambermd/amber-build-box-cmake . -f Dockerfile-cmake
 FROM ambermd/amber-build-box
 
 # wget https://cmake.org/files/v3.9/cmake-3.9.4.tar.gz
