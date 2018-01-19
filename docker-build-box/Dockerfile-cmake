@@ -5,3 +5,4 @@ FROM ambermd/amber-build-box
 ADD cmake-3.9.4.tar.gz /opt/
 RUN cd /opt/cmake-3.9.4 && ./bootstrap
 RUN cd /opt/cmake-3.9.4 && gmake
+ENV PATH=/opt/cmake-3.9.4/bin/:$PATH

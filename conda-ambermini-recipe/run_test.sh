@@ -5,13 +5,13 @@ function test_ambermini(){
     antechamber -h
     tleap -h
     sqm -h
-    acdoctor -h
+    # acdoctor -h
+    # charmmgen -h
+    # match_atomname -h
     am1bcc -h
     atomtype -h
     bondtype -h
-    charmmgen -h
     espgen -h
-    match_atomname -h
     parmchk2 -h
     prepgen -h
     residuegen -h
