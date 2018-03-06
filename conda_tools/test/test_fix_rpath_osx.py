@@ -5,7 +5,7 @@ import pytest
 
 sys.path.insert(0, '..')
 import fix_rpath_osx
-amberhome = '/Users/haichit/amber_git/tmp/amber16/'
+amberhome = os.getenv("AMBERHOME")
 
 
 @pytest.fixture

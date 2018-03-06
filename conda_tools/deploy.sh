@@ -1,4 +1,4 @@
-version=16
+version=18
 ambertools_version=18
 tarfile=amber$version.tar
 platform=`python -c '
