@@ -41,12 +41,12 @@ cat << EOF | docker run -i \
 
     if [ "\$dry_run" = "True" ]; then
         echo "python $BUILD_ALL_SCRIPT --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user -d \
-               --amberhome /amberhome -v $ambertools_version"
+               /amberhome -v $ambertools_version"
         python $BUILD_ALL_SCRIPT --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user -d \
-               --amberhome /amberhome -v $ambertools_version
+               /amberhome -v $ambertools_version
     else
         python $BUILD_ALL_SCRIPT --exclude-osx --no-docker -t $AMBER_BUILD_TASK --exclude-non-conda-user \
-               --amberhome /amberhome -v $ambertools_version
+               /amberhome -v $ambertools_version
     fi
 
     if [ ! -d /amberhome/linux-64/ ]; then

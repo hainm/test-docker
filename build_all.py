@@ -238,6 +238,8 @@ def main(args=None):
     global CONTAINER_FOLDER, DOCKER_BUILD_SCRIPT, BZ2_FILES
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "amberhome", help="Path to amber source code")
+    parser.add_argument(
         "--exclude-linux",
         action='store_true',
         dest="exclude_linux",
@@ -266,8 +268,6 @@ def main(args=None):
         help="which target you want to build? (default ambertools?)")
     parser.add_argument(
         '-d', "--dry-run", action='store_true', dest="dry_run", help="dry run")
-    parser.add_argument(
-        "--amberhome", help="Path to amber source code")
     parser.add_argument(
         '--py',
         '--py-version',
