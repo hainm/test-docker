@@ -1,5 +1,7 @@
 # WARNING: Your current working dir must be outside amber tree.
 # See usage below
+# Known working version
+#    conda-build: 2.1.17
 ''' Building AmberTools binary for conda and non-conda install
 for python 2.7, 3.4, 3.5, 3.6 for Linux and MacOS
 
