@@ -97,8 +97,8 @@ def build_all_python_verions_in_one_package(container_folder, opt,
     tmp_recipe_dir = os.path.abspath(
         os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-multi-python'))
     py2_build_command = ['conda', 'build', recipe_dir, '--py', '2.7']
-    if opt.build_only:
-        py2_build_command.append('-b')
+    if opt.skip_test:
+        py2_build_command.append('--no-test')
     if opt.dry_run:
         print(py2_build_command)
     else:
@@ -108,6 +108,8 @@ def build_all_python_verions_in_one_package(container_folder, opt,
     for pyver in extend_versionss:
         print('pyver', pyver)
         build_command = ['conda', 'build', tmp_recipe_dir, '--py', pyver]
+        if opt.skip_test:
+            build_command.append("--no-test")
         if opt.dry_run:
             print(build_command)
         else:
@@ -217,8 +219,8 @@ def perform_build_without_docker(opt,
         else:
             for ver in py_versions:
                 build_commands = ['conda', 'build', recipe_dir, '--py', ver]
-                if opt.build_only:
-                    build_commands.append("-b")
+                if opt.skip_test:
+                    build_commands.append("--no-test")
                 if opt.dry_run:
                     print(build_commands)
                 else:
@@ -230,8 +232,8 @@ def perform_build_without_docker(opt,
         print("Building ambermini, ignore {}".format(py_versions))
         amber_mini_recipe_dir = recipe_dir + '/../conda-ambermini-recipe'
         build_commands = ['conda', 'build', amber_mini_recipe_dir]
-        if opt.build_only:
-            build_commands.append("-b")
+        if opt.skip_test:
+            build_commands.append("--no-test")
         if opt.dry_run:
             print(build_commands)
         else:
@@ -275,7 +277,7 @@ def main(args=None):
     parser.add_argument(
         '-d', "--dry-run", action='store_true', dest="dry_run", help="dry run")
     parser.add_argument(
-        '-b', "--build-only", action='store_true', dest="build_only", help="do not run tests")
+        "--skip-test", action='store_true', dest="skip_test", help="do not run tests")
     parser.add_argument(
         '--py',
         '--py-version',
