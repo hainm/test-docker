@@ -120,13 +120,13 @@ def build_all_python_verions_in_one_package(container_folder, opt,
     # original full AmberTools build (with python 2.7)
     recipe_dir = tmp_recipe_dir + '/../conda-ambertools-all-python'
     combine_command = ['conda', 'build', recipe_dir]
-    if dry_run:
+    if opt.dry_run:
         print(combine_command)
     else:
         subprocess.check_call(combine_command)
         # sh('cp {} .'.format(built_tarfile_dir(combine_command)))
     copy_tarfile_to_build_folder(
-        combine_command, container_folder, dry_run=dry_run)
+        combine_command, container_folder, dry_run=opt.dry_run)
 
 
 def perform_build_with_docker(opt, container_folder, py_versions=[

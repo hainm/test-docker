@@ -20,6 +20,7 @@ def main():
     copy_ambertools.main()
     ATPY2 = utils.get_package_dir(
         conda_recipe=os.path.join(THIS_RECIPE, '..', 'conda-recipe'), py=2.7)
+    print("ATPY2", ATPY2, 'exists = ', os.path.exists(ATPY2))
     utils.tar_xf(ATPY2)
 
     utils.update_amber()
