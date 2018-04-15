@@ -122,6 +122,8 @@ def build_all_python_verions_in_one_package(container_folder, opt,
     # original full AmberTools build (with python 2.7)
     recipe_dir = tmp_recipe_dir + '/../conda-ambertools-all-python'
     combine_command = ['conda', 'build', recipe_dir]
+    if opt.skip_test:
+        combine_command.append("--no-test")
     if opt.dry_run:
         print(combine_command)
     else:

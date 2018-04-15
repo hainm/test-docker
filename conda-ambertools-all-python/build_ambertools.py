@@ -42,7 +42,7 @@ def main():
     
     if sys.platform.startswith("darwin"):
         os.chdir(PREFIX)
-        update_gfortran_libs_osx.main(['--copy-gfortran'])
+        update_gfortran_libs_osx.main([PREFIX, '--copy-gfortran'])
        
 
 if __name__ == '__main__':
