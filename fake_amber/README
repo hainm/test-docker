@@ -1,0 +1,2 @@
+example:
+    python ~/amber_git/ambertools-binary-build/build_all.py ~/amber_git/fake_amber  -v 18.0 --exclude-linux --skip-test -v 18.0

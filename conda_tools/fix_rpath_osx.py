@@ -38,7 +38,8 @@ def get_file_object_from_prefix(pkg_name):
     lib_iter = os.walk(os.path.join(pkg_name, 'lib'))
     for root, dirs, files in itertools.chain(bin_iter, lib_iter):
         for fn in (os.path.join(root, _) for _ in files):
-            if not fn.endswith('.a') and is_object_file(fn):
+            # if not fn.endswith('.a') and is_object_file(fn):
+            if fn.endswith('.so') or fn.endswith('.dylib'):
                 yield fn
 
 

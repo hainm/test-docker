@@ -88,7 +88,7 @@ def copy_tarfile_to_build_folder(build_commands,
         os.path.join(container_folder, os.path.basename(built_file)))
 
 
-def build_all_python_verions_in_one_package(container_folder, dry_run=False,
+def build_all_python_verions_in_one_package(container_folder, opt,
         extend_versionss=('3.4', '3.5', '3.6')):
     # build full AmberTools for python 2.7 first
     print("Start with python 2.7. Additional versions", extend_versionss)
@@ -97,7 +97,9 @@ def build_all_python_verions_in_one_package(container_folder, dry_run=False,
     tmp_recipe_dir = os.path.abspath(
         os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-multi-python'))
     py2_build_command = ['conda', 'build', recipe_dir, '--py', '2.7']
-    if dry_run:
+    if opt.skip_test:
+        py2_build_command.append('--no-test')
+    if opt.dry_run:
         print(py2_build_command)
     else:
         subprocess.check_call(py2_build_command)
@@ -106,7 +108,9 @@ def build_all_python_verions_in_one_package(container_folder, dry_run=False,
     for pyver in extend_versionss:
         print('pyver', pyver)
         build_command = ['conda', 'build', tmp_recipe_dir, '--py', pyver]
-        if dry_run:
+        if opt.skip_test:
+            build_command.append("--no-test")
+        if opt.dry_run:
             print(build_command)
         else:
             subprocess.check_call(build_command)
@@ -118,13 +122,15 @@ def build_all_python_verions_in_one_package(container_folder, dry_run=False,
     # original full AmberTools build (with python 2.7)
     recipe_dir = tmp_recipe_dir + '/../conda-ambertools-all-python'
     combine_command = ['conda', 'build', recipe_dir]
-    if dry_run:
+    if opt.skip_test:
+        combine_command.append("--no-test")
+    if opt.dry_run:
         print(combine_command)
     else:
         subprocess.check_call(combine_command)
         # sh('cp {} .'.format(built_tarfile_dir(combine_command)))
     copy_tarfile_to_build_folder(
-        combine_command, container_folder, dry_run=dry_run)
+        combine_command, container_folder, dry_run=opt.dry_run)
 
 
 def perform_build_with_docker(opt, container_folder, py_versions=[
@@ -210,11 +216,13 @@ def perform_build_without_docker(opt,
                 pass
             print('final_version', final_version)
             build_all_python_verions_in_one_package(
-                container_folder=container_folder, dry_run=opt.dry_run,
+                container_folder=container_folder, opt=opt,
                 extend_versionss=tuple(final_version))
         else:
             for ver in py_versions:
                 build_commands = ['conda', 'build', recipe_dir, '--py', ver]
+                if opt.skip_test:
+                    build_commands.append("--no-test")
                 if opt.dry_run:
                     print(build_commands)
                 else:
@@ -226,6 +234,8 @@ def perform_build_without_docker(opt,
         print("Building ambermini, ignore {}".format(py_versions))
         amber_mini_recipe_dir = recipe_dir + '/../conda-ambermini-recipe'
         build_commands = ['conda', 'build', amber_mini_recipe_dir]
+        if opt.skip_test:
+            build_commands.append("--no-test")
         if opt.dry_run:
             print(build_commands)
         else:
@@ -268,6 +278,8 @@ def main(args=None):
         help="which target you want to build? (default ambertools?)")
     parser.add_argument(
         '-d', "--dry-run", action='store_true', dest="dry_run", help="dry run")
+    parser.add_argument(
+        "--skip-test", action='store_true', dest="skip_test", help="do not run tests")
     parser.add_argument(
         '--py',
         '--py-version',

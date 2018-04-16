@@ -5,7 +5,7 @@ import subprocess
 
 def get_package_dir(conda_recipe, py=2.7):
     cmd = ['conda', 'build', '--output', conda_recipe, '--py', str(py)]
-    print('cmd', cmd)
+    print('cmd', " ".join(cmd))
     print('conda_recipe', conda_recipe)
     output = subprocess.check_output(cmd)
     return output.decode().replace('\n', '')
