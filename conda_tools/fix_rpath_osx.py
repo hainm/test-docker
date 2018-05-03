@@ -9,6 +9,11 @@ def is_object_file(fn):
     return os.path.isfile(fn) and 'is not an object file' not in subprocess.check_output([
         'otool', '-L', fn]).decode()
 
+def easy_check_output(cmd):
+    try:
+        return subprocess.check_output(cmd)
+    except subprocess.CalledProcessError:
+        print("FAIL to run command", " ".join(cmd))
 
 def add_loader_path(fn, prefix, sub):
     """Add loader_path for `fn` to `prefix`
@@ -16,7 +21,7 @@ def add_loader_path(fn, prefix, sub):
     relpath = os.path.relpath(prefix, os.path.abspath(os.path.dirname(fn)))
     loader_path = '@loader_path/{}/{}'.format(relpath, sub)
     if not loader_path in subprocess.check_output(['otool', '-l', fn]).decode():
-        subprocess.check_output(['install_name_tool', '-add_rpath', loader_path, fn])
+        easy_check_output(['install_name_tool', '-add_rpath', loader_path, fn])
     else:
         print("{} is already in {}".format(loader_path, fn))
 
@@ -71,7 +76,7 @@ def main(args=None):
     parser = argparse.ArgumentParser(description="Fix rpath and loader_path for files in "
         "path/{bin,lib} folders")
     parser.add_argument('path')
-    parser.add_argument('--prefix')
+    parser.add_argument('--prefix', help='prefix got from running otool -L')
     opt = parser.parse_args(args)
     if opt.prefix is None:
         opt.prefix = os.path.abspath(opt.path)
