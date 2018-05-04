@@ -49,17 +49,26 @@ def get_file_object_from_prefix(pkg_name):
     pkg_dir = os.path.abspath(pkg_name)
     bin_iter = os.walk(os.path.join(pkg_name, 'bin'))
     lib_iter = os.walk(os.path.join(pkg_name, 'lib'))
+
+    if DRY_RUN:
+        def check_file(fn):
+            return fn.endswith('orave')
+    else:
+        def check_file(fn):
+            return not fn.endswith('.a') and is_object_file(fn)
+
     for root, dirs, files in itertools.chain(bin_iter, lib_iter):
         for fn in (os.path.join(root, _) for _ in files):
-            if not fn.endswith('.a') and is_object_file(fn):
-            # if fn.endswith('.so') or fn.endswith('.dylib'):
+            if check_file(fn):
                 yield fn
 
 
-def fix_linking_libs(fn, lib_paths, prefix=None):
+def fix_linking_libs(fn, lib_paths):
     # change to @rpath instead of using absolute path
-    lib_paths = lib_paths if prefix is None else [
-            lib for lib in lib_paths if lib.startswith(prefix)]
+    lib_paths = [ 
+            lib for lib in lib_paths if not lib.startswith('/usr') and
+            not lib.startswith('@rpath')]
+    print('lib_paths', lib_paths)
     for lib_path in lib_paths:
         basename = os.path.basename(lib_path)
         cmd = [
@@ -80,33 +89,26 @@ def get_dylibs(fn):
     return lines
 
 
-def handle_gfortran_libs(pkg_name):
-    pass
-
-
 def main(args=None):
     global DRY_RUN
     parser = argparse.ArgumentParser(description="Fix rpath and loader_path for files in "
         "path/{bin,lib} folders")
     parser.add_argument('path')
-    parser.add_argument('--prefix', help='prefix got from running otool -L')
     parser.add_argument('-d', '--dry-run', action='store_true')
     opt = parser.parse_args(args)
 
     if opt.dry_run:
         DRY_RUN = True
 
-    if opt.prefix is None:
-        opt.prefix = os.path.abspath(opt.path)
+    print("DRY RUN = ", DRY_RUN)
 
     pkg_name = os.path.abspath(opt.path)
     for fn in get_file_object_from_prefix(pkg_name):
         add_id(fn)
         add_loader_path(fn, pkg_name, 'lib')
         libs = get_dylibs(fn)
-        fix_linking_libs(fn, libs, prefix=opt.prefix)
-    handle_gfortran_libs(pkg_name)
-
+        print(fn, 'with its libs', libs)
+        fix_linking_libs(fn, libs)
 
 if __name__ == '__main__':
     main()
