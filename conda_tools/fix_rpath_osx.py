@@ -65,11 +65,11 @@ def get_file_object_from_prefix(pkg_name):
 
 def fix_linking_libs(fn, lib_paths):
     # change to @rpath instead of using absolute path
-    lib_paths = [ 
+    paths_to_be_fixed = [ 
             lib for lib in lib_paths if not lib.startswith('/usr') and
             not lib.startswith('@rpath')]
-    print('lib_paths', lib_paths)
-    for lib_path in lib_paths:
+    print('paths_to_be_fixed', paths_to_be_fixed)
+    for lib_path in paths_to_be_fixed:
         basename = os.path.basename(lib_path)
         cmd = [
             'install_name_tool', '-change', lib_path,
