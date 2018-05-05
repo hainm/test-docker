@@ -55,10 +55,13 @@ function naive_test(){
     which rism1d
     which paramfit
     which addles
-    MMPBSA.py -h
     which FEW.pl
     which MCPB.py
     which xleap
+    which AddtoBox
+    which UnitCell
+    which makeCHIR_RST
+    which makeDIST_RST
 }
 
 function extra_test(){
@@ -76,8 +79,11 @@ function extra_test(){
     resp
     parmed --help
     pdb4amber --help
+    ceinutil.py --help
 
+    MMPBSA.py -h
     mmpbsa_py_energy -h
+    ante-MMPBSA.py -h
     ffgbsa
 }
 

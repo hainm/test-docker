@@ -6,7 +6,7 @@ import argparse
 import glob
 
 ENV_ROOT = 'test_ambertools'
-AMBER_VERSION = 'amber17'
+AMBER_VERSION = 'amber18'
 
 
 def is_conda_package(package_dir):
