@@ -42,9 +42,6 @@ function test_ambermini(){
     am1bcc -h
     atomtype -h
     bondtype -h
-    # acdoctor -h
-    # charmmgen -h
-    # match_atomname -h
     espgen -h
     parmchk2 -h
     prepgen -h
@@ -58,7 +55,7 @@ function naive_test(){
     which rism1d
     which paramfit
     which addles
-    which MMPBSA.py
+    MMPBSA.py -h
     which FEW.pl
     which MCPB.py
     which xleap
@@ -74,12 +71,14 @@ function extra_test(){
     sander.LES --version
     mdgx --help
     cpptraj --help
-    # test_nab
     which nab
     UnitCell
     resp
     parmed --help
     pdb4amber --help
+
+    mmpbsa_py_energy -h
+    ffgbsa
 }
 
 case ${amber_build_task} in

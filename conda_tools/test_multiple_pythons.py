@@ -29,8 +29,8 @@ def install_ambertools(package_dir,
                        pyver='2.7'):
     if is_conda_package(package_dir):
         # conda
-        subprocess.check_call(
-            'conda install {} -n {}'.format(package_dir, env_name), shell=True)
+        subprocess.call(
+            'conda install {} -n {} --force'.format(package_dir, env_name), shell=True)
     else:
         amberhome = os.path.abspath(os.path.join(tmp_dir, AMBER_VERSION))
         # non-conda
@@ -43,10 +43,6 @@ def install_ambertools(package_dir,
             print("Existing {}. Skip untar".format(AMBER_VERSION))
         else:
             subprocess.check_call(['tar', '-xf', package_dir])
-        # os.environ['AMBERHOME'] = amberhome
-        # os.environ['PYTHONPATH'] = os.path.join(amberhome,
-        #         'lib/python{}/site-packages'.format(pyver))
-        # os.environ['PATH'] = os.path.join(amberhome, 'bin') + ':' + os.getenv("PATH")
 
 
 def find_miniconda_root():
@@ -109,8 +105,6 @@ def get_so_files(dest):
 
 def get_tested_files(dest):
     so_files = get_so_files(dest)
-    # files_in_bin = [os.path.join(dest, 'bin', fn)
-    #     for fn in ['cpptraj', 'sqm', 'mdgx']]
     files_in_bin = glob.glob(os.path.join(dest, 'bin/*'))
     return [
         fn
@@ -152,6 +146,7 @@ def main(args=None):
                 os.environ['CONDA_PREFIX'] = ''
                 amberhome = os.path.join(
                     os.path.abspath(tmp_dir), AMBER_VERSION)
+            os.environ['AMBERHOME'] = amberhome
 
             install_ambertools(package_dir, env_name, pyver=py)
             if sys.platform.startswith('darwin'):
