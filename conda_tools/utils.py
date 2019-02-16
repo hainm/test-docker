@@ -19,7 +19,11 @@ def sh(cmd):
     try:
         subprocess.check_call(cmd, shell=True)
     except subprocess.CalledProcessError as e:
-        print(e.output.decode())
+        try:
+            print(e.output.decode())
+        except AttributeError:
+            print('e.output is ', e.output)
+            pass
 
 
 def update_amber():

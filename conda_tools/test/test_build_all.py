@@ -16,7 +16,7 @@ amberhome = os.path.join(this_dir, 'fake_data', 'fake_amber')
 import build_all
 import utils
 
-extend_cmd = ['-v', '18.0', '--amberhome', amberhome]
+extend_cmd = ['-v', '18.0', amberhome]
 
 @contextmanager
 def tempfolder():
