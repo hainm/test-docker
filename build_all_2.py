@@ -36,7 +36,7 @@ def build(opt):
 
     working_dir = os.path.join(opt.output_dir, 'working_dir')
     try:
-        os.mkdir('working_dir')
+        os.mkdir(working_dir)
     except FileExistsError:
         pass
     cwd = os.getcwd()
