@@ -43,13 +43,16 @@ def set_compiler_env():
         # https://gcc.gnu.org/wiki/GFortranBinaries#MacOS
         # we do not use clang here since we still need
         # gfortran (so just use included gcc/g++)
-        os.environ['CXX'] = '/usr/local/gfortran/bin/g++'
-        os.environ['CC'] = '/usr/local/gfortran/bin/gcc'
+        # os.environ['CXX'] = '/usr/local/gfortran/bin/g++'
+        # os.environ['CC'] = '/usr/local/gfortran/bin/gcc'
         os.environ['FC'] = '/usr/local/gfortran/bin/gfortran'
 
 
 def run_configure():
-    sh('./configure --with-python python gnu')
+    if sys.platform.startswith('darwin'):
+        sh('./configure --with-python python -macAccelerate clang')
+    else:
+        sh('./configure --with-python python gnu')
 
 
 def make_install(ncpus=4):
