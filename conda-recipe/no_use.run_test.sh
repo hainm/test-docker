@@ -55,7 +55,7 @@ function test_ambermini(){
 function naive_test(){
     # those programs won't return exit 0
     which pbsa
-    which rism1d
+    # which rism1d
     which paramfit
     which addles
     which MMPBSA.py
