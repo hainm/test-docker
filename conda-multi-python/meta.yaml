@@ -15,6 +15,10 @@ build:
   script_env:
     - AMBER_SRC
 
+source:
+  patches:
+    - patch
+
 requirements:
   build:
     - libgcc [linux]

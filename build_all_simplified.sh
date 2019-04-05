@@ -11,7 +11,7 @@ notest='--no-test'
 # notest=''
 
 # Build full ambertools with python 2.7
-conda build $recipes_dir/conda-recipe --py 2.7 $notest
+# conda build $recipes_dir/conda-recipe --py 2.7 $notest
 
 # Use tarfile from above build to build python components in AmberTools
 conda build $recipes_dir/conda-multi-python --py 3.4 $notest
