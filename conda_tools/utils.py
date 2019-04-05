@@ -66,6 +66,17 @@ def make_python_serial():
     os.chdir(amberhome)
 
 
+def patch(patch_fname):
+    print("Patching ...")
+    # We want to reuse libcpptraj from previous build.
+    with open('AmberTools/src/Makefile') as fh:
+        lines = [line for line in fh.readlines()
+                if '$(MAKE) $(LIBCPPTRAJ)' not in line]
+    with open('AmberTools/src/Makefile', 'w') as fh:
+        for line in lines:
+            fh.write(line)
+
+
 def find_miniconda_root():
     command = "conda info --base"
     return subprocess.check_output(command, shell=True).decode().strip()

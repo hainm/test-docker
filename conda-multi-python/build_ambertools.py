@@ -23,6 +23,7 @@ def main():
     print("ATPY2", ATPY2, 'exists = ', os.path.exists(ATPY2))
     utils.tar_xf(ATPY2)
 
+    utils.patch(os.path.join(THIS_RECIPE, 'patch'))
     utils.update_amber()
     utils.set_compiler_env()
     utils.run_configure()
