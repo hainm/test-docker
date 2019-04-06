@@ -8,7 +8,7 @@ ambertools_version=$5
 dry_run=$6 # True/False # Always the 2nd last
 build_only=$7 # True/False # Always the last
 
-DOCKER_IMAGE=ambermd/test-centos6
+DOCKER_IMAGE=ambermd/amber-build-box
 BZ2FILE=/root/miniconda3/conda-bld/linux-64/amber*.tar.bz2
 BUILD_ALL_SCRIPT=/ambertools-binary-build/build_all.py
 
