@@ -3,7 +3,7 @@
 # Known working version
 #    conda-build: 2.1.17
 ''' Building AmberTools binary for conda and non-conda install
-for python 2.7, 3.4, 3.5, 3.6 for Linux and MacOS
+for python 2.7, 3.4, 3.5, 3.6, 3.7 for Linux and MacOS
 
 Require: MacOS + docker + Python stuff + two cups of coffee.
 
@@ -89,7 +89,7 @@ def copy_tarfile_to_build_folder(build_commands,
 
 
 def build_all_python_verions_in_one_package(container_folder, opt,
-        extend_versionss=('3.4', '3.5', '3.6')):
+        extend_versionss=('3.4', '3.5', '3.6', '3.7')):
     # build full AmberTools for python 2.7 first
     print("Start with python 2.7. Additional versions", extend_versionss)
     os.environ['AMBER_BUILD_TASK'] = 'ambertools'
@@ -285,7 +285,7 @@ def main(args=None):
         '--py-version',
         default=None,
         help=
-        'Python version. Default: build all versions (2.7, 3.4, 3.5, 3.6)')
+        'Python version. Default: build all versions (2.7, 3.4, 3.5, 3.6, 3.7)')
     parser.add_argument(
         '-v',
         '--ambertools-version',
@@ -314,7 +314,7 @@ def main(args=None):
 
     if opt.build_task in ['ambertools', 'ambertools_pack_all_pythons']:
         py_versions = ([str(opt.py),] if opt.py not in [None, 'None']
-                      else ['2.7', '3.4', '3.5', '3.6'])
+                      else ['2.7', '3.4', '3.5', '3.6', '3.7'])
         opt.build_task = 'ambertools_pack_all_pythons'
     else:
         py_versions = [

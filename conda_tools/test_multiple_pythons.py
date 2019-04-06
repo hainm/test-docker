@@ -50,9 +50,8 @@ def install_ambertools(package_dir,
 
 
 def find_miniconda_root():
-    command = "conda info | grep 'root environment'"
-    output = subprocess.check_output(command, shell=True).decode()
-    return output.split()[3] + '/'
+    command = "conda info --base"
+    return subprocess.check_output(command, shell=True).decode().strip()
 
 
 def create_env(env, python_version):
@@ -136,7 +135,7 @@ def main(args=None):
 
     pyvers = [
         opt.pyvers,
-    ] if opt.pyvers else ['2.7', '3.4', '3.5', '3.6']
+    ] if opt.pyvers else ['2.7', '3.4', '3.5', '3.6', '3.7']
     print('Python versions = {}'.format(pyvers))
     print('conda package = {}'.format(is_conda_package(package_dir)))
 
