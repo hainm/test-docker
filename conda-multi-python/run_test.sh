@@ -14,7 +14,6 @@ else
 fi
 
 function test_python(){
-    return
     python -c "import parmed; print(parmed)"
     python -c "import pytraj; pytraj.run_tests()"
     python -c "import sander; print(sander)"

@@ -11,14 +11,13 @@
 # You don't need to udpate other recipes.
 
 amber_src=$1
-recipes_dir=$2
+recipes_dir=$2 # root folder having multile recipes (below)
 
 export AMBER_SRC=`(cd $amber_src && pwd)`
 export AMBER_BUILD_TASK=ambertools
 recipes_dir=`(cd $recipes_dir && pwd)`
 
 notest='--no-test'
-# notest=''
 
 # Build full ambertools with python 2.7
 # Do not change python version here since the subsequent steps will use
