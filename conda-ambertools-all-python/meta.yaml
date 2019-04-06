@@ -1,0 +1,27 @@
+# This file is a template, do not change it.
+{% set version = "19" %}
+{% set bugfix_version = "0" %}
+{% set build_number = "0" %}
+{% set ambertools_version = version + '.' + bugfix_version %}
+{% set ambertools_package = "ambertools" %}
+{% set summary = "AmberTools" %}
+
+package:
+  name: {{ ambertools_package }}
+  version: {{ ambertools_version }}
+
+build:
+  number: {{ build_number }}
+
+requirements:
+  build:
+    - libgcc [linux]
+    - python
+    - numpy
+  run:
+    - libgcc [linux]
+
+about:
+    home: https://ambermd.org
+    license: GNU General Public License (GPL)
+    summary: {{ summary }}
