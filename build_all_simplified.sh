@@ -1,11 +1,14 @@
 #!/bin/sh
 
+# Example:
+# bash build_all_simplified.sh $HOME/amber_git/amber $HOME/ambertools-binary-build
+
 # Tested with
 # conda 4.6.7
 # conda-build 3.17.8
 
-# NOTE: Make suret to update ambertools version in conda-ambertools-all-python/meta.yaml
-# You don't need to udpate the version in other recipes.
+# NOTE: Make sure to update ambertools version in conda-ambertools-all-python/meta.yaml
+# You don't need to udpate other recipes.
 
 amber_src=$1
 recipes_dir=$2
