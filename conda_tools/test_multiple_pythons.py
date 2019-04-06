@@ -135,8 +135,7 @@ def main(args=None):
 
     pyvers = [
         opt.pyvers,
-    ] if opt.pyvers else ['2.7', '3.5', '3.6', '3.7']
-    # ] if opt.pyvers else ['2.7', '3.4', '3.5', '3.6', '3.7']
+    ] if opt.pyvers else ['2.7', '3.4', '3.5', '3.6', '3.7']
     print('Python versions = {}'.format(pyvers))
     print('conda package = {}'.format(is_conda_package(package_dir)))
 
