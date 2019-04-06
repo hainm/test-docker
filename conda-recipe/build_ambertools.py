@@ -47,8 +47,7 @@ def main():
         # fix rpath
         # $PYTHON ${RECIPE_DIR}/../conda_tools/fix_rpath_osx.py $AMBERHOME/bin/
         # $PYTHON ${RECIPE_DIR}/../conda_tools/fix_rpath_osx.py $AMBERHOME/lib/
-        # fix_rpath_osx.main([amberhome])
-        pass
+        fix_rpath_osx.main([amberhome]) # conda-build seems not help.
     
     copy_to_prefix(amberhome, prefix)
 
