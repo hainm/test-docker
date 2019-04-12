@@ -13,4 +13,5 @@ conda install ambertools -c ambermd
 ```
 
 - Working versions
-    conda-build==2.1.17
+    - conda 4.6.7
+    - conda-build 3.17.8
