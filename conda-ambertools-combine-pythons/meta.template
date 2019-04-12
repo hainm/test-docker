@@ -15,11 +15,8 @@ build:
 
 requirements:
   build:
-    - libgcc [linux]
     - python
     - numpy
-  run:
-    - libgcc [linux]
 
 about:
     home: https://ambermd.org

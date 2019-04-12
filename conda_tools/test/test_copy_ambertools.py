@@ -17,7 +17,7 @@ def test_copy_ambertools(mock_getenv, mock_copy):
         if name == 'AMBER_SRC':
             return fake_amberhome
         elif name == 'RECIPE_DIR':
-            return os.path.join(this_path, '..', '..', 'conda-recipe')
+            return os.path.join(this_path, '..', '..', 'conda-ambertools-single-python')
     mock_getenv.side_effect = side_effect
     cwd = os.getcwd()
     tmp = 'ok_to_delete_me'

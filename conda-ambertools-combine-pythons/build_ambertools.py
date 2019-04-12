@@ -22,7 +22,7 @@ def main():
     
     THIS_RECIPE = os.getenv('RECIPE_DIR')
     PREFIX = os.getenv('PREFIX')
-    ATPY2 = utils.get_package_dir(conda_recipe=os.path.join(THIS_RECIPE, '..', 'conda-recipe'),
+    ATPY2 = utils.get_package_dir(conda_recipe=os.path.join(THIS_RECIPE, '..', 'conda-ambertools-single-python'),
             py=2.7)
     at_temp_folder = os.path.dirname(ATPY2)
     

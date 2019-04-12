@@ -50,7 +50,7 @@ def test_build_all_cmd_with_assertion():
     package = os.path.basename(
         utils.get_package_dir(
             os.path.join(this_dir, '..', '..',
-                'conda-ambertools-all-python')))
+                'conda-ambertools-combine-pythons')))
     print('package', package)
     all_lines = [
         'amber-conda-bld/osx-64/{}'.format(package),

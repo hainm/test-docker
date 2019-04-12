@@ -1,7 +1,10 @@
-# WARNING: Your current working dir must be outside amber tree.
-# See usage below
 # Known working version
-#    conda-build: 2.1.17
+# conda 4.6.7
+# conda-build 3.17.8
+# NOTE: This script is an advanced version of build_all_simplified.sh
+# It can build conda and non conda binaries for both Linux and MacOS in
+# a single run.
+
 ''' Building AmberTools binary for conda and non-conda install
 for python 2.7, 3.4, 3.5, 3.6, 3.7 for Linux and MacOS
 
@@ -35,7 +38,7 @@ AMBER_BINARY_BUILD_DIR = os.path.abspath(os.path.dirname(__file__))
 CONDA_TOOLS_DIR = os.path.join(AMBER_BINARY_BUILD_DIR, 'conda_tools')
 DOCKER_BUILD_SCRIPT = os.path.join(
     AMBER_BINARY_BUILD_DIR,
-    'conda-recipe/scripts/run_docker_build.sh'
+    'conda_tools/run_docker_build.sh'
 )
 BZ2_FILES = []
 
@@ -44,7 +47,7 @@ def write_meta_file(amber_ver):
     # assume amber_ver is this format 17.4
     version, bugfix = amber_ver.split('.')
     recipe_dir = os.path.join(os.path.dirname(__file__),
-            'conda-ambertools-all-python')
+            'conda-ambertools-combine-pythons')
     with open(os.path.join(recipe_dir, 'meta.template')) as fh, \
          open(os.path.join(recipe_dir, 'meta.yaml'), 'w') as fh_new:
          content = fh.read()
@@ -93,9 +96,9 @@ def build_all_python_verions_in_one_package(container_folder, opt,
     # build full AmberTools for python 2.7 first
     print("Start with python 2.7. Additional versions", extend_versionss)
     os.environ['AMBER_BUILD_TASK'] = 'ambertools'
-    recipe_dir = os.path.abspath(os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-recipe'))
+    recipe_dir = os.path.abspath(os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-ambertools-single-python'))
     tmp_recipe_dir = os.path.abspath(
-        os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-multi-python'))
+        os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-ambertools-python-components'))
     py2_build_command = ['conda', 'build', recipe_dir, '--py', '2.7']
     if opt.skip_test:
         py2_build_command.append('--no-test')
@@ -120,7 +123,7 @@ def build_all_python_verions_in_one_package(container_folder, opt,
     # build all
     # copy all python packages for different python versions to
     # original full AmberTools build (with python 2.7)
-    recipe_dir = tmp_recipe_dir + '/../conda-ambertools-all-python'
+    recipe_dir = tmp_recipe_dir + '/../conda-ambertools-combine-pythons'
     combine_command = ['conda', 'build', recipe_dir]
     if opt.skip_test:
         combine_command.append("--no-test")
@@ -345,7 +348,7 @@ def main(args=None):
         os.mkdir(container_folder_linux)
     container_folder_linux = os.path.abspath(container_folder_linux)
 
-    recipe_dir = os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-recipe')
+    recipe_dir = os.path.join(AMBER_BINARY_BUILD_DIR, 'conda-ambertools-single-python')
     ambertools_src = os.path.abspath(os.path.join(opt.amberhome, 'AmberTools', 'src'))
     pack_non_conda_package_script = os.path.join(
         CONDA_TOOLS_DIR, 'pack_non_conda.py')

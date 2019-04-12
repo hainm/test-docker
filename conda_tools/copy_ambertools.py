@@ -36,7 +36,7 @@ def _copy_folder(source_dir, target_dir):
 def copy_tree(dry_run=False):
     # use mkrelease_at as a file source
     recipe_dir = os.getenv('RECIPE_DIR',
-                           os.path.join(this_path, '../conda-recipe'))
+                           os.path.join(this_path, '../conda-ambertools-single-python'))
     print('recipe_dir', recipe_dir)
     print('this_path', this_path)
     amberhome = os.path.abspath(os.getenv('AMBER_SRC'))

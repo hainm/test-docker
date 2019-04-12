@@ -128,7 +128,7 @@ def main(args=None):
     tmp_dir = 'junk_folder'  # only exists if non-conda package
 
     conda_recipe = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', 'conda-recipe'))
+        os.path.join(os.path.dirname(__file__), '..', 'conda-ambertools-single-python'))
     TEST_SCRIPT = '{}/run_test.sh'.format(conda_recipe)
     print('conda_recipe', conda_recipe)
     print('run_test', run_test)

@@ -41,19 +41,12 @@ build:
 
 requirements:
   build:
-    - zlib
-    - bzip2
     - python
     - numpy
     - cython
-    - libgcc [linux]
   run:
-    - zlib
-    - bzip2
     - python
     - numpy
-    - requests
-    - libgcc [linux]
 
 about:
     home: https://ambermd.org
