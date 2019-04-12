@@ -1,5 +1,4 @@
-# This file is a template, do not change it.
-{% set version = "18" %}
+{% set version = "19" %}
 {% set bugfix_version = "0" %}
 {% set build_number = "0" %}
 {% set ambertools_version = version + '.' + bugfix_version %}
