@@ -21,6 +21,7 @@ def tar_xf(fn):
 
 
 def sh(cmd):
+    print("CMD: ", cmd)
     try:
         subprocess.check_call(cmd, shell=True)
     except subprocess.CalledProcessError as e:
@@ -49,6 +50,7 @@ def set_compiler_env():
 
 
 def run_configure():
+    print("Running ./configure")
     if sys.platform.startswith('darwin'):
         sh('./configure --with-python python -macAccelerate clang')
     else:
