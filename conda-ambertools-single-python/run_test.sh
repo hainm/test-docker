@@ -80,6 +80,7 @@ function extra_test(){
     resp
     parmed --help
     pdb4amber --help
+    packmol-memgen --help
 }
 
 case ${amber_build_task} in
