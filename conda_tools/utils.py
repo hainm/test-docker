@@ -52,7 +52,7 @@ def run_configure():
     if sys.platform.startswith('darwin'):
         sh('./configure --with-python python -macAccelerate clang')
     else:
-        sh('./configure --with-python python -norism gnu')
+        sh('./configure --with-python python -norism -static gnu')
 
 
 def make_install(ncpus=4):
