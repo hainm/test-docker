@@ -55,7 +55,7 @@ function test_ambermini(){
 function naive_test(){
     # those programs won't return exit 0
     which pbsa
-    which rism1d
+    # which rism1d
     which paramfit
     which addles
     which MMPBSA.py
@@ -74,6 +74,7 @@ function extra_test(){
     sander.LES --version
     mdgx --help
     cpptraj --help
+    ambpdb --help
     # test_nab
     which nab
     UnitCell

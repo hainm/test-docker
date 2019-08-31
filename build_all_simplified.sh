@@ -26,7 +26,7 @@ conda build $recipes_dir/conda-ambertools-single-python --py 2.7 $notest || exit
 
 # Use tarfile from above build to build only python components in AmberTools
 # with multiple python versions
-for pyver in 3.4 3.5 3.6 3.7; do
+for pyver in 3.5 3.6 3.7; do
     conda build $recipes_dir/conda-ambertools-python-components --py $pyver $notest || exit 1
 done
 
