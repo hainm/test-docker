@@ -74,6 +74,7 @@ function extra_test(){
     sander.LES --version
     mdgx --help
     cpptraj --help
+    ambpdb --help
     # test_nab
     which nab
     UnitCell

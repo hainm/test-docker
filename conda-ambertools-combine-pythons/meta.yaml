@@ -1,5 +1,5 @@
 {% set version = "19" %}
-{% set bugfix_version = "0" %}
+{% set bugfix_version = "7" %}
 {% set build_number = "0" %}
 {% set ambertools_version = version + '.' + bugfix_version %}
 {% set ambertools_package = "ambertools" %}

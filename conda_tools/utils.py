@@ -21,6 +21,7 @@ def tar_xf(fn):
 
 
 def sh(cmd):
+    print("CMD: %s" % cmd)
     try:
         subprocess.check_call(cmd, shell=True)
     except subprocess.CalledProcessError as e:
